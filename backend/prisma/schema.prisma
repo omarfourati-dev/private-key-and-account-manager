@@ -1,0 +1,105 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  entries       Entry[]
+  categories    Category[]
+  refreshTokens RefreshToken[]
+  settings      Settings?
+
+  @@map("users")
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  isRevoked Boolean  @default(false)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("refresh_tokens")
+}
+
+model Category {
+  id        String   @id @default(uuid())
+  name      String
+  color     String   @default("#6366f1")
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  entries EntryCategory[]
+
+  @@unique([name, userId])
+  @@map("categories")
+}
+
+model Entry {
+  id            String    @id @default(uuid())
+  type          EntryType
+  name          String
+  icon          String?   @default("🔑")
+  userId        String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Encrypted fields (stored as encrypted strings)
+  encryptedData String    // JSON blob containing all sensitive fields, AES-256 encrypted
+
+  // Searchable fields (stored in plaintext for search)
+  service       String?
+  username      String?
+  url           String?
+  note          String?
+  expiresAt     DateTime?
+
+  user       User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categories EntryCategory[]
+
+  @@map("entries")
+}
+
+model EntryCategory {
+  entryId    String
+  categoryId String
+
+  entry    Entry    @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  category Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([entryId, categoryId])
+  @@map("entry_categories")
+}
+
+model Settings {
+  id            String   @id @default(uuid())
+  userId        String   @unique
+  autoLockMins  Int      @default(15)
+  theme         String   @default("dark")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("settings")
+}
+
+enum EntryType {
+  API_KEY
+  ACCOUNT
+}

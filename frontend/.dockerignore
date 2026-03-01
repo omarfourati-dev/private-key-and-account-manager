@@ -1,0 +1,12 @@
+node_modules
+dist
+.git
+*.log
+.env
+.env.*
+!.env.example
+coverage
+.claude-agents
+e2e
+*.md
+.github
