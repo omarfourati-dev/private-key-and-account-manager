@@ -212,13 +212,18 @@ authRouter.post('/logout-all', authMiddleware, async (req: AuthenticatedRequest,
 });
 
 // PUT /api/auth/password
-authRouter.put('/password', authMiddleware, async (req: AuthenticatedRequest, res: Response, next) => {
+authRouter.put('/password', authRateLimiter, authMiddleware, async (req: AuthenticatedRequest, res: Response, next) => {
   try {
     const { currentPassword, newPassword, reEncryptedEntries } = changePasswordSchema.parse(req.body);
 
     const user = await prisma.user.findUnique({ where: { id: req.user!.userId } });
     if (!user) {
       res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    if (!user.passwordHash) {
+      res.status(400).json({ error: 'OAuth users must set a password via the Set Password option first.' });
       return;
     }
 

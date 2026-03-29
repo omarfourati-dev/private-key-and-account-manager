@@ -11,6 +11,7 @@ export interface AuthContextValue {
   settings: Settings | null;
   login: (email: string, password: string) => Promise<void>;
   setup: (email: string, password: string) => Promise<void>;
+  loginWithOAuthToken: (token: string) => Promise<void>;
   logout: () => Promise<void>;
   lock: () => void;
   unlock: (password: string) => Promise<void>;
@@ -133,6 +134,15 @@ export function useAuthState(): AuthContextValue {
     await refreshSettings();
   }, [refreshSettings]);
 
+  const loginWithOAuthToken = useCallback(async (token: string) => {
+    setAccessToken(token);
+    const payload = JSON.parse(atob(token.split('.')[1])) as { userId: string; email: string };
+    setUser({ id: payload.userId, email: payload.email });
+    setIsSetupComplete(true);
+    setIsLocked(true); // Vault locked until user enters vault password
+    await refreshSettings();
+  }, [refreshSettings]);
+
   const setup = useCallback(async (email: string, password: string) => {
     const { data } = await api.post<{ accessToken: string; user: User }>('/auth/setup', { email, password });
     setAccessToken(data.accessToken);
@@ -196,6 +206,7 @@ export function useAuthState(): AuthContextValue {
     settings,
     login,
     setup,
+    loginWithOAuthToken,
     logout,
     lock,
     unlock,

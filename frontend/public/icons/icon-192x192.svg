@@ -1,7 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
-  <rect width="192" height="192" rx="40" fill="#1e1e2e"/>
-  <rect x="40" y="58" width="112" height="88" rx="12" fill="none" stroke="#a6e3a1" stroke-width="9"/>
-  <rect x="76" y="38" width="40" height="30" rx="10" fill="none" stroke="#a6e3a1" stroke-width="9"/>
-  <circle cx="96" cy="98" r="13" fill="#a6e3a1"/>
-  <rect x="91" y="111" width="10" height="18" rx="4" fill="#a6e3a1"/>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d0d1f"/>
+      <stop offset="100%" stop-color="#14142b"/>
+    </linearGradient>
+    <linearGradient id="key" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8b79f8"/>
+      <stop offset="100%" stop-color="#6a57f0"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="192" height="192" rx="44" fill="url(#bg)"/>
+  <!-- Subtle glow -->
+  <circle cx="96" cy="70" r="64" fill="#7c6af7" fill-opacity="0.08"/>
+  <!-- Key shape -->
+  <circle cx="84" cy="80" r="28" fill="none" stroke="url(#key)" stroke-width="12"/>
+  <!-- Key stem -->
+  <line x1="104" y1="95" x2="148" y2="128" stroke="url(#key)" stroke-width="12" stroke-linecap="round"/>
+  <!-- Key teeth -->
+  <line x1="136" y1="120" x2="136" y2="135" stroke="url(#key)" stroke-width="10" stroke-linecap="round"/>
+  <line x1="122" y1="111" x2="122" y2="124" stroke="url(#key)" stroke-width="10" stroke-linecap="round"/>
 </svg>

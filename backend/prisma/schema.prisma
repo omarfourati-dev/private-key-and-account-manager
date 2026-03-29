@@ -10,7 +10,9 @@ datasource db {
 model User {
   id           String   @id @default(uuid())
   email        String   @unique
-  passwordHash String
+  passwordHash String?
+  googleId     String?  @unique
+  appleId      String?  @unique
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
@@ -72,6 +74,8 @@ model Entry {
   user       User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   categories EntryCategory[]
 
+  @@index([userId])
+  @@index([userId, type])
   @@map("entries")
 }
 

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -15,12 +15,37 @@
 
   html {
     @apply bg-base text-text;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   html.light {
     color-scheme: light;
-    @apply bg-gray-50 text-gray-900;
+    --tw-bg-opacity: 1;
+    background-color: #f8fafc;
+    color: #0f172a;
+  }
+
+  html.light .card {
+    background-color: #ffffff;
+    border-color: #e2e8f0;
+  }
+
+  html.light .input {
+    background-color: #f8fafc;
+    border-color: #e2e8f0;
+    color: #0f172a;
+  }
+
+  html.light .btn-secondary {
+    background-color: #f1f5f9;
+    color: #475569;
+  }
+
+  html.light .nav-bg {
+    background-color: rgba(248, 250, 252, 0.85);
+    border-color: #e2e8f0;
   }
 
   body {
@@ -29,65 +54,231 @@
 
   /* Custom scrollbar */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-base-100;
+    background: transparent;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-surface-100 rounded-full;
+    @apply bg-surface-200 rounded-full;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-surface-200;
+    @apply bg-primary/40;
+  }
+
+  /* Focus ring */
+  :focus-visible {
+    @apply outline-none ring-2 ring-primary/50 ring-offset-2 ring-offset-base;
   }
 }
 
 @layer components {
+  /* Buttons */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-medium text-sm transition-all duration-150 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl font-medium text-sm transition-all duration-150 cursor-pointer select-none;
+    @apply disabled:opacity-40 disabled:cursor-not-allowed;
   }
 
   .btn-primary {
-    @apply btn bg-primary text-base hover:bg-primary-hover;
+    @apply btn text-white shadow-glow-sm;
+    background: linear-gradient(135deg, #7c6af7 0%, #6a57f0 100%);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    @apply shadow-glow;
+    background: linear-gradient(135deg, #8b79f8 0%, #7c6af7 100%);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:active:not(:disabled) {
+    transform: translateY(0);
   }
 
   .btn-secondary {
-    @apply btn bg-surface text-text hover:bg-surface-100;
+    @apply btn bg-surface text-text border border-surface-200;
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    @apply bg-surface-100 border-surface-200/80;
   }
 
   .btn-danger {
-    @apply btn bg-error/20 text-error hover:bg-error/30;
+    @apply btn bg-error/10 text-error border border-error/20;
+  }
+
+  .btn-danger:hover:not(:disabled) {
+    @apply bg-error/20 border-error/30;
   }
 
   .btn-ghost {
-    @apply btn text-text-muted hover:text-text hover:bg-surface;
+    @apply btn text-text-muted;
   }
 
+  .btn-ghost:hover:not(:disabled) {
+    @apply text-text bg-surface;
+  }
+
+  /* Inputs — min 48px height for mobile tappability */
   .input {
-    @apply w-full px-3 py-2 bg-surface border border-surface-200 rounded-lg text-text placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-colors;
+    @apply w-full px-3.5 bg-surface border border-surface-200 rounded-xl text-text;
+    @apply placeholder-text-dim text-sm;
+    @apply transition-all duration-150;
+    @apply focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/60;
+    min-height: 48px;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+    /* Prevent iOS zoom on focus */
+    font-size: 16px;
   }
 
+  /* iOS: prevent input zoom */
+  @media (max-width: 640px) {
+    .input {
+      font-size: 16px !important;
+    }
+  }
+
+  /* Cards */
   .card {
-    @apply bg-base-100 border border-surface rounded-xl p-4;
+    @apply bg-base-100 border border-surface rounded-2xl p-4;
+    box-shadow: var(--shadow-card, 0 1px 2px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.04) inset);
+    background-image: linear-gradient(135deg, rgba(255,255,255,0.025) 0%, rgba(255,255,255,0) 100%);
   }
 
+  .card:hover {
+    @apply border-surface-100;
+  }
+
+  /* Glass card */
+  .glass {
+    @apply backdrop-blur-xl bg-base-100/80 border border-white/5 rounded-2xl;
+  }
+
+  /* Modals — bottom sheet on mobile, centered on desktop */
   .modal-overlay {
-    @apply fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in;
+    @apply fixed inset-0 z-50 flex items-end sm:items-center justify-center sm:p-4;
+    @apply bg-black/60 backdrop-blur-sm animate-fade-in;
+    /* Respect keyboard on iOS */
+    padding-bottom: env(keyboard-inset-height, 0px);
   }
 
   .modal-content {
-    @apply bg-base-100 border border-surface rounded-2xl shadow-2xl w-full animate-slide-up;
+    @apply bg-base-100 border border-surface rounded-t-3xl sm:rounded-2xl shadow-modal w-full;
+    @apply animate-slide-up;
+    background-image: linear-gradient(160deg, rgba(124,106,247,0.04) 0%, transparent 50%);
+    max-height: 92dvh;
+    /* Use dvh for better mobile support */
   }
 
+  @media (min-width: 640px) {
+    .modal-content {
+      max-height: 85vh;
+    }
+  }
+
+  /* Masked value */
   .masked-value {
-    @apply font-mono tracking-widest text-text-muted text-sm;
+    @apply font-mono tracking-widest text-text-dim text-sm;
+    letter-spacing: 0.18em;
   }
 
+  /* Badges */
   .badge {
-    @apply inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium;
+    @apply inline-flex items-center px-2 py-0.5 rounded-lg text-xs font-medium;
+  }
+
+  /* Stat card glow effect */
+  .stat-glow-purple {
+    box-shadow: 0 0 0 1px rgba(124,106,247,0.15) inset, 0 4px 16px rgba(124,106,247,0.05);
+  }
+
+  .stat-glow-cyan {
+    box-shadow: 0 0 0 1px rgba(56,189,248,0.15) inset, 0 4px 16px rgba(56,189,248,0.05);
+  }
+
+  .stat-glow-warning {
+    box-shadow: 0 0 0 1px rgba(251,191,36,0.15) inset, 0 4px 16px rgba(251,191,36,0.05);
+  }
+
+  .stat-glow-error {
+    box-shadow: 0 0 0 1px rgba(248,113,113,0.15) inset, 0 4px 16px rgba(248,113,113,0.05);
+  }
+
+  /* Entry card */
+  .entry-card {
+    @apply card flex flex-col gap-3 transition-all duration-200 cursor-default;
+  }
+
+  .entry-card:hover {
+    @apply -translate-y-0.5;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 0 1px rgba(124,106,247,0.15) inset;
+  }
+
+  /* Navigation */
+  .nav-bg {
+    background: rgba(8, 8, 18, 0.85);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  /* Section heading */
+  .section-label {
+    @apply text-xs font-semibold uppercase tracking-wider text-text-dim;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, #7c6af7 0%, #38bdf8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Hero orb effect */
+  .hero-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+  }
+
+  /* Download platform card */
+  .platform-card {
+    @apply card flex flex-col items-center gap-4 p-6 text-center cursor-pointer;
+    @apply hover:-translate-y-1 hover:shadow-glow transition-all duration-200;
+  }
+
+  /* Strength bar */
+  .strength-bar {
+    @apply h-1.5 rounded-full flex-1 transition-all duration-300;
+  }
+
+  /* Toggle */
+  .toggle {
+    @apply relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-200;
+    @apply cursor-pointer;
+  }
+
+  .toggle-thumb {
+    @apply absolute left-0.5 h-4 w-4 rounded-full bg-white shadow transition-transform duration-200;
+  }
+}
+
+/* Mobile safe area */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* PWA display mode adjustments */
+@media (display-mode: standalone) {
+  .nav-bg {
+    padding-top: env(safe-area-inset-top, 0);
   }
 }
