@@ -212,7 +212,7 @@ authRouter.post('/logout-all', authMiddleware, async (req: AuthenticatedRequest,
 });
 
 // PUT /api/auth/password
-authRouter.put('/password', authMiddleware, async (req: AuthenticatedRequest, res: Response, next) => {
+authRouter.put('/password', authRateLimiter, authMiddleware, async (req: AuthenticatedRequest, res: Response, next) => {
   try {
     const { currentPassword, newPassword, reEncryptedEntries } = changePasswordSchema.parse(req.body);
 

@@ -193,6 +193,80 @@ oauthRouter.get('/google/callback', async (req: Request, res: Response) => {
   }
 });
 
+// ─── APPLE JWT Verification ──────────────────────────────────────────────────
+
+interface AppleJWK {
+  kty: string;
+  kid: string;
+  use: string;
+  alg: string;
+  n: string;
+  e: string;
+}
+
+interface AppleIdTokenPayload {
+  sub?: string;
+  email?: string;
+  email_verified?: boolean;
+  iss?: string;
+  aud?: string;
+  exp?: number;
+}
+
+let appleJwksCache: { keys: AppleJWK[]; fetchedAt: number } | null = null;
+const JWKS_CACHE_TTL = 3600_000; // 1 hour
+
+async function fetchAppleJwks(): Promise<AppleJWK[]> {
+  const now = Date.now();
+  if (appleJwksCache && now - appleJwksCache.fetchedAt < JWKS_CACHE_TTL) {
+    return appleJwksCache.keys;
+  }
+  const raw = await httpsGet('https://appleid.apple.com/auth/keys');
+  const { keys } = JSON.parse(raw) as { keys: AppleJWK[] };
+  appleJwksCache = { keys, fetchedAt: now };
+  return keys;
+}
+
+async function verifyAppleIdToken(idToken: string): Promise<AppleIdTokenPayload> {
+  const parts = idToken.split('.');
+  if (parts.length !== 3) throw new Error('Invalid Apple id_token format');
+
+  const [headerB64, payloadB64, signatureB64] = parts;
+
+  const header = JSON.parse(Buffer.from(headerB64, 'base64url').toString('utf8')) as { kid: string; alg: string };
+  const payload = JSON.parse(Buffer.from(payloadB64, 'base64url').toString('utf8')) as AppleIdTokenPayload;
+
+  // Basic claims validation
+  if (payload.iss !== 'https://appleid.apple.com') throw new Error('Invalid Apple token issuer');
+  if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) throw new Error('Apple token expired');
+  if (process.env.APPLE_CLIENT_ID && payload.aud !== process.env.APPLE_CLIENT_ID) {
+    throw new Error('Apple token audience mismatch');
+  }
+
+  // Verify signature using Apple's JWKS
+  const keys = await fetchAppleJwks();
+  const jwk = keys.find(k => k.kid === header.kid);
+  if (!jwk) throw new Error(`Apple JWK not found for kid: ${header.kid}`);
+
+  // Import RSA public key from JWK components
+  const publicKey = crypto.createPublicKey({
+    key: {
+      kty: jwk.kty,
+      n: jwk.n,
+      e: jwk.e,
+    },
+    format: 'jwk',
+  });
+
+  const signingInput = `${headerB64}.${payloadB64}`;
+  const signature = Buffer.from(signatureB64, 'base64url');
+  const isValid = crypto.verify('SHA256', Buffer.from(signingInput), publicKey, signature);
+
+  if (!isValid) throw new Error('Apple id_token signature verification failed');
+
+  return payload;
+}
+
 // ─── APPLE Sign In ───────────────────────────────────────────────────────────
 
 // GET /api/auth/apple — redirect to Apple sign-in
@@ -240,13 +314,8 @@ oauthRouter.post(
     }
 
     try {
-      // Decode Apple id_token JWT payload (header.payload.signature)
-      // Note: In production, verify signature against Apple's JWKS endpoint
-      // https://appleid.apple.com/auth/keys
-      const payloadBase64 = id_token.split('.')[1];
-      const payload = JSON.parse(
-        Buffer.from(payloadBase64, 'base64url').toString('utf8')
-      ) as { sub?: string; email?: string; email_verified?: boolean };
+      // Verify Apple id_token signature against Apple's JWKS endpoint
+      const payload = await verifyAppleIdToken(id_token);
 
       const appleId = payload.sub;
       const email = payload.email;
