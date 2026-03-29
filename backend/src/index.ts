@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { PrismaClient } from '@prisma/client';
 import { authRouter } from './routes/auth';
+import { oauthRouter } from './routes/oauth';
 import { entriesRouter } from './routes/entries';
 import { categoriesRouter } from './routes/categories';
 import { transferRouter } from './routes/transfer';
@@ -57,6 +58,7 @@ app.get('/health', (_req, res) => {
 
 // API Routes
 app.use('/api/auth', authRouter);
+app.use('/api/auth', oauthRouter);
 app.use('/api/entries', entriesRouter);
 app.use('/api/categories', categoriesRouter);
 app.use('/api/settings', settingsRouter);

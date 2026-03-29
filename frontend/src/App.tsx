@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth';
 import SetupPage from './pages/SetupPage';
 import LoginPage from './pages/LoginPage';
+import OAuthCallbackPage from './pages/OAuthCallbackPage';
 import LockScreen from './components/LockScreen';
 import Dashboard from './pages/Dashboard';
 import SettingsPage from './pages/SettingsPage';
@@ -18,6 +19,11 @@ export default function App(): React.ReactElement {
     document.documentElement.classList.toggle('dark', theme === 'dark');
     document.documentElement.classList.toggle('light', theme === 'light');
   }, [settings?.theme]);
+
+  // Handle OAuth callback redirect before any auth guards
+  if (window.location.pathname === '/auth/callback') {
+    return <OAuthCallbackPage />;
+  }
 
   if (isSetupComplete === null) {
     return (

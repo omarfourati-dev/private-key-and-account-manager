@@ -222,6 +222,11 @@ authRouter.put('/password', authMiddleware, async (req: AuthenticatedRequest, re
       return;
     }
 
+    if (!user.passwordHash) {
+      res.status(400).json({ error: 'OAuth users must set a password via the Set Password option first.' });
+      return;
+    }
+
     const isValid = await bcrypt.compare(currentPassword, user.passwordHash);
     if (!isValid) {
       res.status(401).json({ error: 'Current password is incorrect' });
