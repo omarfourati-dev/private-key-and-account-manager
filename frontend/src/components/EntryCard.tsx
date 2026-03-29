@@ -84,17 +84,18 @@ export default function EntryCard({ entry, masterPassword, onEdit, onDelete, onD
           </div>
         </div>
 
+        {/* Buttons: min 40px tap target */}
         <div className="flex items-center gap-0.5 flex-shrink-0">
           <button
             onClick={() => onEdit(entry)}
-            className="p-1.5 rounded-lg text-text-muted hover:text-text hover:bg-surface transition-all"
+            className="w-9 h-9 flex items-center justify-center rounded-xl text-text-muted hover:text-text hover:bg-surface transition-all"
             title="Edit"
           >
             <Edit2 className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={() => setShowDeleteConfirm(true)}
-            className="p-1.5 rounded-lg text-text-muted hover:text-error hover:bg-error/10 transition-all"
+            className="w-9 h-9 flex items-center justify-center rounded-xl text-text-muted hover:text-error hover:bg-error/10 transition-all"
             title="Delete"
           >
             <Trash2 className="w-3.5 h-3.5" />
@@ -103,17 +104,18 @@ export default function EntryCard({ entry, masterPassword, onEdit, onDelete, onD
       </div>
 
       {/* Secret field */}
-      <div className="flex items-center gap-2 bg-surface/60 border border-surface-100/50 rounded-xl px-3 py-2">
+      {/* Secret row — buttons 36px minimum */}
+      <div className="flex items-center gap-1 bg-surface/60 border border-surface-100/50 rounded-xl px-3 py-2">
         <span className="flex-1 font-mono text-xs truncate min-w-0">
           {revealed
-            ? <span className="text-success">{isApiKey ? revealed.apiKey : revealed.password}</span>
+            ? <span className="text-success text-xs">{isApiKey ? revealed.apiKey : revealed.password}</span>
             : <span className="masked-value select-none">••••••••••••</span>
           }
         </span>
 
         <button
           onClick={handleReveal}
-          className="text-text-muted hover:text-text transition-colors flex-shrink-0 p-0.5"
+          className="w-8 h-8 flex items-center justify-center rounded-lg text-text-muted hover:text-text hover:bg-surface transition-colors flex-shrink-0"
           disabled={isRevealing}
           title={revealed ? 'Hide' : 'Show'}
         >
@@ -128,7 +130,7 @@ export default function EntryCard({ entry, masterPassword, onEdit, onDelete, onD
 
         <button
           onClick={handleCopySecret}
-          className="text-text-muted hover:text-primary transition-colors flex-shrink-0 p-0.5"
+          className="w-8 h-8 flex items-center justify-center rounded-lg text-text-muted hover:text-primary hover:bg-surface transition-colors flex-shrink-0"
           title={isApiKey ? 'Copy API Key' : 'Copy Password'}
         >
           <Copy className="w-3.5 h-3.5" />

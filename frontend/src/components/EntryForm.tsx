@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { X, Eye, EyeOff, Wand2 } from 'lucide-react';
+import { X, Eye, EyeOff, Wand2, ChevronDown } from 'lucide-react';
 import PasswordGenerator from './PasswordGenerator';
 import type { Entry, EntryFormData, Category } from '../types';
 import { decryptData } from '../utils/crypto';
 import toast from 'react-hot-toast';
 
-const ICONS = ['🔑', '🔐', '🛡️', '⚡', '🌐', '🚀', '💻', '📱', '☁️', '🏦', '💳', '🔒', '🤖', '📊', '🎯'];
+const ICONS = ['🔑', '🔐', '🛡️', '⚡', '🌐', '🚀', '💻', '📱', '☁️', '🏦', '💳', '🔒', '🤖', '📊', '🎯', '🗝️', '🔓', '📋', '🧩', '🌍'];
 
 interface EntryFormProps {
   entry?: Entry;
@@ -33,6 +33,7 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
 
   const [showSecret, setShowSecret] = useState(false);
   const [showGenerator, setShowGenerator] = useState(false);
+  const [showIconPicker, setShowIconPicker] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingExisting, setIsLoadingExisting] = useState(false);
 
@@ -75,13 +76,11 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     const secretValue = formData.type === 'API_KEY' ? formData.apiKey : formData.password;
     if (!secretValue && !isEditing) {
       toast.error(`Please enter a ${formData.type === 'API_KEY' ? 'API key' : 'password'}`);
       return;
     }
-
     setIsLoading(true);
     try {
       await onSubmit(formData);
@@ -95,7 +94,7 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
   if (isLoadingExisting) {
     return (
       <div className="modal-overlay">
-        <div className="modal-content max-w-lg flex items-center justify-center p-8">
+        <div className="modal-content max-w-lg flex items-center justify-center p-10">
           <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
         </div>
       </div>
@@ -104,27 +103,39 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
 
   return (
     <div className="modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
-      <div className="modal-content max-w-lg max-h-[90vh] overflow-y-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-surface">
-          <h2 className="text-lg font-semibold text-text">
+      <div className="modal-content max-w-lg">
+        {/* Drag handle (mobile) */}
+        <div className="flex justify-center pt-3 pb-1 sm:hidden">
+          <div className="w-10 h-1 bg-surface-200 rounded-full" />
+        </div>
+
+        {/* Sticky header */}
+        <div className="sticky top-0 z-10 flex items-center justify-between px-5 py-4 border-b border-surface bg-base-100/95 backdrop-blur-sm rounded-t-3xl sm:rounded-t-2xl">
+          <h2 className="text-base font-semibold text-text">
             {isEditing ? 'Edit Entry' : 'New Entry'}
           </h2>
-          <button onClick={onClose} className="btn-ghost p-1.5">
+          {/* Large close button for mobile */}
+          <button
+            onClick={onClose}
+            className="w-9 h-9 flex items-center justify-center rounded-xl bg-surface hover:bg-surface-100 transition-colors text-text-muted hover:text-text"
+            aria-label="Close"
+          >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-4 space-y-4">
-          {/* Type selector */}
+        <form onSubmit={handleSubmit} className="px-5 py-4 space-y-4 overflow-y-auto" style={{ maxHeight: 'calc(85vh - 72px)' }}>
+          {/* Type selector — full height buttons for easy tap */}
           <div className="flex gap-2">
             {(['API_KEY', 'ACCOUNT'] as const).map(t => (
               <button
                 key={t}
                 type="button"
                 onClick={() => update('type', t)}
-                className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  formData.type === t ? 'bg-primary text-base' : 'bg-surface text-text-muted hover:text-text'
+                className={`flex-1 py-3 rounded-xl text-sm font-medium transition-all ${
+                  formData.type === t
+                    ? 'bg-primary/20 text-primary border border-primary/40'
+                    : 'bg-surface text-text-muted hover:text-text border border-transparent'
                 }`}
               >
                 {t === 'API_KEY' ? '🔑 API Key' : '👤 Account'}
@@ -132,27 +143,50 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
             ))}
           </div>
 
-          {/* Icon & Name */}
-          <div className="flex gap-2">
+          {/* Icon Picker + Name */}
+          <div className="flex gap-2 items-start">
+            {/* Icon picker button */}
             <div className="relative">
-              <select
-                value={formData.icon}
-                onChange={e => update('icon', e.target.value)}
-                className="input w-16 text-center text-xl appearance-none cursor-pointer"
+              <button
+                type="button"
+                onClick={() => setShowIconPicker(v => !v)}
+                className="w-12 h-12 flex items-center justify-center bg-surface border border-surface-200 rounded-xl text-xl hover:bg-surface-100 transition-colors relative"
                 title="Choose icon"
               >
-                {ICONS.map(icon => (
-                  <option key={icon} value={icon}>{icon}</option>
-                ))}
-              </select>
+                {formData.icon}
+                <ChevronDown className="absolute bottom-0.5 right-0.5 w-2.5 h-2.5 text-text-dim" />
+              </button>
+
+              {showIconPicker && (
+                <div
+                  className="absolute top-14 left-0 z-20 bg-base-100 border border-surface rounded-2xl p-2 shadow-modal animate-scale-in"
+                  style={{ width: 196 }}
+                >
+                  <div className="grid grid-cols-5 gap-1">
+                    {ICONS.map(icon => (
+                      <button
+                        key={icon}
+                        type="button"
+                        onClick={() => { update('icon', icon); setShowIconPicker(false); }}
+                        className={`w-9 h-9 flex items-center justify-center rounded-lg text-lg transition-colors ${
+                          formData.icon === icon ? 'bg-primary/20' : 'hover:bg-surface'
+                        }`}
+                      >
+                        {icon}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
+
             <div className="flex-1">
               <input
                 type="text"
                 value={formData.name}
                 onChange={e => update('name', e.target.value)}
-                className="input"
-                placeholder="Name / Label (e.g. OpenAI Production)"
+                className="input h-12"
+                placeholder="Name / Label"
                 required
                 maxLength={255}
               />
@@ -165,7 +199,7 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
             value={formData.service}
             onChange={e => update('service', e.target.value)}
             className="input"
-            placeholder={formData.type === 'API_KEY' ? 'Service / Provider (e.g. OpenAI)' : 'Service / Website Name'}
+            placeholder={formData.type === 'API_KEY' ? 'Service / Provider (e.g. OpenAI)' : 'Service / Website'}
             maxLength={255}
           />
 
@@ -177,6 +211,7 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
               onChange={e => update('username', e.target.value)}
               className="input"
               placeholder="Username / Email"
+              autoComplete="off"
               maxLength={255}
             />
           )}
@@ -188,15 +223,17 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
                 type={showSecret ? 'text' : 'password'}
                 value={formData.type === 'API_KEY' ? formData.apiKey : formData.password}
                 onChange={e => update(formData.type === 'API_KEY' ? 'apiKey' : 'password', e.target.value)}
-                className="input pr-20 font-mono"
-                placeholder={formData.type === 'API_KEY' ? 'API Key (encrypted)' : 'Password (encrypted)'}
+                className="input pr-24 font-mono text-sm"
+                placeholder={formData.type === 'API_KEY' ? 'API Key (AES-256 encrypted)' : 'Password (AES-256 encrypted)'}
+                autoComplete="new-password"
                 maxLength={4096}
               />
-              <div className="absolute right-2 top-1/2 -translate-y-1/2 flex gap-1">
+              {/* Two action buttons with proper tap targets */}
+              <div className="absolute right-1 top-1/2 -translate-y-1/2 flex gap-0.5">
                 <button
                   type="button"
                   onClick={() => setShowSecret(v => !v)}
-                  className="text-text-muted hover:text-text p-1"
+                  className="w-10 h-9 flex items-center justify-center rounded-lg text-text-muted hover:text-text hover:bg-surface transition-colors"
                   title={showSecret ? 'Hide' : 'Show'}
                 >
                   {showSecret ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -204,7 +241,9 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
                 <button
                   type="button"
                   onClick={() => setShowGenerator(v => !v)}
-                  className="text-text-muted hover:text-primary p-1"
+                  className={`w-10 h-9 flex items-center justify-center rounded-lg transition-colors ${
+                    showGenerator ? 'bg-primary/20 text-primary' : 'text-text-muted hover:text-primary hover:bg-surface'
+                  }`}
                   title="Generate password"
                 >
                   <Wand2 className="w-4 h-4" />
@@ -233,10 +272,10 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
             maxLength={2048}
           />
 
-          {/* Expiry */}
+          {/* Expiry (API key only) */}
           {formData.type === 'API_KEY' && (
             <div>
-              <label className="block text-xs text-text-muted mb-1">Expiration Date (optional)</label>
+              <label className="block text-xs font-medium text-text-muted mb-1.5">Expiration Date (optional)</label>
               <input
                 type="datetime-local"
                 value={formData.expiresAt ?? ''}
@@ -259,37 +298,40 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
           {/* Categories */}
           {categories.length > 0 && (
             <div>
-              <label className="block text-xs text-text-muted mb-2">Categories</label>
+              <label className="block text-xs font-medium text-text-muted mb-2">Categories</label>
               <div className="flex flex-wrap gap-2">
-                {categories.map(cat => (
-                  <button
-                    key={cat.id}
-                    type="button"
-                    onClick={() => toggleCategory(cat.id)}
-                    className={`badge py-1 px-2.5 cursor-pointer transition-all text-xs ${
-                      formData.categoryIds?.includes(cat.id) ? 'ring-1' : 'opacity-50 hover:opacity-80'
-                    }`}
-                    style={{
-                      backgroundColor: `${cat.color}20`,
-                      color: cat.color,
-                    }}
-                  >
-                    {formData.categoryIds?.includes(cat.id) && '✓ '}
-                    {cat.name}
-                  </button>
-                ))}
+                {categories.map(cat => {
+                  const selected = formData.categoryIds?.includes(cat.id);
+                  return (
+                    <button
+                      key={cat.id}
+                      type="button"
+                      onClick={() => toggleCategory(cat.id)}
+                      className={`min-h-[36px] px-3 py-1.5 rounded-lg text-xs font-medium transition-all border ${
+                        selected ? 'ring-1' : 'opacity-60 hover:opacity-90'
+                      }`}
+                      style={{
+                        backgroundColor: `${cat.color}18`,
+                        color: cat.color,
+                        borderColor: selected ? cat.color : 'transparent',
+                      }}
+                    >
+                      {selected ? '✓ ' : ''}{cat.name}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           )}
 
-          {/* Submit */}
-          <div className="flex gap-2 pt-2">
-            <button type="button" onClick={onClose} className="btn-secondary flex-1">
+          {/* Submit buttons — full width, 48px height */}
+          <div className="flex gap-3 pt-2 pb-2">
+            <button type="button" onClick={onClose} className="btn-secondary flex-1 h-12">
               Cancel
             </button>
-            <button type="submit" className="btn-primary flex-1" disabled={isLoading}>
+            <button type="submit" className="btn-primary flex-1 h-12" disabled={isLoading}>
               {isLoading ? (
-                <span className="w-4 h-4 border-2 border-base border-t-transparent rounded-full animate-spin" />
+                <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
                 isEditing ? 'Save Changes' : 'Create Entry'
               )}

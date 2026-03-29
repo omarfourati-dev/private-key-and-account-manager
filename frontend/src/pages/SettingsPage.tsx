@@ -171,25 +171,27 @@ function AccountSection({ user }: { user: { email: string } | null }) {
 
 function AutoLockSection({ settings, onUpdate }: { settings: { autoLockMins: number } | null; onUpdate: (s: { autoLockMins: number }) => Promise<void> }) {
   const options = [
-    { value: 5, label: '5 minutes' },
-    { value: 15, label: '15 minutes' },
-    { value: 30, label: '30 minutes' },
-    { value: 0, label: 'Disabled' },
+    { value: 5, label: '5 min' },
+    { value: 15, label: '15 min' },
+    { value: 30, label: '30 min' },
+    { value: 0, label: 'Off' },
   ];
 
   return (
     <SettingCard title="Auto-Lock">
-      <div className="flex flex-wrap gap-2">
+      <div className="grid grid-cols-4 gap-2">
         {options.map(opt => (
           <button
             key={opt.value}
             onClick={() => onUpdate({ autoLockMins: opt.value }).then(() => toast.success('Auto-lock updated'))}
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${
-              settings?.autoLockMins === opt.value ? 'bg-primary text-base' : 'bg-surface text-text-muted hover:text-text'
+            className={`flex flex-col items-center gap-1 py-3 rounded-xl text-sm transition-all ${
+              settings?.autoLockMins === opt.value
+                ? 'bg-primary/20 text-primary border border-primary/30'
+                : 'bg-surface text-text-muted hover:text-text border border-transparent'
             }`}
           >
-            <Clock className="w-3.5 h-3.5" />
-            {opt.label}
+            <Clock className="w-4 h-4" />
+            <span className="text-xs font-medium">{opt.label}</span>
           </button>
         ))}
       </div>
@@ -200,25 +202,24 @@ function AutoLockSection({ settings, onUpdate }: { settings: { autoLockMins: num
 function ThemeSection({ settings, onUpdate }: { settings: { theme: string } | null; onUpdate: (s: { theme: 'dark' | 'light' }) => Promise<void> }) {
   return (
     <SettingCard title="Appearance">
-      <div className="flex gap-2">
-        <button
-          onClick={() => onUpdate({ theme: 'dark' }).then(() => toast.success('Theme updated'))}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-colors ${
-            settings?.theme === 'dark' ? 'bg-primary text-base' : 'bg-surface text-text-muted hover:text-text'
-          }`}
-        >
-          <Moon className="w-4 h-4" />
-          Dark
-        </button>
-        <button
-          onClick={() => onUpdate({ theme: 'light' }).then(() => toast.success('Theme updated'))}
-          className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm transition-colors ${
-            settings?.theme === 'light' ? 'bg-primary text-base' : 'bg-surface text-text-muted hover:text-text'
-          }`}
-        >
-          <Sun className="w-4 h-4" />
-          Light
-        </button>
+      <div className="grid grid-cols-2 gap-2">
+        {([
+          { value: 'dark', label: 'Dark', Icon: Moon },
+          { value: 'light', label: 'Light', Icon: Sun },
+        ] as const).map(({ value, label, Icon }) => (
+          <button
+            key={value}
+            onClick={() => onUpdate({ theme: value }).then(() => toast.success('Theme updated'))}
+            className={`flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-all border ${
+              settings?.theme === value
+                ? 'bg-primary/20 text-primary border-primary/30'
+                : 'bg-surface text-text-muted hover:text-text border-transparent'
+            }`}
+          >
+            <Icon className="w-4 h-4" />
+            {label}
+          </button>
+        ))}
       </div>
     </SettingCard>
   );
@@ -284,7 +285,7 @@ function CategorySection({
 
       <div className="space-y-2">
         {categories.map(cat => (
-          <div key={cat.id} className="flex items-center gap-2 p-2 bg-surface rounded-lg">
+          <div key={cat.id} className="flex items-center gap-2 p-2 bg-surface rounded-xl min-h-[48px]">
             <div className="w-3 h-3 rounded-full flex-shrink-0" style={{ backgroundColor: cat.color }} />
 
             {editingId === cat.id ? (
@@ -293,14 +294,20 @@ function CategorySection({
                   type="text"
                   value={editName}
                   onChange={e => setEditName(e.target.value)}
-                  className="input flex-1 py-1 text-sm"
+                  className="input flex-1 py-1.5 text-sm"
                   autoFocus
                   maxLength={100}
                 />
-                <button onClick={() => handleEdit(cat.id)} className="text-success hover:text-success/80 p-1">
+                <button
+                  onClick={() => handleEdit(cat.id)}
+                  className="w-9 h-9 flex items-center justify-center rounded-lg text-success hover:bg-success/10 transition-colors"
+                >
                   <Check className="w-4 h-4" />
                 </button>
-                <button onClick={() => setEditingId(null)} className="text-text-muted hover:text-text p-1">
+                <button
+                  onClick={() => setEditingId(null)}
+                  className="w-9 h-9 flex items-center justify-center rounded-lg text-text-muted hover:text-text hover:bg-surface-100 transition-colors"
+                >
                   <X className="w-4 h-4" />
                 </button>
               </>
@@ -310,13 +317,13 @@ function CategorySection({
                 {cat._count && <span className="text-xs text-text-muted">{cat._count.entries}</span>}
                 <button
                   onClick={() => { setEditingId(cat.id); setEditName(cat.name); }}
-                  className="text-text-muted hover:text-text p-1"
+                  className="w-9 h-9 flex items-center justify-center rounded-lg text-text-muted hover:text-text hover:bg-surface-100 transition-colors"
                 >
                   <Edit2 className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={() => onDeleteCategory(cat.id)}
-                  className="text-text-muted hover:text-error p-1"
+                  className="w-9 h-9 flex items-center justify-center rounded-lg text-text-muted hover:text-error hover:bg-error/10 transition-colors"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
                 </button>
