@@ -69,6 +69,6 @@ jobs:
         run: npm test
         env:
           DATABASE_URL: "postgresql://test:test@localhost:5432/test"
-          JWT_SECRET: "test-jwt-secret-minimum-32-chars-long"
-          REFRESH_TOKEN_SECRET: "test-refresh-secret-minimum-32-chars"
+          JWT_ACCESS_SECRET: "test-access-secret-minimum-32-chars-long"
+          JWT_REFRESH_SECRET: "test-refresh-secret-minimum-32-chars-long"
           NODE_ENV: test
