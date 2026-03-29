@@ -32,7 +32,8 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
   });
 
   const [showSecret, setShowSecret] = useState(false);
-  const [showGenerator, setShowGenerator] = useState(false);
+  // Auto-open generator for new account entries so password can be generated immediately
+  const [showGenerator, setShowGenerator] = useState(!entry && formData.type === 'ACCOUNT');
   const [showIconPicker, setShowIconPicker] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingExisting, setIsLoadingExisting] = useState(false);
@@ -63,6 +64,13 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
 
   const update = (field: keyof EntryFormData, value: unknown) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    // Auto-open generator when switching to account type with no password yet
+    if (field === 'type' && value === 'ACCOUNT' && !formData.password && !isEditing) {
+      setShowGenerator(true);
+    }
+    if (field === 'type' && value === 'API_KEY') {
+      setShowGenerator(false);
+    }
   };
 
   const toggleCategory = (id: string) => {
@@ -218,37 +226,42 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
 
           {/* Secret field */}
           <div className="space-y-2">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-xs font-medium text-text-muted uppercase tracking-wide">
+                {formData.type === 'API_KEY' ? 'API Key' : 'Password'}
+              </span>
+              <button
+                type="button"
+                onClick={() => setShowGenerator(v => !v)}
+                className={`flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-lg transition-colors ${
+                  showGenerator
+                    ? 'bg-primary/20 text-primary'
+                    : 'text-text-muted hover:text-primary hover:bg-primary/10'
+                }`}
+              >
+                <Wand2 className="w-3.5 h-3.5" />
+                {showGenerator ? 'Hide generator' : 'Generate password'}
+              </button>
+            </div>
+
             <div className="relative">
               <input
                 type={showSecret ? 'text' : 'password'}
                 value={formData.type === 'API_KEY' ? formData.apiKey : formData.password}
                 onChange={e => update(formData.type === 'API_KEY' ? 'apiKey' : 'password', e.target.value)}
-                className="input pr-24 font-mono text-sm"
-                placeholder={formData.type === 'API_KEY' ? 'API Key (AES-256 encrypted)' : 'Password (AES-256 encrypted)'}
+                className="input pr-12 font-mono text-sm"
+                placeholder={formData.type === 'API_KEY' ? 'API Key (AES-256 encrypted)' : 'Paste or generate a password'}
                 autoComplete="new-password"
                 maxLength={4096}
               />
-              {/* Two action buttons with proper tap targets */}
-              <div className="absolute right-1 top-1/2 -translate-y-1/2 flex gap-0.5">
-                <button
-                  type="button"
-                  onClick={() => setShowSecret(v => !v)}
-                  className="w-10 h-9 flex items-center justify-center rounded-lg text-text-muted hover:text-text hover:bg-surface transition-colors"
-                  title={showSecret ? 'Hide' : 'Show'}
-                >
-                  {showSecret ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setShowGenerator(v => !v)}
-                  className={`w-10 h-9 flex items-center justify-center rounded-lg transition-colors ${
-                    showGenerator ? 'bg-primary/20 text-primary' : 'text-text-muted hover:text-primary hover:bg-surface'
-                  }`}
-                  title="Generate password"
-                >
-                  <Wand2 className="w-4 h-4" />
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => setShowSecret(v => !v)}
+                className="absolute right-1 top-1/2 -translate-y-1/2 w-10 h-9 flex items-center justify-center rounded-lg text-text-muted hover:text-text hover:bg-surface transition-colors"
+                title={showSecret ? 'Hide' : 'Show'}
+              >
+                {showSecret ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
             </div>
 
             {showGenerator && (
