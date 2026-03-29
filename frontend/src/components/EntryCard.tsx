@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Eye, EyeOff, Copy, Edit2, Trash2, ExternalLink, Clock, Tag } from 'lucide-react';
+import { Eye, EyeOff, Copy, Edit2, Trash2, ExternalLink, Clock, Tag, Key, User } from 'lucide-react';
 import { useClipboard } from '../hooks/useClipboard';
 import type { Entry, DecryptedEntry } from '../types';
 import toast from 'react-hot-toast';
@@ -23,18 +23,11 @@ export default function EntryCard({ entry, masterPassword, onEdit, onDelete, onD
   const isExpiringSoon = entry.expiresAt && !isExpired && new Date(entry.expiresAt) < new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
 
   const handleReveal = async () => {
-    if (revealed) {
-      setRevealed(null);
-      return;
-    }
-
+    if (revealed) { setRevealed(null); return; }
     setIsRevealing(true);
     try {
       const decrypted = await onDecrypt(entry, masterPassword);
-      setRevealed({
-        apiKey: decrypted.apiKey,
-        password: decrypted.password,
-      });
+      setRevealed({ apiKey: decrypted.apiKey, password: decrypted.password });
     } catch {
       toast.error('Failed to decrypt. Check your master password.');
     } finally {
@@ -53,32 +46,55 @@ export default function EntryCard({ entry, masterPassword, onEdit, onDelete, onD
   };
 
   const handleCopyUsername = async () => {
-    if (entry.username) {
-      await copy(entry.username, 'Username');
-    }
+    if (entry.username) await copy(entry.username, 'Username');
   };
 
+  const borderClass = isExpired
+    ? 'border-error/30'
+    : isExpiringSoon
+    ? 'border-warning/30'
+    : '';
+
   return (
-    <div className={`card flex flex-col gap-3 hover:border-surface-100 transition-colors ${isExpired ? 'border-error/30' : isExpiringSoon ? 'border-warning/30' : ''}`}>
+    <div className={`entry-card ${borderClass}`}>
       {/* Header */}
       <div className="flex items-start justify-between gap-2">
-        <div className="flex items-center gap-2 min-w-0">
-          <span className="text-xl flex-shrink-0">{entry.icon}</span>
+        <div className="flex items-center gap-2.5 min-w-0">
+          {/* Type icon + emoji */}
+          <div className="relative flex-shrink-0">
+            <div className={`w-9 h-9 rounded-xl flex items-center justify-center text-base ${
+              isApiKey ? 'bg-primary/10' : 'bg-secondary/10'
+            }`}>
+              {entry.icon ?? (isApiKey ? '🔑' : '👤')}
+            </div>
+            <div className={`absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full flex items-center justify-center ${
+              isApiKey ? 'bg-primary/20' : 'bg-secondary/20'
+            }`}>
+              {isApiKey
+                ? <Key className="w-2 h-2 text-primary" />
+                : <User className="w-2 h-2 text-secondary" />
+              }
+            </div>
+          </div>
           <div className="min-w-0">
-            <h3 className="font-semibold text-text truncate">{entry.name}</h3>
+            <h3 className="font-semibold text-text text-sm truncate leading-tight">{entry.name}</h3>
             {entry.service && (
-              <p className="text-xs text-text-muted truncate">{entry.service}</p>
+              <p className="text-xs text-text-muted truncate mt-0.5">{entry.service}</p>
             )}
           </div>
         </div>
 
-        <div className="flex items-center gap-1 flex-shrink-0">
-          <button onClick={() => onEdit(entry)} className="btn-ghost p-1.5" title="Edit">
+        <div className="flex items-center gap-0.5 flex-shrink-0">
+          <button
+            onClick={() => onEdit(entry)}
+            className="p-1.5 rounded-lg text-text-muted hover:text-text hover:bg-surface transition-all"
+            title="Edit"
+          >
             <Edit2 className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={() => setShowDeleteConfirm(true)}
-            className="btn-ghost p-1.5 hover:text-error"
+            className="p-1.5 rounded-lg text-text-muted hover:text-error hover:bg-error/10 transition-all"
             title="Delete"
           >
             <Trash2 className="w-3.5 h-3.5" />
@@ -87,17 +103,17 @@ export default function EntryCard({ entry, masterPassword, onEdit, onDelete, onD
       </div>
 
       {/* Secret field */}
-      <div className="flex items-center gap-2 bg-surface rounded-lg px-3 py-2">
-        <span className="flex-1 font-mono text-sm truncate">
+      <div className="flex items-center gap-2 bg-surface/60 border border-surface-100/50 rounded-xl px-3 py-2">
+        <span className="flex-1 font-mono text-xs truncate min-w-0">
           {revealed
-            ? (isApiKey ? revealed.apiKey : revealed.password) ?? '••••••••••'
-            : <span className="masked-value">••••••••••••</span>
+            ? <span className="text-success">{isApiKey ? revealed.apiKey : revealed.password}</span>
+            : <span className="masked-value select-none">••••••••••••</span>
           }
         </span>
 
         <button
           onClick={handleReveal}
-          className="text-text-muted hover:text-text transition-colors flex-shrink-0"
+          className="text-text-muted hover:text-text transition-colors flex-shrink-0 p-0.5"
           disabled={isRevealing}
           title={revealed ? 'Hide' : 'Show'}
         >
@@ -112,7 +128,7 @@ export default function EntryCard({ entry, masterPassword, onEdit, onDelete, onD
 
         <button
           onClick={handleCopySecret}
-          className="text-text-muted hover:text-text transition-colors flex-shrink-0"
+          className="text-text-muted hover:text-primary transition-colors flex-shrink-0 p-0.5"
           title={isApiKey ? 'Copy API Key' : 'Copy Password'}
         >
           <Copy className="w-3.5 h-3.5" />
@@ -121,15 +137,15 @@ export default function EntryCard({ entry, masterPassword, onEdit, onDelete, onD
 
       {/* Username / URL row */}
       {(entry.username || entry.url) && (
-        <div className="flex items-center gap-2 text-sm">
+        <div className="flex items-center gap-2 text-xs">
           {entry.username && (
             <button
               onClick={handleCopyUsername}
-              className="flex items-center gap-1 text-text-muted hover:text-text transition-colors min-w-0"
+              className="flex items-center gap-1.5 text-text-muted hover:text-text transition-colors min-w-0 flex-1 group"
               title="Copy username"
             >
-              <Copy className="w-3 h-3 flex-shrink-0" />
-              <span className="truncate max-w-32">{entry.username}</span>
+              <Copy className="w-3 h-3 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" />
+              <span className="truncate">{entry.username}</span>
             </button>
           )}
           {entry.url && (
@@ -137,54 +153,50 @@ export default function EntryCard({ entry, masterPassword, onEdit, onDelete, onD
               href={entry.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 text-secondary hover:text-primary transition-colors ml-auto flex-shrink-0"
+              className="flex items-center gap-1 text-secondary/70 hover:text-secondary transition-colors ml-auto flex-shrink-0"
               title="Open URL"
             >
               <ExternalLink className="w-3 h-3" />
-              <span className="hidden sm:inline text-xs">Open</span>
+              <span>Open</span>
             </a>
           )}
         </div>
       )}
 
-      {/* Footer */}
-      <div className="flex items-center gap-2 flex-wrap">
-        {/* Categories */}
-        {entry.categories.map(cat => (
-          <span
-            key={cat.id}
-            className="badge text-xs"
-            style={{ backgroundColor: `${cat.color}20`, color: cat.color }}
-          >
-            <Tag className="w-2.5 h-2.5 mr-1" />
-            {cat.name}
-          </span>
-        ))}
+      {/* Footer: categories + expiry */}
+      {(entry.categories.length > 0 || entry.expiresAt) && (
+        <div className="flex items-center gap-1.5 flex-wrap pt-0.5">
+          {entry.categories.map(cat => (
+            <span
+              key={cat.id}
+              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-medium"
+              style={{ backgroundColor: `${cat.color}18`, color: cat.color }}
+            >
+              <Tag className="w-2 h-2" />
+              {cat.name}
+            </span>
+          ))}
 
-        {/* Expiry */}
-        {entry.expiresAt && (
-          <span className={`flex items-center gap-1 text-xs ml-auto ${isExpired ? 'text-error' : 'text-warning'}`}>
-            <Clock className="w-3 h-3" />
-            {isExpired ? 'Expired' : 'Exp'} {new Date(entry.expiresAt).toLocaleDateString()}
-          </span>
-        )}
-      </div>
+          {entry.expiresAt && (
+            <span className={`flex items-center gap-1 text-[10px] ml-auto ${isExpired ? 'text-error' : 'text-warning'}`}>
+              <Clock className="w-3 h-3" />
+              {isExpired ? 'Expired' : 'Exp.'} {new Date(entry.expiresAt).toLocaleDateString()}
+            </span>
+          )}
+        </div>
+      )}
 
       {/* Delete Confirmation */}
       {showDeleteConfirm && (
-        <div className="mt-2 p-3 bg-error/10 border border-error/30 rounded-lg">
-          <p className="text-sm text-text mb-3">Delete &quot;{entry.name}&quot;? This cannot be undone.</p>
+        <div className="mt-1 p-3 bg-error/8 border border-error/25 rounded-xl animate-scale-in">
+          <p className="text-xs text-text mb-2.5">
+            Delete <strong className="text-error">"{entry.name}"</strong>? This cannot be undone.
+          </p>
           <div className="flex gap-2">
-            <button
-              onClick={() => onDelete(entry.id)}
-              className="btn-danger flex-1 py-1.5 text-sm"
-            >
+            <button onClick={() => onDelete(entry.id)} className="btn-danger flex-1 py-1.5 text-xs">
               Delete
             </button>
-            <button
-              onClick={() => setShowDeleteConfirm(false)}
-              className="btn-secondary flex-1 py-1.5 text-sm"
-            >
+            <button onClick={() => setShowDeleteConfirm(false)} className="btn-secondary flex-1 py-1.5 text-xs">
               Cancel
             </button>
           </div>

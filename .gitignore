@@ -36,3 +36,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.env
+
+# Backend build output
+/backend/dist/
+
+# Android local properties
+frontend/android/local.properties
+frontend/android/.gradle/
+frontend/android/app/.cxx/
+frontend/android/app/build/
+frontend/android/build/

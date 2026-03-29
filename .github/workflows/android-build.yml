@@ -1,0 +1,129 @@
+name: Android APK Build
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Build type (debug or release)'
+        required: true
+        default: 'release'
+        type: choice
+        options:
+          - debug
+          - release
+
+env:
+  JAVA_VERSION: "17"
+  NODE_VERSION: "20"
+
+jobs:
+  build-android:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+          cache: gradle
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build frontend (web)
+        working-directory: frontend
+        run: npm run build
+
+      - name: Sync Capacitor (copy web assets to Android)
+        working-directory: frontend
+        run: npx cap sync android
+
+      - name: Make Gradlew executable
+        working-directory: frontend/android
+        run: chmod +x gradlew
+
+      - name: Build debug APK
+        if: github.event.inputs.release_type == 'debug' || github.event_name == 'workflow_dispatch' && github.event.inputs.release_type != 'release'
+        working-directory: frontend/android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Build release APK (unsigned)
+        if: github.event_name == 'push' || github.event.inputs.release_type == 'release'
+        working-directory: frontend/android
+        run: ./gradlew assembleRelease --no-daemon
+
+      - name: Find APK
+        id: find-apk
+        run: |
+          APK_PATH=$(find frontend/android -name "*.apk" | head -1)
+          echo "apk_path=$APK_PATH" >> $GITHUB_OUTPUT
+          APK_NAME=$(basename "$APK_PATH")
+          echo "apk_name=$APK_NAME" >> $GITHUB_OUTPUT
+          echo "Found APK: $APK_PATH"
+
+      - name: Rename APK
+        run: |
+          VERSION="${{ github.ref_name }}"
+          if [[ "$VERSION" == v* ]]; then
+            NEW_NAME="keyvault-${VERSION}.apk"
+          else
+            NEW_NAME="keyvault-latest.apk"
+          fi
+          mv "${{ steps.find-apk.outputs.apk_path }}" "${NEW_NAME}"
+          echo "renamed=$NEW_NAME" >> $GITHUB_ENV
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: keyvault-android-apk
+          path: "*.apk"
+          retention-days: 90
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: "*.apk"
+          generate_release_notes: true
+          body: |
+            ## KeyVault ${{ github.ref_name }}
+
+            ### Download
+
+            | Platform | Link |
+            |---|---|
+            | **Android APK** | See assets below ↓ |
+            | **iOS / iPadOS** | Open the web app in Safari → Share → Add to Home Screen |
+            | **Desktop (Chrome/Edge)** | Click the ⊕ install icon in the address bar |
+
+            ### Install on Android
+            1. Download the `.apk` file from the assets below
+            2. On your Android device: **Settings → Security → Install unknown apps** → allow your browser
+            3. Open the downloaded APK and tap **Install**
+            4. Launch **KeyVault** from your app drawer
+
+            ### Security
+            - All data encrypted end-to-end with AES-256-GCM
+            - Master password never leaves your device
+            - Zero server-side plaintext storage
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

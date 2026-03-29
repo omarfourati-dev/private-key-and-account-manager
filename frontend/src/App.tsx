@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage';
 import LockScreen from './components/LockScreen';
 import Dashboard from './pages/Dashboard';
 import SettingsPage from './pages/SettingsPage';
+import DownloadsPage from './pages/DownloadsPage';
 import Layout from './components/Layout';
 
 export default function App(): React.ReactElement {
@@ -47,6 +48,7 @@ export default function App(): React.ReactElement {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/downloads" element={<DownloadsPage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Layout>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { Plus, Key, User, Clock, Filter, SortAsc } from 'lucide-react';
+import { Plus, Key, User, Clock, Filter, SortAsc, AlertTriangle, Shield } from 'lucide-react';
 import { useEntries } from '../hooks/useEntries';
 import { useCategories } from '../hooks/useCategories';
 import { useAuth } from '../hooks/useAuth';
@@ -34,47 +34,30 @@ export default function Dashboard(): React.ReactElement {
 
   const filteredEntries = useMemo(() => {
     let result = [...entries];
-
     if (filter.search) {
-      const searchLower = filter.search.toLowerCase();
+      const s = filter.search.toLowerCase();
       result = result.filter(e =>
-        e.name.toLowerCase().includes(searchLower) ||
-        (e.service?.toLowerCase().includes(searchLower)) ||
-        (e.username?.toLowerCase().includes(searchLower)) ||
-        (e.url?.toLowerCase().includes(searchLower)) ||
-        (e.note?.toLowerCase().includes(searchLower)) ||
-        e.categories.some(c => c.name.toLowerCase().includes(searchLower))
+        e.name.toLowerCase().includes(s) ||
+        (e.service?.toLowerCase().includes(s)) ||
+        (e.username?.toLowerCase().includes(s)) ||
+        (e.url?.toLowerCase().includes(s)) ||
+        (e.note?.toLowerCase().includes(s)) ||
+        e.categories.some(c => c.name.toLowerCase().includes(s))
       );
     }
-
-    if (filter.type !== 'ALL') {
-      result = result.filter(e => e.type === filter.type);
-    }
-
-    if (filter.categoryId) {
-      result = result.filter(e => e.categories.some(c => c.id === filter.categoryId));
-    }
-
+    if (filter.type !== 'ALL') result = result.filter(e => e.type === filter.type);
+    if (filter.categoryId) result = result.filter(e => e.categories.some(c => c.id === filter.categoryId));
     if (filter.showExpiredOnly) {
       const now = new Date();
       result = result.filter(e => e.expiresAt && new Date(e.expiresAt) < now);
     }
-
     result.sort((a, b) => {
       let valA: string, valB: string;
-      if (filter.sortBy === 'name') {
-        valA = a.name.toLowerCase();
-        valB = b.name.toLowerCase();
-      } else if (filter.sortBy === 'updatedAt') {
-        valA = a.updatedAt;
-        valB = b.updatedAt;
-      } else {
-        valA = a.createdAt;
-        valB = b.createdAt;
-      }
+      if (filter.sortBy === 'name') { valA = a.name.toLowerCase(); valB = b.name.toLowerCase(); }
+      else if (filter.sortBy === 'updatedAt') { valA = a.updatedAt; valB = b.updatedAt; }
+      else { valA = a.createdAt; valB = b.createdAt; }
       return filter.sortOrder === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
     });
-
     return result;
   }, [entries, filter]);
 
@@ -114,63 +97,78 @@ export default function Dashboard(): React.ReactElement {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <StatCard icon={<Key className="w-4 h-4 text-secondary" />} label="API Keys" value={stats.apiKeys} />
-        <StatCard icon={<User className="w-4 h-4 text-success" />} label="Accounts" value={stats.accounts} />
         <StatCard
-          icon={<Clock className="w-4 h-4 text-warning" />}
-          label="Expiring Soon"
+          icon={<Key className="w-4 h-4" />}
+          label="API Keys"
+          value={stats.apiKeys}
+          color="purple"
+        />
+        <StatCard
+          icon={<User className="w-4 h-4" />}
+          label="Accounts"
+          value={stats.accounts}
+          color="cyan"
+        />
+        <StatCard
+          icon={<AlertTriangle className="w-4 h-4" />}
+          label="Expiring"
           value={stats.expiringSoon}
+          color="warning"
           highlight={stats.expiringSoon > 0}
         />
         <StatCard
-          icon={<Clock className="w-4 h-4 text-error" />}
+          icon={<Clock className="w-4 h-4" />}
           label="Expired"
           value={stats.expired}
+          color="error"
           highlight={stats.expired > 0}
-          danger
         />
       </div>
 
       {/* Search & Actions */}
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex flex-col sm:flex-row gap-2.5">
         <SearchBar
           value={filter.search}
           onChange={search => updateFilter({ search })}
           className="flex-1"
         />
-
         <div className="flex gap-2">
           <button
             onClick={() => setShowFilters(v => !v)}
-            className={`btn-secondary ${showFilters ? 'bg-surface-100' : ''}`}
+            className={`btn-secondary gap-1.5 ${showFilters ? 'border-primary/40 text-primary' : ''}`}
           >
-            <Filter className="w-4 h-4" />
-            <span className="hidden sm:inline">Filters</span>
+            <Filter className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline text-sm">Filters</span>
           </button>
-
           <button onClick={() => setShowForm(true)} className="btn-primary">
             <Plus className="w-4 h-4" />
             <span className="hidden sm:inline">Add Entry</span>
+            <span className="sm:hidden">Add</span>
           </button>
         </div>
       </div>
 
       {/* Filter Panel */}
       {showFilters && (
-        <div className="card flex flex-wrap gap-4 animate-slide-down">
+        <div
+          className="rounded-2xl border border-surface p-4 flex flex-wrap gap-5 animate-slide-down"
+          style={{ background: 'rgba(20,20,43,0.6)' }}
+        >
           {/* Type filter */}
           <div>
-            <label className="block text-xs text-text-muted mb-1">Type</label>
-            <div className="flex gap-1">
+            <p className="section-label mb-2">Type</p>
+            <div className="flex gap-1.5">
               {(['ALL', 'API_KEY', 'ACCOUNT'] as const).map(t => (
                 <button
                   key={t}
                   onClick={() => updateFilter({ type: t as EntryType | 'ALL' })}
-                  className={`px-3 py-1 rounded-lg text-sm transition-colors ${
-                    filter.type === t ? 'bg-primary text-base' : 'bg-surface text-text-muted hover:text-text'
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                    filter.type === t
+                      ? 'bg-primary/20 text-primary border border-primary/30'
+                      : 'bg-surface text-text-muted hover:text-text border border-transparent'
                   }`}
                 >
                   {t === 'ALL' ? 'All' : t === 'API_KEY' ? 'API Keys' : 'Accounts'}
@@ -181,8 +179,8 @@ export default function Dashboard(): React.ReactElement {
 
           {/* Sort */}
           <div>
-            <label className="block text-xs text-text-muted mb-1">Sort by</label>
-            <div className="flex gap-1">
+            <p className="section-label mb-2">Sort by</p>
+            <div className="flex gap-1.5">
               {(['createdAt', 'updatedAt', 'name'] as const).map(field => (
                 <button
                   key={field}
@@ -190,27 +188,39 @@ export default function Dashboard(): React.ReactElement {
                     sortBy: field,
                     sortOrder: filter.sortBy === field && filter.sortOrder === 'desc' ? 'asc' : 'desc',
                   })}
-                  className={`flex items-center gap-1 px-3 py-1 rounded-lg text-sm transition-colors ${
-                    filter.sortBy === field ? 'bg-primary text-base' : 'bg-surface text-text-muted hover:text-text'
+                  className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                    filter.sortBy === field
+                      ? 'bg-primary/20 text-primary border border-primary/30'
+                      : 'bg-surface text-text-muted hover:text-text border border-transparent'
                   }`}
                 >
                   {field === 'createdAt' ? 'Created' : field === 'updatedAt' ? 'Updated' : 'Name'}
-                  {filter.sortBy === field && <SortAsc className={`w-3 h-3 ${filter.sortOrder === 'desc' ? 'rotate-180' : ''}`} />}
+                  {filter.sortBy === field && (
+                    <SortAsc className={`w-3 h-3 transition-transform ${filter.sortOrder === 'desc' ? 'rotate-180' : ''}`} />
+                  )}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Expired filter */}
+          {/* Expired toggle */}
           <div className="flex items-end">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={filter.showExpiredOnly}
-                onChange={e => updateFilter({ showExpiredOnly: e.target.checked })}
-                className="w-4 h-4 accent-primary"
-              />
-              <span className="text-sm text-text-muted">Expired only</span>
+            <label className="flex items-center gap-2 cursor-pointer group">
+              <div
+                className={`w-9 h-5 rounded-full transition-colors duration-200 relative ${
+                  filter.showExpiredOnly ? 'bg-primary' : 'bg-surface-200'
+                }`}
+                onClick={() => updateFilter({ showExpiredOnly: !filter.showExpiredOnly })}
+              >
+                <div
+                  className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${
+                    filter.showExpiredOnly ? 'translate-x-4' : 'translate-x-0.5'
+                  }`}
+                />
+              </div>
+              <span className="text-xs text-text-muted group-hover:text-text transition-colors">
+                Expired only
+              </span>
             </label>
           </div>
         </div>
@@ -225,24 +235,31 @@ export default function Dashboard(): React.ReactElement {
         />
       )}
 
-      {/* Entries */}
+      {/* Entries Grid */}
       {isLoading ? (
-        <div className="flex justify-center py-12">
-          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        <div className="flex justify-center py-16">
+          <div className="w-8 h-8 border-2 border-primary/40 border-t-primary rounded-full animate-spin" />
         </div>
       ) : filteredEntries.length === 0 ? (
-        <div className="text-center py-16">
-          <Key className="w-12 h-12 text-text-muted mx-auto mb-4" />
-          <p className="text-text-muted text-lg font-medium">
-            {entries.length === 0 ? 'No entries yet' : 'No results found'}
+        <div className="text-center py-20">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-surface mb-5">
+            {entries.length === 0
+              ? <Shield className="w-7 h-7 text-text-dim" />
+              : <Key className="w-7 h-7 text-text-dim" />
+            }
+          </div>
+          <p className="text-text font-medium mb-1">
+            {entries.length === 0 ? 'Your vault is empty' : 'No results found'}
           </p>
-          <p className="text-text-dim text-sm mt-1">
-            {entries.length === 0 ? 'Add your first API key or account' : 'Try adjusting your search or filters'}
+          <p className="text-text-muted text-sm mb-6">
+            {entries.length === 0
+              ? 'Add your first API key or account credential'
+              : 'Try adjusting your search or filters'}
           </p>
           {entries.length === 0 && (
-            <button onClick={() => setShowForm(true)} className="btn-primary mt-4">
+            <button onClick={() => setShowForm(true)} className="btn-primary">
               <Plus className="w-4 h-4" />
-              Add Entry
+              Add your first entry
             </button>
           )}
         </div>
@@ -281,20 +298,30 @@ export default function Dashboard(): React.ReactElement {
   );
 }
 
-function StatCard({
-  icon, label, value, highlight, danger,
-}: {
+interface StatCardProps {
   icon: React.ReactNode;
   label: string;
   value: number;
+  color: 'purple' | 'cyan' | 'warning' | 'error';
   highlight?: boolean;
-  danger?: boolean;
-}) {
+}
+
+function StatCard({ icon, label, value, color, highlight }: StatCardProps) {
+  const colorMap = {
+    purple: { text: 'text-primary', bg: 'bg-primary/10', glow: 'stat-glow-purple' },
+    cyan: { text: 'text-secondary', bg: 'bg-secondary/10', glow: 'stat-glow-cyan' },
+    warning: { text: 'text-warning', bg: 'bg-warning/10', glow: 'stat-glow-warning' },
+    error: { text: 'text-error', bg: 'bg-error/10', glow: 'stat-glow-error' },
+  };
+  const c = colorMap[color];
+
   return (
-    <div className={`card flex items-center gap-3 ${highlight ? (danger ? 'border-error/30' : 'border-warning/30') : ''}`}>
-      {icon}
+    <div className={`card flex items-center gap-3 ${highlight ? c.glow : ''}`}>
+      <div className={`w-9 h-9 rounded-xl ${c.bg} flex items-center justify-center flex-shrink-0`}>
+        <span className={c.text}>{icon}</span>
+      </div>
       <div>
-        <p className="text-2xl font-bold text-text">{value}</p>
+        <p className="text-xl font-bold text-text leading-none mb-0.5">{value}</p>
         <p className="text-xs text-text-muted">{label}</p>
       </div>
     </div>

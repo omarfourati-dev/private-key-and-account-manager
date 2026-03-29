@@ -1,0 +1,76 @@
+name: iOS Build (macOS)
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+# Note: iOS builds require:
+# 1. Apple Developer account (paid, $99/year)
+# 2. Signing certificates stored as GitHub secrets
+# 3. Provisioning profiles
+# See: https://capacitorjs.com/docs/ios/deploying-to-app-store
+
+jobs:
+  build-ios:
+    name: Build iOS IPA
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build frontend (web)
+        working-directory: frontend
+        run: npm run build
+
+      - name: Add iOS platform
+        working-directory: frontend
+        run: npx cap add ios 2>/dev/null || true
+
+      - name: Sync Capacitor
+        working-directory: frontend
+        run: npx cap sync ios
+
+      - name: Install CocoaPods
+        working-directory: frontend/ios/App
+        run: pod install
+
+      - name: Build iOS (no signing – simulator)
+        working-directory: frontend/ios/App
+        run: |
+          xcodebuild \
+            -workspace App.xcworkspace \
+            -scheme App \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            ONLY_ACTIVE_ARCH=NO \
+            build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: keyvault-ios-build
+          path: frontend/ios/App/build/Build/Products/**/*.app
+          retention-days: 7
+
+      # To distribute as IPA (TestFlight / Ad Hoc), add:
+      # - APPLE_TEAM_ID secret
+      # - APPLE_CERTIFICATE_BASE64 secret
+      # - APPLE_CERTIFICATE_PASSWORD secret
+      # - APPLE_PROVISIONING_PROFILE secret
+      # Then use: xcodebuild -exportArchive with ExportOptions.plist
