@@ -1,0 +1,738 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e4]:
+    - generic [ref=e6]:
+      - generic [ref=e7]:
+        - link "Homepage" [ref=e8] [cursor=pointer]:
+          - /url: https://medium.com/?source=post_page---top_nav_layout_nav-----------------------------------------
+          - img "Medium Logo" [ref=e9]
+        - generic [ref=e12]:
+          - listbox
+          - img [ref=e14]
+          - combobox "search" [ref=e16]
+      - button "Get the Medium app" [ref=e18] [cursor=pointer]:
+        - img [ref=e19]
+        - generic [ref=e22]: Get app
+      - link "Write" [ref=e25] [cursor=pointer]:
+        - /url: https://medium.com/m/signin?operation=register&redirect=https%3A%2F%2Fmedium.com%2Fnew-story&source=---top_nav_layout_nav-----------------------new_post_topnav------------------
+        - generic [ref=e26]:
+          - img [ref=e27]
+          - text: Write
+      - generic [ref=e31]:
+        - paragraph [ref=e32]:
+          - button "Sign up" [ref=e34]
+        - paragraph [ref=e36]:
+          - link "Sign in" [ref=e38] [cursor=pointer]:
+            - /url: https://medium.com/m/signin?operation=login&redirect=https%3A%2F%2F3bube.medium.com%2Fthe-ultimate-ai-design-guide-ship-app-designs-with-claude-code-stitch-via-mcp-36103d4fbcbd&source=post_page---top_nav_layout_nav-----------------------global_nav------------------
+      - tooltip "user options menu" [ref=e41]:
+        - button "user options menu" [ref=e43] [cursor=pointer]
+    - generic [ref=e48]:
+      - generic:
+        - dialog
+      - article [ref=e50]:
+        - generic [ref=e54]:
+          - generic [ref=e57]:
+            - generic [ref=e58]:
+              - 'heading "The Ultimate AI Design Guide: Ship App Designs with Claude code & stitch via MCP" [level=1] [ref=e59]'
+              - generic [ref=e62]:
+                - generic [ref=e63]:
+                  - generic [ref=e64]:
+                    - tooltip "Ebubechukwu Ugbor" [ref=e67]:
+                      - link "Ebubechukwu Ugbor" [ref=e69] [cursor=pointer]:
+                        - /url: /?source=post_page---byline--36103d4fbcbd---------------------------------------
+                        - img "Ebubechukwu Ugbor" [ref=e72]
+                    - generic [ref=e76]:
+                      - tooltip "Ebubechukwu Ugbor" [ref=e79]:
+                        - link "Ebubechukwu Ugbor" [ref=e82] [cursor=pointer]:
+                          - /url: /?source=post_page---byline--36103d4fbcbd---------------------------------------
+                      - button "Follow" [ref=e83] [cursor=pointer]:
+                        - generic [ref=e85]: Follow
+                  - generic [ref=e88]:
+                    - generic [ref=e89]: 9 min read
+                    - generic [ref=e91]: ·
+                    - generic [ref=e92]: Mar 25, 2026
+                - generic [ref=e93]:
+                  - generic [ref=e94]:
+                    - generic [ref=e96]:
+                      - link "clap" [ref=e99] [cursor=pointer]:
+                        - /url: https://medium.com/m/signin?actionUrl=https%3A%2F%2Fmedium.com%2F_%2Fvote%2Fp%2F36103d4fbcbd&operation=register&redirect=https%3A%2F%2F3bube.medium.com%2Fthe-ultimate-ai-design-guide-ship-app-designs-with-claude-code-stitch-via-mcp-36103d4fbcbd&user=Ebubechukwu+Ugbor&userId=f1adddb001a3&source=---header_actions--36103d4fbcbd---------------------clap_footer------------------
+                        - tooltip "clap" [ref=e101]:
+                          - generic [ref=e102]:
+                            - img "clap"
+                      - tooltip "12" [ref=e105]:
+                        - paragraph [ref=e107]:
+                          - button "12" [ref=e108] [cursor=pointer]: "12"
+                    - tooltip "responses" [ref=e110]:
+                      - button "responses" [ref=e112] [cursor=pointer]:
+                        - img [ref=e113]
+                  - generic [ref=e115]:
+                    - tooltip "Add to list bookmark button" [ref=e118]:
+                      - link "Add to list bookmark button" [ref=e121] [cursor=pointer]:
+                        - /url: https://medium.com/m/signin?actionUrl=https%3A%2F%2Fmedium.com%2F_%2Fbookmark%2Fp%2F36103d4fbcbd&operation=register&redirect=https%3A%2F%2F3bube.medium.com%2Fthe-ultimate-ai-design-guide-ship-app-designs-with-claude-code-stitch-via-mcp-36103d4fbcbd&source=---header_actions--36103d4fbcbd---------------------bookmark_footer------------------
+                        - img "Add to list bookmark button" [ref=e123]
+                    - link "Listen" [ref=e131] [cursor=pointer]:
+                      - /url: https://medium.com/m/signin?actionUrl=https%3A%2F%2Fmedium.com%2Fplans%3Fdimension%3Dpost_audio_button%26postId%3D36103d4fbcbd&operation=register&redirect=https%3A%2F%2F3bube.medium.com%2Fthe-ultimate-ai-design-guide-ship-app-designs-with-claude-code-stitch-via-mcp-36103d4fbcbd&source=---header_actions--36103d4fbcbd---------------------post_audio_button------------------
+                      - tooltip "Listen" [ref=e133]:
+                        - button "Listen" [ref=e135]:
+                          - img [ref=e136]
+                    - tooltip "Share Post" [ref=e140]:
+                      - button "Share Post" [ref=e142] [cursor=pointer]:
+                        - img [ref=e143]
+            - paragraph [ref=e145]:
+              - emphasis [ref=e146]: A beginner’s guide to going from idea to polished, production-ready UI in under an hour — no design experience required.
+          - separator [ref=e147]
+          - generic [ref=e153]:
+            - paragraph [ref=e154]: Not long ago, shipping a polished app design required Figma expertise, a dedicated designer, and a painstaking handoff process to engineers. Today, that entire pipeline has collapsed into a single morning of work.
+            - paragraph [ref=e155]:
+              - text: Two tools
+              - link "Google Stitch" [ref=e156] [cursor=pointer]:
+                - /url: https://stitch.withgoogle.com/
+              - text: and
+              - link "Claude Code" [ref=e157] [cursor=pointer]:
+                - /url: https://claude.com/product/claude-code
+              - text: have made it possible for anyone. You design your app in Stitch using plain English prompts, then copy or export the generated code and hand it to Claude Code, which builds out the full working app for you. No Figma skills, no manually writing CSS, no describing your design in words and hoping the AI gets it right.
+            - paragraph [ref=e158]: For those who want to go further, an optional MCP (Model Context Protocol) connection lets Stitch talk to Claude Code directly so your design data flows in without any copypasting. But even without MCP, the core workflow is fast, free and suprisingly powerful.
+            - paragraph [ref=e159]: This guide walks you through every step, even if you have never touched a design tool or AI coding assistant before.
+          - separator [ref=e160]
+          - generic [ref=e166]:
+            - heading "1. What are these tools, and why do they work so well together?" [level=3] [ref=e167]
+            - paragraph [ref=e168]:
+              - strong [ref=e169]: Google Stitch
+            - paragraph [ref=e170]:
+              - link "Google Stitch" [ref=e171] [cursor=pointer]:
+                - /url: https://stitch.withgoogle.com/
+              - text: is a free AI-powered UI design tool built by Google Labs. You describe what you want in plain english, and it generates a complete, high-fidelity interface screens, components, color palettes, and all powered by Google’s Gemini AI models.
+            - paragraph [ref=e172]: "The March 2026 update was a major leap forward. Stitch now features:"
+            - list [ref=e173]:
+              - listitem [ref=e174]: An AI-native infinite canvas where you can combine images, text, code and UI components side by side.
+              - listitem [ref=e175]: Generation of up to five screens simultaneously, instead of one at a time
+              - listitem [ref=e176]: A built-in design agent that reasons across your entire project history
+              - listitem [ref=e177]: Interactive prototyping — click “Play” to simulate your app’s user journey
+              - listitem [ref=e178]: Voice commands for real-time design critiques and on-the-fly changes
+              - listitem [ref=e179]: DESIGN.md — an agent friendly markdown file that exports your full design system (colors, typography, spacing, components) for use in other tools
+            - paragraph [ref=e180]:
+              - strong [ref=e181]: Claude Code
+            - paragraph [ref=e182]:
+              - link "Claude Code" [ref=e183] [cursor=pointer]:
+                - /url: https://claude.com/product/claude-code
+              - text: is Anthropic’s AI coding assistant that runs in your terminal. Unlike chat based coding tools, Claude Code operates directly inside your project — reading files, writing code, and executing commands autonomously. Give it a task and it handles the full implementation.
+            - paragraph [ref=e184]: It is available with Claude.ai Pro plan ($20/month or higher)
+            - paragraph [ref=e185]:
+              - strong [ref=e186]: "MCP: The Bridge Between Them"
+            - paragraph [ref=e187]: "MCP (Model Context Protocol) is an open standard that lets AI tools talk to each other through a shared interface. The stitch-mcp package acts as a bridge: it connects Claude Code directly to your Stitch project, letting Claude read your design data (layout, colors, HTML, screenshots) and implement it as real code — without any manual copy-pasting."
+          - separator [ref=e188]
+          - generic [ref=e194]:
+            - heading "2. Setting Up Claude Code + Stitch MCP" [level=3] [ref=e195]
+            - paragraph [ref=e196]: The setup has a few steps, but you only do this once. Here is a complete walkthrough.
+            - paragraph [ref=e197]:
+              - strong [ref=e198]: "Step 1: Install Claude Code"
+            - paragraph [ref=e199]: Claude Code requires Node.js (v18 or later). Install it from nodejs.org if you do not have it, then run
+            - generic [ref=e201]: npm install -g @anthropic-ai/claude-code
+            - paragraph [ref=e202]: "Authenticate with your Anthropic account:"
+            - generic [ref=e204]: claude login
+            - paragraph [ref=e205]:
+              - strong [ref=e206]: "Step 2: Get Your Stitch API Key"
+            - paragraph [ref=e207]: This is straightforward — no Google Cloud setup required.
+            - list [ref=e208]:
+              - listitem [ref=e209]: Go to stitch.withgoogle.com and sign in with your Google account
+              - listitem [ref=e210]: Open Settings (top-right corner)
+              - listitem [ref=e211]: Navigate to the API Keys section and create a new key
+              - listitem [ref=e212]: Copy the key and keep it somewhere safe
+            - paragraph [ref=e213]:
+              - strong [ref=e214]: "Step 3: Connect Stitch to Claude Code"
+            - paragraph [ref=e215]: "Run this single command in your terminal, replacing YOUR-API-KEY with the key you just copied:"
+            - generic [ref=e217]: "claude mcp add stitch --transport http https://stitch.googleapis.com/mcp --header \"X-Goog-Api-Key: YOUR-API-KEY\""
+            - paragraph [ref=e218]: That is it. Claude Code registers the Stitch MCP server automatically — no config files to edit, no JSON to write.
+            - 'heading "3. Designing in Google Stitch: Prompting for Great UI" [level=3] [ref=e219]'
+            - paragraph [ref=e220]: The quality of what Stitch generates depends heavily on how you describe it. Most people get mediocre results because they type one vague sentence. Here is a framework that producrs production-quality designs consistently.
+            - paragraph [ref=e221]:
+              - strong [ref=e222]: The 4-Part Prompt Formula
+            - paragraph [ref=e223]:
+              - strong [ref=e224]: "Part 1: App Type + Platform"
+            - paragraph [ref=e225]: Start by telling Stitch exactly what kind of interface you are building and where it will live.
+            - paragraph [ref=e226]:
+              - strong [ref=e227]: "Example:"
+              - text: “A mobile iOS app” or “A web dashboard” or “A SaaS onboarding flow”
+            - paragraph [ref=e228]:
+              - strong [ref=e229]: "Part 2: Purpose + Target User"
+            - paragraph [ref=e230]: Explain what the app does and who is using it. This shapes layout decisions, visual weight, and information density.
+            - paragraph [ref=e231]:
+              - strong [ref=e232]: "Example:"
+              - text: “for project managers who need to track team tasks at a glance”
+            - paragraph [ref=e233]:
+              - strong [ref=e234]: "Part 3: Screen + Key Components"
+            - paragraph [ref=e235]: List the specific screens and the components each screen needs. The more specific you are, the closer the first draft will be to what you want.
+            - paragraph [ref=e236]:
+              - strong [ref=e237]: "Example:"
+              - text: “Dashboard screen with KPI cards at the top, a line chart showing weekly activity, and a task list below. Sidebar navigation with Home, Projects, Team, and Settings”
+            - paragraph [ref=e238]:
+              - strong [ref=e239]: "Part 4: Visual Style"
+            - paragraph [ref=e240]: Describe the aesthetic — color scheme, mood, reference apps. Stitch interprets style cues well.
+            - paragraph [ref=e241]:
+              - strong [ref=e242]: "Example:"
+              - text: “Dark theme, clean and minimal, inspired by Linear and Vercel Blue accent colors, monospace font for code snippets.”
+            - paragraph [ref=e243]:
+              - strong [ref=e244]: Full Example Prompt
+            - paragraph [ref=e245]: "Putting it all together:"
+            - generic [ref=e247]:
+              - text: "\"A web SaaS dashboard for a project management tool used by\","
+              - text: "\"software teams. I need three screens:\","
+              - text: "\"\","
+              - text: "\"1. Overview Dashboard: KPI cards (open tasks, completed today,\","
+              - text: "\" team velocity), a line chart for sprint progress, and a\","
+              - text: "\" recent activity feed.\","
+              - text: "\"\","
+              - text: "\"2. Task Board: Kanban columns (Backlog, In Progress, Review,\","
+              - text: "\" Done) with draggable task cards showing assignee avatar,\","
+              - text: "\" priority label, and due date.\","
+              - text: "\"\","
+              - text: "\"3. Settings Page: Profile section, notification preferences,\","
+              - text: "\" and team members table.\","
+              - text: "\"\","
+              - text: "\"Dark theme, minimal design. Sidebar navigation. Inspired by\","
+              - text: "\"Linear. Blue and purple accent colors.\""
+            - paragraph [ref=e248]:
+              - strong [ref=e249]: Iteration Tips
+            - list [ref=e250]:
+              - listitem [ref=e251]: "Start broad, then drill down: Generate all screens first, then refine each one individually"
+              - listitem [ref=e252]: "Use chat to tweak without regenerating: ‘Move the chart to the right side’ or ‘Make the sidebar narrower’ works without starting over"
+              - listitem [ref=e253]: "Use the multi-select trick: Hold Shift, select multiple screens, and apply a single prompt to update all of them at once — great for theme changes"
+              - listitem [ref=e254]:
+                - strong [ref=e255]: "Voice canvas:"
+                - text: Speak your changes out loud. Say ‘give me three different color palettes for this screen’ and watch Stitch respond in real time
+              - listitem [ref=e256]: "Generate the DESIGN.md file: Go to Export > DESIGN.md to create your design system file before connecting to Claude Code. This gives Claude the full context it needs"
+          - separator [ref=e257]
+          - generic [ref=e263]:
+            - heading "4. Connecting Stitch to Claude Code via MCP" [level=3] [ref=e264]
+            - paragraph [ref=e265]: Once your design looks good in Stitch, the next step is getting Claude Code to implement it. There are two ways to do this — starting with the simpler one.
+            - paragraph [ref=e266]:
+              - strong [ref=e267]: "Path A: Copy & Export (The Default Way)"
+            - paragraph [ref=e268]: This is the quickest path and requires no extra setup.
+            - paragraph [ref=e269]: 5. In Stitch, open the screen you want to build
+            - paragraph [ref=e270]: 6. Click the code panel on the right — Stitch shows you the generated HTML and CSS
+            - paragraph [ref=e271]: 7. Copy the code, or use Export > DESIGN.md to get your full design system as a markdown file
+            - paragraph [ref=e272]: "8. Open Claude Code in your project and paste it in:"
+            - generic [ref=e274]:
+              - text: "\"Here is the design code for my dashboard screen [paste code]."
+              - text: Build this as a React component with Tailwind CSS."
+            - paragraph [ref=e275]: Claude reads the design and starts generating. For a landing page or simple screen, expect working code in a few minutes. You can also paste the DESIGN.md file to give Claude your full design system — colors, typography, spacing — so it stays consistent across every screen it builds.
+            - paragraph [ref=e276]:
+              - strong [ref=e277]: "Path B: Direct MCP Connection (Advanced)"
+            - paragraph [ref=e278]: "If you are building a multi-screen app and want a live connection between Stitch and Claude Code — so Claude can pull design data directly without any copy-pasting — MCP is the way to go. See Section 2 for the full setup. Once connected, you simply tell Claude:"
+            - paragraph [ref=e279]:
+              - strong [ref=e280]: "The build_site Command: Scaffold an Entire App at Once"
+            - paragraph [ref=e281]: "For multi-screen apps, the build_site tool maps your Stitch screens to routes and generates a deployable site structure:"
+            - generic [ref=e283]:
+              - text: npx @_davideast/stitch-mcp tool build_site -d '
+              - text: "{"
+              - text: "\"projectId\": \"YOUR_PROJECT_ID\","
+              - text: "\"routes\": ["
+              - text: "{ \"screenId\": \"abc123\", \"route\": \"/\" },"
+              - text: "{ \"screenId\": \"def456\", \"route\": \"/dashboard\" },"
+              - text: "{ \"screenId\": \"ghi789\", \"route\": \"/settings\" }"
+              - text: "]"
+              - text: "}'"
+            - paragraph [ref=e284]: "Find your screen IDs by running:"
+            - generic [ref=e286]: npx @_davideast/stitch-mcp view --project YOUR_PROJECT_ID
+          - separator [ref=e287]
+          - generic [ref=e293]:
+            - 'heading "5. Workflow & Iteration: From Design to Deployed Code" [level=3] [ref=e294]'
+            - paragraph [ref=e295]: Here is the end-to-end workflow that gets you from blank canvas to working app.
+            - paragraph [ref=e296]:
+              - strong [ref=e297]: The Full Workflow
+            - generic [ref=e298]:
+              - heading "Get Ebubechukwu Ugbor’s stories in your inbox" [level=2] [ref=e300]
+              - paragraph [ref=e302]: Join Medium for free to get updates from this writer.
+              - generic [ref=e303]:
+                - textbox "Enter your email" [ref=e307]
+                - button "Subscribe" [ref=e310]
+              - generic [ref=e312]:
+                - generic [ref=e313]:
+                  - checkbox "Remember me for faster sign in" [checked]
+                  - img [ref=e315] [cursor=pointer]
+                - paragraph [ref=e318]: Remember me for faster sign in
+            - paragraph [ref=e319]:
+              - strong [ref=e320]: "Phase 1: Design (20–40 minutes)"
+            - list [ref=e321]:
+              - listitem [ref=e322]: Open stitch.withgoogle.com
+              - listitem [ref=e323]: Choose Experimental Mode for your first pass
+              - listitem [ref=e324]: Use the 4-part prompt formula to describe your app
+              - listitem [ref=e325]: Review the generated screens — compare multiple variants
+              - listitem [ref=e326]: Refine with follow-up prompts or voice commands
+              - listitem [ref=e327]: Use the multi-screen generator to create all your key screens
+              - listitem [ref=e328]: Click ‘Play’ to preview your interactive prototype
+              - listitem [ref=e329]: Export DESIGN.md from the canvas
+            - paragraph [ref=e330]:
+              - strong [ref=e331]: "Phase 2: Implementation (20–30 minutes)"
+            - list [ref=e332]:
+              - listitem [ref=e333]: In Stitch, open each screen and copy the generated code from the code panel
+              - listitem [ref=e334]: Export DESIGN.md for your full design system (colors, fonts, spacing)
+              - listitem [ref=e335]: Open Claude Code in your project directory
+              - listitem [ref=e336]: "Paste the code and instruct Claude: ‘Build the dashboard screen as a React component using this design code’"
+              - listitem [ref=e337]: Review Claude’s output in your browser
+              - listitem [ref=e338]: "Use Claude to fix specifics: ‘The nav sidebar is too wide, reduce it to 240px’"
+              - listitem [ref=e339]: (Optional) Set up MCP for a live connection if you want Claude to pull updates automatically
+            - paragraph [ref=e340]:
+              - strong [ref=e341]: "Phase 3: Polish (10–20 minutes)"
+            - list [ref=e342]:
+              - listitem [ref=e343]: Swap placeholder images for real ones
+              - listitem [ref=e344]: Add hover states and transitions (Stitch designs are static — interactions need to be specified)
+              - listitem [ref=e345]: Check spacing and padding in the browser — AI often gets these close but not exact
+              - listitem [ref=e346]: Test on mobile if targeting responsive layouts
+            - paragraph [ref=e347]: "Total time from blank canvas to a working, shareable prototype: 60–90 minutes. A year ago, the same work took a designer half a day and a developer a full day."
+            - paragraph [ref=e348]:
+              - strong [ref=e349]: What Claude Code Does Well
+            - list [ref=e350]:
+              - listitem [ref=e351]: Reading complex design specs and translating them into clean component code
+              - listitem [ref=e352]: Maintaining design consistency across multiple screens using the DESIGN.md context
+              - listitem [ref=e353]: Generating TypeScript types for data structures implied by the UI
+              - listitem [ref=e354]: Wiring up routing between screens
+              - listitem [ref=e355]: Adapting Stitch’s HTML/CSS output into React + Tailwind patterns
+            - paragraph [ref=e356]:
+              - strong [ref=e357]: What Still Needs Human Judgement
+            - list [ref=e358]:
+              - listitem [ref=e359]: Spacing tweaks — AI gets padding and margins close, but pixel-perfect polish requires manual review
+              - listitem [ref=e360]: Placeholder content — replace generated text and images with real content
+              - listitem [ref=e361]: Complex animations and micro-interactions
+              - listitem [ref=e362]: Accessibility audit — add proper ARIA labels and keyboard navigation
+              - listitem [ref=e363]: Brand alignment — Stitch’s color choices may not match your exact brand tokens
+            - heading "6. Real Examples" [level=3] [ref=e364]
+            - paragraph [ref=e365]:
+              - strong [ref=e366]: "Example 1: SaaS Landing Page"
+            - paragraph [ref=e367]: "Prompt used in Stitch:"
+            - paragraph [ref=e368]: “Landing page for an AI writing assistant called InkFlow.
+            - paragraph [ref=e369]: Web, modern SaaS aesthetic. Clean white background,
+            - paragraph [ref=e370]: purple and indigo accents.
+            - paragraph [ref=e371]: "Sections: Hero (headline, subheadline, CTA button, product"
+            - paragraph [ref=e372]: screenshot mockup), Features (3 cards with icons), Social
+            - paragraph [ref=e373]: proof (3 customer quotes with avatars), Pricing (2 tiers,
+            - paragraph [ref=e374]: monthly/annual toggle), Footer with links.”
+            - paragraph [ref=e375]: "What Stitch generated: Four complete screen variants in under 30 seconds. The hero section had a clean headline layout with a visible product screenshot area, the feature cards used a consistent icon style, and the pricing section correctly rendered the two-tier structure."
+            - paragraph [ref=e376]: "Claude Code instruction after connecting via MCP:"
+            - paragraph [ref=e377]: “Implement the first landing page variant as a Next.js page
+            - paragraph [ref=e378]: component with Tailwind CSS. Use the InkFlow project color
+            - paragraph [ref=e379]: tokens from DESIGN.md.”
+            - paragraph [ref=e380]: "Result: A deployable Next.js page in approximately 12 minutes of generation time."
+            - paragraph [ref=e381]:
+              - strong [ref=e382]: "Example 2: Mobile Dashboard"
+            - paragraph [ref=e383]: "Prompt used in Stitch:"
+            - paragraph [ref=e384]: “Mobile iOS app dashboard for a personal finance tracker.
+            - paragraph [ref=e385]: Dark theme, minimal. Shows monthly spending by category
+            - paragraph [ref=e386]: as a donut chart, recent transactions list, and quick
+            - paragraph [ref=e387]: action buttons (Add Expense, Transfer, Pay). Bottom tab
+            - paragraph [ref=e388]: "navigation: Home, Budget, Cards, Profile.”"
+            - paragraph [ref=e389]: "What Stitch generated: A complete dark-mode mobile layout with a clean donut chart placeholder, well-spaced transaction rows, and a bottom tab bar with correct spacing for iOS."
+            - paragraph [ref=e390]: "Common issues and fixes:"
+            - list [ref=e391]:
+              - listitem [ref=e392]:
+                - strong [ref=e393]: "Chart type:"
+                - text: "Stitch generated a pie chart instead of a donut. Fix: ‘Change the portfolio chart to a donut chart with a centered total amount label’"
+              - listitem [ref=e394]:
+                - strong [ref=e395]: "Navigation label alignment:"
+                - text: "Tab labels were centered but not aligned below icons. Fix: ‘Align each tab label directly below its icon with 4px gap’"
+            - heading "7. Troubleshooting Common Issues" [level=3] [ref=e396]
+            - paragraph [ref=e397]:
+              - strong [ref=e398]: MCP connection not working
+            - list [ref=e399]:
+              - listitem [ref=e400]: Run npx @_davideast/stitch-mcp doctor — verbose to diagnose
+              - listitem [ref=e401]: Double-check your STITCH_API_KEY is set correctly — regenerate it in Stitch Settings if needed
+              - listitem [ref=e402]: Restart Claude Code after updating your MCP config
+            - paragraph [ref=e403]:
+              - strong [ref=e404]: Stitch output quality is low
+            - list [ref=e405]:
+              - listitem [ref=e406]: Switch to Experimental Mode (Gemini 2.5 Pro) for better results
+              - listitem [ref=e407]: Add more specific detail to your prompt — vague prompts produce generic layouts
+              - listitem [ref=e408]: Upload a reference screenshot or sketch if you have one — Stitch uses it as visual context
+            - paragraph [ref=e409]:
+              - strong [ref=e410]: Claude is not matching the design accurately
+            - list [ref=e411]:
+              - listitem [ref=e412]: Make sure you exported and shared the DESIGN.md file with Claude
+              - listitem [ref=e413]: "Use get_screen_image to give Claude a screenshot of the screen: ‘Look at the screenshot for screen abc123 and match it closely’"
+              - listitem [ref=e414]: "Be specific about the tech stack: ‘React with Tailwind CSS, not inline styles’"
+            - paragraph [ref=e415]:
+              - strong [ref=e416]: Final Thoughts
+            - paragraph [ref=e417]: The Stitch + Claude Code + MCP workflow is one of the most significant shifts in how software gets built. It does not eliminate the need for design judgment — you still decide what looks right, what feels intuitive, and what matches your brand. But it removes the bottleneck between having an idea and seeing it rendered, designed, and coded.
+            - paragraph [ref=e418]: "For solo builders, the time savings are remarkable. For teams, it changes the role of the designer from pixel-pusher to creative director: prompt, review, and refine — rather than manually constructing every component."
+            - paragraph [ref=e419]: The best way to understand it is to use it. Go to stitch.withgoogle.com, describe your next screen, and see what comes back in 30 seconds. Then connect Claude Code and watch it turn that design into real code.
+            - paragraph [ref=e420]: The whole pipeline — from prompt to prototype — is genuinely available to anyone right now.
+            - paragraph [ref=e421]:
+              - strong [ref=e422]: Tools referenced in this article
+            - list [ref=e423]:
+              - listitem [ref=e424]: Google Stitch — stitch.withgoogle.com (free)
+              - listitem [ref=e425]: Claude Code — via claude.ai Pro ($20/month)
+              - listitem [ref=e426]: stitch-mcp — github.com/davideast/stitch-mcp (open source)
+              - listitem [ref=e427]: stitch-skills — github.com/google-labs-code/stitch-skills (open source)
+      - generic [ref=e430]:
+        - link "Artifical Intelligence" [ref=e432] [cursor=pointer]:
+          - /url: https://medium.com/tag/artifical-intelligence?source=post_page-----36103d4fbcbd---------------------------------------
+          - generic [ref=e433]: Artifical Intelligence
+        - link "Google Gemini" [ref=e435] [cursor=pointer]:
+          - /url: https://medium.com/tag/google-gemini?source=post_page-----36103d4fbcbd---------------------------------------
+          - generic [ref=e436]: Google Gemini
+        - link "Claude" [ref=e438] [cursor=pointer]:
+          - /url: https://medium.com/tag/claude?source=post_page-----36103d4fbcbd---------------------------------------
+          - generic [ref=e439]: Claude
+        - link "Claude Code" [ref=e441] [cursor=pointer]:
+          - /url: https://medium.com/tag/claude-code?source=post_page-----36103d4fbcbd---------------------------------------
+          - generic [ref=e442]: Claude Code
+        - link "Design" [ref=e444] [cursor=pointer]:
+          - /url: https://medium.com/tag/design?source=post_page-----36103d4fbcbd---------------------------------------
+          - generic [ref=e445]: Design
+      - contentinfo [ref=e446]:
+        - generic [ref=e450]:
+          - generic [ref=e451]:
+            - generic [ref=e454]:
+              - link "clap" [ref=e457] [cursor=pointer]:
+                - /url: https://medium.com/m/signin?actionUrl=https%3A%2F%2Fmedium.com%2F_%2Fvote%2Fp%2F36103d4fbcbd&operation=register&redirect=https%3A%2F%2F3bube.medium.com%2Fthe-ultimate-ai-design-guide-ship-app-designs-with-claude-code-stitch-via-mcp-36103d4fbcbd&user=Ebubechukwu+Ugbor&userId=f1adddb001a3&source=---footer_actions--36103d4fbcbd---------------------clap_footer------------------
+                - tooltip "clap" [ref=e459]:
+                  - generic [ref=e460]:
+                    - img "clap"
+              - tooltip "12" [ref=e463]:
+                - paragraph [ref=e465]:
+                  - button "12" [ref=e466] [cursor=pointer]
+            - tooltip "responses" [ref=e469]:
+              - button "responses" [ref=e471] [cursor=pointer]:
+                - img [ref=e472]
+          - generic [ref=e474]:
+            - tooltip "Add to list bookmark button" [ref=e477]:
+              - link "Add to list bookmark button" [ref=e480] [cursor=pointer]:
+                - /url: https://medium.com/m/signin?actionUrl=https%3A%2F%2Fmedium.com%2F_%2Fbookmark%2Fp%2F36103d4fbcbd&operation=register&redirect=https%3A%2F%2F3bube.medium.com%2Fthe-ultimate-ai-design-guide-ship-app-designs-with-claude-code-stitch-via-mcp-36103d4fbcbd&source=---footer_actions--36103d4fbcbd---------------------bookmark_footer------------------
+                - img "Add to list bookmark button" [ref=e482]
+            - tooltip "Share Post" [ref=e487]:
+              - button "Share Post" [ref=e489] [cursor=pointer]:
+                - img [ref=e490]
+      - generic [ref=e495]:
+        - link "Ebubechukwu Ugbor" [ref=e498] [cursor=pointer]:
+          - /url: /?source=post_page---post_author_info--36103d4fbcbd---------------------------------------
+          - img "Ebubechukwu Ugbor" [ref=e500]
+        - generic [ref=e503]:
+          - link "Written by Ebubechukwu Ugbor" [ref=e504] [cursor=pointer]:
+            - /url: /?source=post_page---post_author_info--36103d4fbcbd---------------------------------------
+            - heading "Written by Ebubechukwu Ugbor" [level=2] [ref=e505]:
+              - generic [ref=e506]: Written by Ebubechukwu Ugbor
+          - generic [ref=e507]:
+            - generic [ref=e508]: 0 followers
+            - generic [ref=e509]:
+              - generic [ref=e510]: ·
+              - link "1 following" [ref=e511] [cursor=pointer]:
+                - /url: /following?source=post_page---post_author_info--36103d4fbcbd---------------------------------------
+          - paragraph [ref=e513]: Software engineer focused on full-stack development. Sharing insights on architecture, performance, and building profitable software products.
+        - button "Follow" [ref=e516] [cursor=pointer]:
+          - generic [ref=e518]: Follow
+      - generic [ref=e522]:
+        - generic [ref=e523]:
+          - heading "No responses yet" [level=2] [ref=e524]
+          - tooltip "Shield with a checkmark" [ref=e527]:
+            - link "Shield with a checkmark" [ref=e529] [cursor=pointer]:
+              - /url: https://policy.medium.com/medium-rules-30e5502c4eb4?source=post_page---post_responses--36103d4fbcbd---------------------------------------
+              - img "Shield with a checkmark" [ref=e530]
+        - generic [ref=e536]:
+          - paragraph [ref=e541]: Write a response
+          - generic [ref=e543]:
+            - link "What are your thoughts?" [ref=e545] [cursor=pointer]:
+              - /url: https://medium.com/m/signin?operation=register&redirect=https%3A%2F%2F3bube.medium.com%2Fthe-ultimate-ai-design-guide-ship-app-designs-with-claude-code-stitch-via-mcp-36103d4fbcbd&source=---post_responses--36103d4fbcbd---------------------respond_sidebar------------------
+              - paragraph [ref=e547]: What are your thoughts?
+            - generic:
+              - generic [ref=e548]:
+                - tooltip "Bold (⌘B)" [ref=e550]:
+                  - button "Bold (⌘B)" [ref=e552]:
+                    - img [ref=e553]
+                - tooltip "Italic (⌘I)" [ref=e556]:
+                  - button "Italic (⌘I)" [ref=e558]:
+                    - img [ref=e559]
+              - generic:
+                - button "Cancel" [ref=e561]
+                - button "Respond" [disabled] [ref=e562]
+      - generic [ref=e563]:
+        - generic [ref=e566]:
+          - heading "Recommended from Medium" [level=2] [ref=e567]
+          - generic [ref=e569]:
+            - article [ref=e572]:
+              - 'link "Paperclip: The Open-Source Platform Turning AI Agents into an Actual Company Kristopher Dunham Kristopher Dunham Paperclip: The Open-Source Platform Turning AI Agents into an Actual Company Something strange happened when businesses started deploying AI agents at scale. The tools worked. The agents were capable. But the… Member-only story Mar 25 A clap icon 142 A response icon 2 I''m not interested in this story" [ref=e576]':
+                - 'generic "Paperclip: The Open-Source Platform Turning AI Agents into an Actual Company" [ref=e578]':
+                  - 'img "Paperclip: The Open-Source Platform Turning AI Agents into an Actual Company" [ref=e580]'
+                - generic [ref=e582]:
+                  - generic [ref=e583]:
+                    - tooltip "Kristopher Dunham" [ref=e587]:
+                      - link "Kristopher Dunham" [ref=e589] [cursor=pointer]:
+                        - /url: https://medium.com/@creativeaininja?source=post_page---read_next_recirc--36103d4fbcbd----0---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                        - img "Kristopher Dunham" [ref=e591]
+                    - tooltip "Kristopher Dunham" [ref=e594]:
+                      - link "Kristopher Dunham" [ref=e596] [cursor=pointer]:
+                        - /url: https://medium.com/@creativeaininja?source=post_page---read_next_recirc--36103d4fbcbd----0---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                        - paragraph [ref=e597]: Kristopher Dunham
+                  - 'link "Paperclip: The Open-Source Platform Turning AI Agents into an Actual Company Something strange happened when businesses started deploying AI agents at scale. The tools worked. The agents were capable. But the…" [ref=e600] [cursor=pointer]':
+                    - /url: https://medium.com/@creativeaininja/paperclip-the-open-source-platform-turning-ai-agents-into-an-actual-company-7348015c5bf7?source=post_page---read_next_recirc--36103d4fbcbd----0---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                    - 'generic "Paperclip: The Open-Source Platform Turning AI Agents into an Actual Company" [ref=e601]':
+                      - 'heading "Paperclip: The Open-Source Platform Turning AI Agents into an Actual Company" [level=2] [ref=e602]'
+                    - heading "Something strange happened when businesses started deploying AI agents at scale. The tools worked. The agents were capable. But the…" [level=3] [ref=e604]
+                  - generic [ref=e606]:
+                    - generic [ref=e607]:
+                      - button "Member-only story" [ref=e609] [cursor=pointer]:
+                        - tooltip [ref=e612]:
+                          - img [ref=e614]
+                      - generic [ref=e616]: Mar 25
+                      - link "A clap icon 142 A response icon 2" [ref=e621] [cursor=pointer]:
+                        - /url: https://medium.com/@creativeaininja/paperclip-the-open-source-platform-turning-ai-agents-into-an-actual-company-7348015c5bf7?source=post_page---read_next_recirc--36103d4fbcbd----0---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                        - tooltip "A clap icon 142" [ref=e623]:
+                          - generic [ref=e625]:
+                            - img "A clap icon" [ref=e626]
+                            - generic [ref=e628]: "142"
+                        - tooltip "A response icon 2" [ref=e630]:
+                          - generic [ref=e632]:
+                            - img "A response icon" [ref=e633]
+                            - generic [ref=e635]: "2"
+                    - link "I'm not interested in this story" [ref=e638] [cursor=pointer]:
+                      - /url: https://medium.com/m/signin?operation=register&redirect=https%3A%2F%2F3bube.medium.com%2Fthe-ultimate-ai-design-guide-ship-app-designs-with-claude-code-stitch-via-mcp-36103d4fbcbd&source=---read_next_recirc--36103d4fbcbd----0-----------------explicit_signal----ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                      - tooltip "I'm not interested in this story" [ref=e640]:
+                        - generic "I'm not interested in this story" [ref=e642]:
+                          - img [ref=e643]
+            - article [ref=e647]:
+              - link "MiniMax m2.7 Claude Code Joe Njenga Joe Njenga When I Tried MiniMax m2.7 on Claude Code (I Stopped Wasting Money Overnight) It was an ignorant mistake; I was not paying attention to MiniMax AI models, but Claude Code + MiniMax has taught me a new lesson. Member-only story 4d ago A clap icon 333 A response icon 5 I'm not interested in this story" [ref=e651]:
+                - generic "MiniMax m2.7 Claude Code" [ref=e653]:
+                  - img "MiniMax m2.7 Claude Code" [ref=e655]
+                - generic [ref=e657]:
+                  - generic [ref=e658]:
+                    - tooltip "Joe Njenga" [ref=e662]:
+                      - link "Joe Njenga" [ref=e664] [cursor=pointer]:
+                        - /url: https://medium.com/@joe.njenga?source=post_page---read_next_recirc--36103d4fbcbd----1---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                        - img "Joe Njenga" [ref=e666]
+                    - tooltip "Joe Njenga" [ref=e669]:
+                      - link "Joe Njenga" [ref=e671] [cursor=pointer]:
+                        - /url: https://medium.com/@joe.njenga?source=post_page---read_next_recirc--36103d4fbcbd----1---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                        - paragraph [ref=e672]: Joe Njenga
+                  - link "When I Tried MiniMax m2.7 on Claude Code (I Stopped Wasting Money Overnight) It was an ignorant mistake; I was not paying attention to MiniMax AI models, but Claude Code + MiniMax has taught me a new lesson." [ref=e675] [cursor=pointer]:
+                    - /url: https://medium.com/@joe.njenga/when-i-tried-minimax-m2-7-on-claude-code-i-stopped-wasting-money-overnight-7eccf68e57d9?source=post_page---read_next_recirc--36103d4fbcbd----1---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                    - generic "When I Tried MiniMax m2.7 on Claude Code (I Stopped Wasting Money Overnight)" [ref=e676]:
+                      - heading "When I Tried MiniMax m2.7 on Claude Code (I Stopped Wasting Money Overnight)" [level=2] [ref=e677]
+                    - heading "It was an ignorant mistake; I was not paying attention to MiniMax AI models, but Claude Code + MiniMax has taught me a new lesson." [level=3] [ref=e679]
+                  - generic [ref=e681]:
+                    - generic [ref=e682]:
+                      - button "Member-only story" [ref=e684] [cursor=pointer]:
+                        - tooltip [ref=e687]:
+                          - img [ref=e689]
+                      - generic [ref=e691]: 4d ago
+                      - link "A clap icon 333 A response icon 5" [ref=e696] [cursor=pointer]:
+                        - /url: https://medium.com/@joe.njenga/when-i-tried-minimax-m2-7-on-claude-code-i-stopped-wasting-money-overnight-7eccf68e57d9?source=post_page---read_next_recirc--36103d4fbcbd----1---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                        - tooltip "A clap icon 333" [ref=e698]:
+                          - generic [ref=e700]:
+                            - img "A clap icon" [ref=e701]
+                            - generic [ref=e703]: "333"
+                        - tooltip "A response icon 5" [ref=e705]:
+                          - generic [ref=e707]:
+                            - img "A response icon" [ref=e708]
+                            - generic [ref=e710]: "5"
+                    - link "I'm not interested in this story" [ref=e713] [cursor=pointer]:
+                      - /url: https://medium.com/m/signin?operation=register&redirect=https%3A%2F%2F3bube.medium.com%2Fthe-ultimate-ai-design-guide-ship-app-designs-with-claude-code-stitch-via-mcp-36103d4fbcbd&source=---read_next_recirc--36103d4fbcbd----1-----------------explicit_signal----ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                      - tooltip "I'm not interested in this story" [ref=e715]:
+                        - generic "I'm not interested in this story" [ref=e717]:
+                          - img [ref=e718]
+          - generic [ref=e720]:
+            - article [ref=e723]:
+              - link "10 Must-Have Skills for Claude (and Any Coding Agent) in 2026 unicodeveloper unicodeveloper 10 Must-Have Skills for Claude (and Any Coding Agent) in 2026 The definitive guide to agent skills that change how Claude Code, Cursor, Gemini CLI, and other AI coding assistants perform in production. Mar 9 A clap icon 1.2K A response icon 15 I'm not interested in this story" [ref=e727]:
+                - generic "10 Must-Have Skills for Claude (and Any Coding Agent) in 2026" [ref=e729]:
+                  - img "10 Must-Have Skills for Claude (and Any Coding Agent) in 2026" [ref=e731]
+                - generic [ref=e733]:
+                  - generic [ref=e734]:
+                    - tooltip "unicodeveloper" [ref=e738]:
+                      - link "unicodeveloper" [ref=e740] [cursor=pointer]:
+                        - /url: https://medium.com/@unicodeveloper?source=post_page---read_next_recirc--36103d4fbcbd----0---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                        - img "unicodeveloper" [ref=e742]
+                    - tooltip "unicodeveloper" [ref=e745]:
+                      - link "unicodeveloper" [ref=e747] [cursor=pointer]:
+                        - /url: https://medium.com/@unicodeveloper?source=post_page---read_next_recirc--36103d4fbcbd----0---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                        - paragraph [ref=e748]: unicodeveloper
+                  - link "10 Must-Have Skills for Claude (and Any Coding Agent) in 2026 The definitive guide to agent skills that change how Claude Code, Cursor, Gemini CLI, and other AI coding assistants perform in production." [ref=e751] [cursor=pointer]:
+                    - /url: https://medium.com/@unicodeveloper/10-must-have-skills-for-claude-and-any-coding-agent-in-2026-b5451b013051?source=post_page---read_next_recirc--36103d4fbcbd----0---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                    - heading "10 Must-Have Skills for Claude (and Any Coding Agent) in 2026" [level=2] [ref=e753]
+                    - heading "The definitive guide to agent skills that change how Claude Code, Cursor, Gemini CLI, and other AI coding assistants perform in production." [level=3] [ref=e755]
+                  - generic [ref=e757]:
+                    - generic [ref=e758]:
+                      - generic [ref=e759]: Mar 9
+                      - link "A clap icon 1.2K A response icon 15" [ref=e764] [cursor=pointer]:
+                        - /url: https://medium.com/@unicodeveloper/10-must-have-skills-for-claude-and-any-coding-agent-in-2026-b5451b013051?source=post_page---read_next_recirc--36103d4fbcbd----0---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                        - tooltip "A clap icon 1.2K" [ref=e766]:
+                          - generic [ref=e768]:
+                            - img "A clap icon" [ref=e769]
+                            - generic [ref=e771]: 1.2K
+                        - tooltip "A response icon 15" [ref=e773]:
+                          - generic [ref=e775]:
+                            - img "A response icon" [ref=e776]
+                            - generic [ref=e778]: "15"
+                    - link "I'm not interested in this story" [ref=e781] [cursor=pointer]:
+                      - /url: https://medium.com/m/signin?operation=register&redirect=https%3A%2F%2F3bube.medium.com%2Fthe-ultimate-ai-design-guide-ship-app-designs-with-claude-code-stitch-via-mcp-36103d4fbcbd&source=---read_next_recirc--36103d4fbcbd----0-----------------explicit_signal----ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                      - tooltip "I'm not interested in this story" [ref=e783]:
+                        - generic "I'm not interested in this story" [ref=e785]:
+                          - img [ref=e786]
+            - article [ref=e790]:
+              - 'link "Claude Certified Architect: The Complete Guide to Passing the CCA Foundations Exam Towards AI In Towards AI by Rick Hightower Claude Certified Architect: The Complete Guide to Passing the CCA Foundations Exam Everything You Need to Know to Ace the CCA Foundations Exam on Your First Try — Article 1 of 8 Member-only story Mar 24 A clap icon 281 A response icon 5 I''m not interested in this story" [ref=e794]':
+                - 'generic "Claude Certified Architect: The Complete Guide to Passing the CCA Foundations Exam" [ref=e796]':
+                  - 'img "Claude Certified Architect: The Complete Guide to Passing the CCA Foundations Exam" [ref=e798]'
+                - generic [ref=e800]:
+                  - generic [ref=e801]:
+                    - tooltip "Towards AI" [ref=e804]:
+                      - link "Towards AI" [ref=e806] [cursor=pointer]:
+                        - /url: https://pub.towardsai.net/?source=post_page---read_next_recirc--36103d4fbcbd----1---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                        - img "Towards AI" [ref=e808]
+                    - paragraph [ref=e811]: In
+                    - tooltip "Towards AI" [ref=e814]:
+                      - link "Towards AI" [ref=e816] [cursor=pointer]:
+                        - /url: https://pub.towardsai.net/?source=post_page---read_next_recirc--36103d4fbcbd----1---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                        - paragraph [ref=e817]: Towards AI
+                    - paragraph [ref=e819]: by
+                    - tooltip "Rick Hightower" [ref=e821]:
+                      - link "Rick Hightower" [ref=e823] [cursor=pointer]:
+                        - /url: https://medium.com/@richardhightower?source=post_page---read_next_recirc--36103d4fbcbd----1---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                        - paragraph [ref=e824]: Rick Hightower
+                  - 'link "Claude Certified Architect: The Complete Guide to Passing the CCA Foundations Exam Everything You Need to Know to Ace the CCA Foundations Exam on Your First Try — Article 1 of 8" [ref=e827] [cursor=pointer]':
+                    - /url: https://medium.com/@richardhightower/claude-certified-architect-the-complete-guide-to-passing-the-cca-foundations-exam-9665ce7342a8?source=post_page---read_next_recirc--36103d4fbcbd----1---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                    - 'generic "Claude Certified Architect: The Complete Guide to Passing the CCA Foundations Exam" [ref=e828]':
+                      - 'heading "Claude Certified Architect: The Complete Guide to Passing the CCA Foundations Exam" [level=2] [ref=e829]'
+                    - heading "Everything You Need to Know to Ace the CCA Foundations Exam on Your First Try — Article 1 of 8" [level=3] [ref=e831]
+                  - generic [ref=e833]:
+                    - generic [ref=e834]:
+                      - button "Member-only story" [ref=e836] [cursor=pointer]:
+                        - tooltip [ref=e839]:
+                          - img [ref=e841]
+                      - generic [ref=e843]: Mar 24
+                      - link "A clap icon 281 A response icon 5" [ref=e848] [cursor=pointer]:
+                        - /url: https://medium.com/@richardhightower/claude-certified-architect-the-complete-guide-to-passing-the-cca-foundations-exam-9665ce7342a8?source=post_page---read_next_recirc--36103d4fbcbd----1---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                        - tooltip "A clap icon 281" [ref=e850]:
+                          - generic [ref=e852]:
+                            - img "A clap icon" [ref=e853]
+                            - generic [ref=e855]: "281"
+                        - tooltip "A response icon 5" [ref=e857]:
+                          - generic [ref=e859]:
+                            - img "A response icon" [ref=e860]
+                            - generic [ref=e862]: "5"
+                    - link "I'm not interested in this story" [ref=e865] [cursor=pointer]:
+                      - /url: https://medium.com/m/signin?operation=register&redirect=https%3A%2F%2F3bube.medium.com%2Fthe-ultimate-ai-design-guide-ship-app-designs-with-claude-code-stitch-via-mcp-36103d4fbcbd&source=---read_next_recirc--36103d4fbcbd----1-----------------explicit_signal----ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                      - tooltip "I'm not interested in this story" [ref=e867]:
+                        - generic "I'm not interested in this story" [ref=e869]:
+                          - img [ref=e870]
+            - article [ref=e874]:
+              - link "What I Learnt Using Claude Code to Build Production-Ready Apps Data Science Collective In Data Science Collective by Farhad Malik What I Learnt Using Claude Code to Build Production-Ready Apps A practical guide covering the building blocks, hidden features, and tips that helped me build stable applications Member-only story 5d ago A clap icon 410 A response icon 2 I'm not interested in this story" [ref=e878]:
+                - generic "What I Learnt Using Claude Code to Build Production-Ready Apps" [ref=e880]:
+                  - img "What I Learnt Using Claude Code to Build Production-Ready Apps" [ref=e882]
+                - generic [ref=e884]:
+                  - generic [ref=e885]:
+                    - tooltip "Data Science Collective" [ref=e888]:
+                      - link "Data Science Collective" [ref=e890] [cursor=pointer]:
+                        - /url: https://medium.com/data-science-collective?source=post_page---read_next_recirc--36103d4fbcbd----2---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                        - img "Data Science Collective" [ref=e892]
+                    - paragraph [ref=e895]: In
+                    - tooltip "Data Science Collective" [ref=e898]:
+                      - link "Data Science Collective" [ref=e900] [cursor=pointer]:
+                        - /url: https://medium.com/data-science-collective?source=post_page---read_next_recirc--36103d4fbcbd----2---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                        - paragraph [ref=e901]: Data Science Collective
+                    - paragraph [ref=e903]: by
+                    - tooltip "Farhad Malik" [ref=e905]:
+                      - link "Farhad Malik" [ref=e907] [cursor=pointer]:
+                        - /url: https://medium.com/@farhadmalik?source=post_page---read_next_recirc--36103d4fbcbd----2---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                        - paragraph [ref=e908]: Farhad Malik
+                  - link "What I Learnt Using Claude Code to Build Production-Ready Apps A practical guide covering the building blocks, hidden features, and tips that helped me build stable applications" [ref=e911] [cursor=pointer]:
+                    - /url: https://medium.com/@farhadmalik/what-i-learnt-using-claude-code-to-build-production-ready-apps-a27272af0c48?source=post_page---read_next_recirc--36103d4fbcbd----2---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                    - heading "What I Learnt Using Claude Code to Build Production-Ready Apps" [level=2] [ref=e913]
+                    - heading "A practical guide covering the building blocks, hidden features, and tips that helped me build stable applications" [level=3] [ref=e915]
+                  - generic [ref=e917]:
+                    - generic [ref=e918]:
+                      - button "Member-only story" [ref=e920] [cursor=pointer]:
+                        - tooltip [ref=e923]:
+                          - img [ref=e925]
+                      - generic [ref=e927]: 5d ago
+                      - link "A clap icon 410 A response icon 2" [ref=e932] [cursor=pointer]:
+                        - /url: https://medium.com/@farhadmalik/what-i-learnt-using-claude-code-to-build-production-ready-apps-a27272af0c48?source=post_page---read_next_recirc--36103d4fbcbd----2---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                        - tooltip "A clap icon 410" [ref=e934]:
+                          - generic [ref=e936]:
+                            - img "A clap icon" [ref=e937]
+                            - generic [ref=e939]: "410"
+                        - tooltip "A response icon 2" [ref=e941]:
+                          - generic [ref=e943]:
+                            - img "A response icon" [ref=e944]
+                            - generic [ref=e946]: "2"
+                    - link "I'm not interested in this story" [ref=e949] [cursor=pointer]:
+                      - /url: https://medium.com/m/signin?operation=register&redirect=https%3A%2F%2F3bube.medium.com%2Fthe-ultimate-ai-design-guide-ship-app-designs-with-claude-code-stitch-via-mcp-36103d4fbcbd&source=---read_next_recirc--36103d4fbcbd----2-----------------explicit_signal----ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                      - tooltip "I'm not interested in this story" [ref=e951]:
+                        - generic "I'm not interested in this story" [ref=e953]:
+                          - img [ref=e954]
+            - article [ref=e958]:
+              - link "Vibe Coding is Over illustration of three ai generated landing pages with the words IT’S OVER written at the top in large text Michal Malewicz Michal Malewicz Vibe Coding is OVER. Here’s What Comes Next. Member-only story Mar 24 A clap icon 3.2K A response icon 106 I'm not interested in this story" [ref=e962]:
+                - generic "Vibe Coding is Over illustration of three ai generated landing pages with the words IT’S OVER written at the top in large text" [ref=e964]:
+                  - img "Vibe Coding is Over illustration of three ai generated landing pages with the words IT’S OVER written at the top in large text" [ref=e966]
+                - generic [ref=e968]:
+                  - generic [ref=e969]:
+                    - tooltip "Michal Malewicz" [ref=e973]:
+                      - link "Michal Malewicz" [ref=e975] [cursor=pointer]:
+                        - /url: https://michalmalewicz.medium.com/?source=post_page---read_next_recirc--36103d4fbcbd----3---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                        - img "Michal Malewicz" [ref=e977]
+                    - tooltip "Michal Malewicz" [ref=e980]:
+                      - link "Michal Malewicz" [ref=e982] [cursor=pointer]:
+                        - /url: https://michalmalewicz.medium.com/?source=post_page---read_next_recirc--36103d4fbcbd----3---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                        - paragraph [ref=e983]: Michal Malewicz
+                        - img [ref=e987]
+                  - link "Vibe Coding is OVER. Here’s What Comes Next." [ref=e992] [cursor=pointer]:
+                    - /url: https://michalmalewicz.medium.com/vibe-coding-is-over-5a84da799e0d?source=post_page---read_next_recirc--36103d4fbcbd----3---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                    - heading "Vibe Coding is OVER." [level=2] [ref=e994]
+                    - heading "Here’s What Comes Next." [level=3] [ref=e996]
+                  - generic [ref=e998]:
+                    - generic [ref=e999]:
+                      - button "Member-only story" [ref=e1001] [cursor=pointer]:
+                        - tooltip [ref=e1004]:
+                          - img [ref=e1006]
+                      - generic [ref=e1008]: Mar 24
+                      - link "A clap icon 3.2K A response icon 106" [ref=e1013] [cursor=pointer]:
+                        - /url: https://michalmalewicz.medium.com/vibe-coding-is-over-5a84da799e0d?source=post_page---read_next_recirc--36103d4fbcbd----3---------------------ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                        - tooltip "A clap icon 3.2K" [ref=e1015]:
+                          - generic [ref=e1017]:
+                            - img "A clap icon" [ref=e1018]
+                            - generic [ref=e1020]: 3.2K
+                        - tooltip "A response icon 106" [ref=e1022]:
+                          - generic [ref=e1024]:
+                            - img "A response icon" [ref=e1025]
+                            - generic [ref=e1027]: "106"
+                    - link "I'm not interested in this story" [ref=e1030] [cursor=pointer]:
+                      - /url: https://medium.com/m/signin?operation=register&redirect=https%3A%2F%2F3bube.medium.com%2Fthe-ultimate-ai-design-guide-ship-app-designs-with-claude-code-stitch-via-mcp-36103d4fbcbd&source=---read_next_recirc--36103d4fbcbd----3-----------------explicit_signal----ac8acc90_80e8_4fe7_a9a5_2239048e87db--------------
+                      - tooltip "I'm not interested in this story" [ref=e1032]:
+                        - generic "I'm not interested in this story" [ref=e1034]:
+                          - img [ref=e1035]
+          - link "See more recommendations" [ref=e1038] [cursor=pointer]:
+            - /url: https://medium.com/?source=post_page---read_next_recirc--36103d4fbcbd---------------------------------------
+            - generic [ref=e1039]: See more recommendations
+        - generic [ref=e1044]:
+          - link "Help" [ref=e1046] [cursor=pointer]:
+            - /url: https://help.medium.com/hc/en-us?source=post_page-----36103d4fbcbd---------------------------------------
+            - paragraph [ref=e1047]: Help
+          - link "Status" [ref=e1049] [cursor=pointer]:
+            - /url: https://status.medium.com/?source=post_page-----36103d4fbcbd---------------------------------------
+            - paragraph [ref=e1050]: Status
+          - link "About" [ref=e1052] [cursor=pointer]:
+            - /url: https://medium.com/about?autoplay=1&source=post_page-----36103d4fbcbd---------------------------------------
+            - paragraph [ref=e1053]: About
+          - link "Careers" [ref=e1055] [cursor=pointer]:
+            - /url: https://medium.com/jobs-at-medium/work-at-medium-959d1a85284e?source=post_page-----36103d4fbcbd---------------------------------------
+            - paragraph [ref=e1056]: Careers
+          - link "Press" [ref=e1058] [cursor=pointer]:
+            - /url: mailto:pressinquiries@medium.com
+            - paragraph [ref=e1059]: Press
+          - link "Blog" [ref=e1061] [cursor=pointer]:
+            - /url: https://blog.medium.com/?source=post_page-----36103d4fbcbd---------------------------------------
+            - paragraph [ref=e1062]: Blog
+          - link "Privacy" [ref=e1064] [cursor=pointer]:
+            - /url: https://policy.medium.com/medium-privacy-policy-f03bf92035c9?source=post_page-----36103d4fbcbd---------------------------------------
+            - paragraph [ref=e1065]: Privacy
+          - link "Rules" [ref=e1067] [cursor=pointer]:
+            - /url: https://policy.medium.com/medium-rules-30e5502c4eb4?source=post_page-----36103d4fbcbd---------------------------------------
+            - paragraph [ref=e1068]: Rules
+          - link "Terms" [ref=e1070] [cursor=pointer]:
+            - /url: https://policy.medium.com/medium-terms-of-service-9db0094a1e0f?source=post_page-----36103d4fbcbd---------------------------------------
+            - paragraph [ref=e1071]: Terms
+          - link "Text to speech" [ref=e1073] [cursor=pointer]:
+            - /url: https://speechify.com/medium?source=post_page-----36103d4fbcbd---------------------------------------
+            - paragraph [ref=e1074]: Text to speech
+  - generic [ref=e1077]:
+    - alert [ref=e1078]:
+      - text: To make Medium work, we log user data. By using Medium, you agree to our
+      - link "Privacy Policy" [ref=e1079] [cursor=pointer]:
+        - /url: https://policy.medium.com/medium-privacy-policy-f03bf92035c9
+      - text: ", including cookie policy."
+    - button "close" [ref=e1082] [cursor=pointer]:
+      - img [ref=e1083]

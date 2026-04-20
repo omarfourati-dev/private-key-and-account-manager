@@ -1,0 +1,1102 @@
+- generic [ref=e2]:
+  - region
+  - generic [ref=e3]:
+    - link "Skip to content" [ref=e4] [cursor=pointer]:
+      - /url: "#start-of-content"
+    - banner [ref=e6]:
+      - heading "Navigation Menu" [level=2] [ref=e7]
+      - generic [ref=e8]:
+        - link "Homepage" [ref=e10] [cursor=pointer]:
+          - /url: /
+          - img [ref=e11]
+        - generic [ref=e13]:
+          - navigation "Global" [ref=e16]:
+            - list [ref=e17]:
+              - listitem [ref=e18]:
+                - button "Platform" [ref=e20] [cursor=pointer]:
+                  - text: Platform
+                  - img [ref=e21]
+              - listitem [ref=e23]:
+                - button "Solutions" [ref=e25] [cursor=pointer]:
+                  - text: Solutions
+                  - img [ref=e26]
+              - listitem [ref=e28]:
+                - button "Resources" [ref=e30] [cursor=pointer]:
+                  - text: Resources
+                  - img [ref=e31]
+              - listitem [ref=e33]:
+                - button "Open Source" [ref=e35] [cursor=pointer]:
+                  - text: Open Source
+                  - img [ref=e36]
+              - listitem [ref=e38]:
+                - button "Enterprise" [ref=e40] [cursor=pointer]:
+                  - text: Enterprise
+                  - img [ref=e41]
+              - listitem [ref=e43]:
+                - link "Pricing" [ref=e44] [cursor=pointer]:
+                  - /url: https://github.com/pricing
+                  - generic [ref=e45]: Pricing
+          - generic [ref=e46]:
+            - button "Search or jump to…" [ref=e49] [cursor=pointer]:
+              - img [ref=e51]
+            - link "Sign in" [ref=e54] [cursor=pointer]:
+              - /url: /login?return_to=https%3A%2F%2Fgithub.com%2Fdavideast%2Fstitch-mcp
+            - link "Sign up" [ref=e55] [cursor=pointer]:
+              - /url: /signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F%3Crepo-name%3E&source=header-repo&source_repo=davideast%2Fstitch-mcp
+            - button "Appearance settings" [ref=e58] [cursor=pointer]:
+              - img
+  - main [ref=e62]:
+    - generic [ref=e63]:
+      - generic [ref=e64]:
+        - generic [ref=e66]:
+          - img [ref=e67]
+          - link "davideast" [ref=e70] [cursor=pointer]:
+            - /url: /davideast
+          - generic [ref=e71]: /
+          - strong [ref=e72]:
+            - link "stitch-mcp" [ref=e73] [cursor=pointer]:
+              - /url: /davideast/stitch-mcp
+          - generic [ref=e74]: Public
+        - generic [ref=e75]:
+          - list:
+            - listitem [ref=e76]:
+              - link "You must be signed in to change notification settings" [ref=e77] [cursor=pointer]:
+                - /url: /login?return_to=%2Fdavideast%2Fstitch-mcp
+                - img [ref=e78]
+                - text: Notifications
+            - listitem [ref=e80]:
+              - link "Fork 84" [ref=e81] [cursor=pointer]:
+                - /url: /login?return_to=%2Fdavideast%2Fstitch-mcp
+                - img [ref=e82]
+                - text: Fork
+                - generic "84" [ref=e84]
+            - listitem [ref=e85]:
+              - link "You must be signed in to star a repository" [ref=e87] [cursor=pointer]:
+                - /url: /login?return_to=%2Fdavideast%2Fstitch-mcp
+                - img [ref=e88]
+                - text: Star
+                - generic "705 users starred this repository" [ref=e90]: "705"
+      - navigation "Repository" [ref=e91]:
+        - list [ref=e92]:
+          - listitem [ref=e93]:
+            - link "Code" [ref=e94] [cursor=pointer]:
+              - /url: /davideast/stitch-mcp
+              - img [ref=e95]
+              - generic [ref=e97]: Code
+          - listitem [ref=e98]:
+            - link "Issues 7" [ref=e99] [cursor=pointer]:
+              - /url: /davideast/stitch-mcp/issues
+              - img [ref=e100]
+              - generic [ref=e103]: Issues
+              - generic "7" [ref=e104]
+          - listitem [ref=e105]:
+            - link "Pull requests 4" [ref=e106] [cursor=pointer]:
+              - /url: /davideast/stitch-mcp/pulls
+              - img [ref=e107]
+              - generic [ref=e109]: Pull requests
+              - generic "4" [ref=e110]
+          - listitem [ref=e111]:
+            - link "Actions" [ref=e112] [cursor=pointer]:
+              - /url: /davideast/stitch-mcp/actions
+              - img [ref=e113]
+              - generic [ref=e115]: Actions
+          - listitem [ref=e116]:
+            - link "Projects" [ref=e117] [cursor=pointer]:
+              - /url: /davideast/stitch-mcp/projects
+              - img [ref=e118]
+              - generic [ref=e120]: Projects
+          - listitem [ref=e121]:
+            - link "Security and quality" [ref=e122] [cursor=pointer]:
+              - /url: /davideast/stitch-mcp/security
+              - img [ref=e123]
+              - generic [ref=e125]: Security and quality
+          - listitem [ref=e126]:
+            - link "Insights" [ref=e127] [cursor=pointer]:
+              - /url: /davideast/stitch-mcp/pulse
+              - img [ref=e128]
+              - generic [ref=e130]: Insights
+    - generic [ref=e143]:
+      - heading "davideast/stitch-mcp" [level=1] [ref=e145]
+      - generic [ref=e146]:
+        - generic [ref=e149]:
+          - generic [ref=e150]:
+            - generic [ref=e151]:
+              - button "main branch" [ref=e153] [cursor=pointer]:
+                - generic [ref=e154]:
+                  - generic [ref=e156]:
+                    - img [ref=e158]
+                    - generic [ref=e161]: main
+                  - generic:
+                    - img
+              - generic [ref=e162]:
+                - link "Go to Branches page" [ref=e163] [cursor=pointer]:
+                  - /url: /davideast/stitch-mcp/branches
+                  - img [ref=e164]
+                - link "Go to Tags page" [ref=e166] [cursor=pointer]:
+                  - /url: /davideast/stitch-mcp/tags
+                  - img [ref=e167]
+            - generic [ref=e169]:
+              - generic [ref=e173]:
+                - img [ref=e175]
+                - combobox "Go to file" [ref=e177]
+              - button "Code" [ref=e178] [cursor=pointer]:
+                - generic [ref=e179]:
+                  - generic:
+                    - img
+                  - generic [ref=e180]: Code
+                  - generic:
+                    - img
+          - generic [ref=e181]:
+            - generic [ref=e182]:
+              - heading "Folders and files" [level=2] [ref=e183]
+              - table "Folders and files" [ref=e184]:
+                - rowgroup:
+                  - row "Name Last commit message Last commit date":
+                    - columnheader "Name"
+                    - columnheader "Last commit message":
+                      - generic "Last commit message"
+                    - columnheader "Last commit date":
+                      - generic "Last commit date"
+                - rowgroup [ref=e185]:
+                  - row "Latest commit davideast commits by davideast 0.5.3 success Commit bca9554 · Apr 2, 20262 days ago History 187 Commits" [ref=e186]:
+                    - cell "Latest commit davideast commits by davideast 0.5.3 success Commit bca9554 · Apr 2, 20262 days ago History 187 Commits" [ref=e187]:
+                      - generic [ref=e188]:
+                        - heading "Latest commit" [level=2] [ref=e189]
+                        - generic [ref=e190]:
+                          - generic [ref=e192]:
+                            - link "davideast" [ref=e193] [cursor=pointer]:
+                              - /url: /davideast
+                              - img "davideast" [ref=e194]
+                            - link "commits by davideast" [ref=e195] [cursor=pointer]:
+                              - /url: /davideast/stitch-mcp/commits?author=davideast
+                              - text: davideast
+                          - generic [ref=e196]:
+                            - link "0.5.3" [ref=e199] [cursor=pointer]:
+                              - /url: /davideast/stitch-mcp/commit/bca9554125d6e0178113c1eb5d70f7c6aa6e0e10
+                            - button "success" [ref=e200] [cursor=pointer]:
+                              - img [ref=e201]
+                        - generic [ref=e203]:
+                          - generic [ref=e205]:
+                            - link "Commit bca9554" [ref=e206] [cursor=pointer]:
+                              - /url: /davideast/stitch-mcp/commit/bca9554125d6e0178113c1eb5d70f7c6aa6e0e10
+                              - text: bca9554
+                            - text: ·
+                            - generic "Apr 2, 2026, 3:19 AM GMT+2" [ref=e207]: Apr 2, 20262 days ago
+                          - generic [ref=e208]:
+                            - heading "History" [level=2] [ref=e209]
+                            - link "187 Commits" [ref=e210] [cursor=pointer]:
+                              - /url: /davideast/stitch-mcp/commits/main/
+                              - generic [ref=e211]:
+                                - generic:
+                                  - img
+                                - generic [ref=e212]: 187 Commits
+                  - 'row ".gemini, (Directory) feat: stitch-mcp Jan 16, 20263 months ago" [ref=e213]':
+                    - cell ".gemini, (Directory)" [ref=e214]:
+                      - generic [ref=e215]:
+                        - img [ref=e216]
+                        - link ".gemini, (Directory)" [ref=e221] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/tree/main/.gemini
+                          - text: .gemini
+                    - 'cell "feat: stitch-mcp" [ref=e222]':
+                      - 'link "feat: stitch-mcp" [ref=e225] [cursor=pointer]':
+                        - /url: /davideast/stitch-mcp/commit/10ed2b4d4237c6740b3bfab284129ca74c251d13
+                    - cell "Jan 16, 20263 months ago" [ref=e226]:
+                      - generic [ref=e227]: Jan 16, 20263 months ago
+                  - 'row ".github/workflows, (Directory) fix(ci): remove lockfile before install for platform-specific deps Feb 17, 20262 months ago" [ref=e228]':
+                    - cell ".github/workflows, (Directory)" [ref=e229]:
+                      - generic [ref=e230]:
+                        - img [ref=e231]
+                        - link ".github/workflows, (Directory)" [ref=e236] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/tree/main/.github/workflows
+                          - text: .github/workflows
+                    - 'cell "fix(ci): remove lockfile before install for platform-specific deps" [ref=e237]':
+                      - 'link "fix(ci): remove lockfile before install for platform-specific deps" [ref=e240] [cursor=pointer]':
+                        - /url: /davideast/stitch-mcp/commit/bb4e764a6c796eba4b4b5ba672bf7619778f9f79
+                    - cell "Feb 17, 20262 months ago" [ref=e241]:
+                      - generic [ref=e242]: Feb 17, 20262 months ago
+                  - row "assets, (Directory) Create migration.md Mar 17, 20263 weeks ago" [ref=e243]:
+                    - cell "assets, (Directory)" [ref=e244]:
+                      - generic [ref=e245]:
+                        - img [ref=e246]
+                        - link "assets, (Directory)" [ref=e251] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/tree/main/assets
+                          - text: assets
+                    - cell "Create migration.md" [ref=e252]:
+                      - link "Create migration.md" [ref=e255] [cursor=pointer]:
+                        - /url: /davideast/stitch-mcp/commit/83d539835c2cca5fb9edd6516bfcce2b3de2299e
+                    - cell "Mar 17, 20263 weeks ago" [ref=e256]:
+                      - generic [ref=e257]: Mar 17, 20263 weeks ago
+                  - 'row "docs, (Directory) docs: Improve docs, add a site. (#105) Feb 17, 20262 months ago" [ref=e258]':
+                    - cell "docs, (Directory)" [ref=e259]:
+                      - generic [ref=e260]:
+                        - img [ref=e261]
+                        - link "docs, (Directory)" [ref=e266] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/tree/main/docs
+                          - text: docs
+                    - 'cell "docs: Improve docs, add a site. (#105)" [ref=e267]':
+                      - generic [ref=e269]:
+                        - 'link "docs: Improve docs, add a site. (" [ref=e270] [cursor=pointer]':
+                          - /url: /davideast/stitch-mcp/commit/90df4021fe930411fb9e049fcab3890a67b04717
+                        - link "#105" [ref=e271] [cursor=pointer]:
+                          - /url: https://github.com/davideast/stitch-mcp/pull/105
+                        - link ")" [ref=e272] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/commit/90df4021fe930411fb9e049fcab3890a67b04717
+                    - cell "Feb 17, 20262 months ago" [ref=e273]:
+                      - generic [ref=e274]: Feb 17, 20262 months ago
+                  - row "scripts, (Directory) Refactor CLI to use command autoloading (#114) Feb 22, 20262 months ago" [ref=e275]:
+                    - cell "scripts, (Directory)" [ref=e276]:
+                      - generic [ref=e277]:
+                        - img [ref=e278]
+                        - link "scripts, (Directory)" [ref=e283] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/tree/main/scripts
+                          - text: scripts
+                    - cell "Refactor CLI to use command autoloading (#114)" [ref=e284]:
+                      - generic [ref=e286]:
+                        - link "Refactor CLI to use command autoloading (" [ref=e287] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/commit/cda59ee84e32a142c4c2c8d05b3b077840fe02d9
+                        - link "#114" [ref=e288] [cursor=pointer]:
+                          - /url: https://github.com/davideast/stitch-mcp/pull/114
+                        - link ")" [ref=e289] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/commit/cda59ee84e32a142c4c2c8d05b3b077840fe02d9
+                    - cell "Feb 22, 20262 months ago" [ref=e290]:
+                      - generic [ref=e291]: Feb 22, 20262 months ago
+                  - 'row "site, (Directory) fix(site): Implement responsive slide-out sidebar for mobile (#107) Feb 18, 20262 months ago" [ref=e292]':
+                    - cell "site, (Directory)" [ref=e293]:
+                      - generic [ref=e294]:
+                        - img [ref=e295]
+                        - link "site, (Directory)" [ref=e300] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/tree/main/site
+                          - text: site
+                    - 'cell "fix(site): Implement responsive slide-out sidebar for mobile (#107)" [ref=e301]':
+                      - generic [ref=e303]:
+                        - 'link "fix(site): Implement responsive slide-out sidebar for mobile (" [ref=e304] [cursor=pointer]':
+                          - /url: /davideast/stitch-mcp/commit/67b7d26ae69c1a5ad334ee28747e2242671444fc
+                        - link "#107" [ref=e305] [cursor=pointer]:
+                          - /url: https://github.com/davideast/stitch-mcp/pull/107
+                        - link ")" [ref=e306] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/commit/67b7d26ae69c1a5ad334ee28747e2242671444fc
+                    - cell "Feb 18, 20262 months ago" [ref=e307]:
+                      - generic [ref=e308]: Feb 18, 20262 months ago
+                  - row "src, (Directory) ⚡ Optimize route prefetching with Promise.all in AssetGateway (#156) Apr 2, 20262 days ago" [ref=e309]:
+                    - cell "src, (Directory)" [ref=e310]:
+                      - generic [ref=e311]:
+                        - img [ref=e312]
+                        - link "src, (Directory)" [ref=e317] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/tree/main/src
+                          - text: src
+                    - cell "⚡ Optimize route prefetching with Promise.all in AssetGateway (#156)" [ref=e318]:
+                      - generic [ref=e320]:
+                        - link "⚡ Optimize route prefetching with Promise.all in AssetGateway (" [ref=e321] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/commit/9b277f88f410dbc84b97812e562dc68616502efc
+                        - link "#156" [ref=e322] [cursor=pointer]:
+                          - /url: https://github.com/davideast/stitch-mcp/pull/156
+                        - link ")" [ref=e323] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/commit/9b277f88f410dbc84b97812e562dc68616502efc
+                    - cell "Apr 2, 20262 days ago" [ref=e324]:
+                      - generic [ref=e325]: Apr 2, 20262 days ago
+                  - row "test, (Directory) Migrate to @google/stitch-sdk (#136) Mar 17, 20262 weeks ago" [ref=e326]:
+                    - cell "test, (Directory)" [ref=e327]:
+                      - generic [ref=e328]:
+                        - img [ref=e329]
+                        - link "test, (Directory)" [ref=e334] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/tree/main/test
+                          - text: test
+                    - cell "Migrate to @google/stitch-sdk (#136)" [ref=e335]:
+                      - generic [ref=e337]:
+                        - link "Migrate to" [ref=e338] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/commit/949c415bf13ffb199fa55b595f32632195262343
+                        - code [ref=e339]:
+                          - link "@google/stitch-sdk" [ref=e340] [cursor=pointer]:
+                            - /url: /davideast/stitch-mcp/commit/949c415bf13ffb199fa55b595f32632195262343
+                        - link "(" [ref=e341] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/commit/949c415bf13ffb199fa55b595f32632195262343
+                        - link "#136" [ref=e342] [cursor=pointer]:
+                          - /url: https://github.com/davideast/stitch-mcp/pull/136
+                        - link ")" [ref=e343] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/commit/949c415bf13ffb199fa55b595f32632195262343
+                    - cell "Mar 17, 20262 weeks ago" [ref=e344]:
+                      - generic [ref=e345]: Mar 17, 20262 weeks ago
+                  - 'row "tests, (Directory) fix: add URL allowlist to AssetGateway to prevent SSRF via asset proxy ( Apr 1, 20262 days ago" [ref=e346]':
+                    - cell "tests, (Directory)" [ref=e347]:
+                      - generic [ref=e348]:
+                        - img [ref=e349]
+                        - link "tests, (Directory)" [ref=e354] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/tree/main/tests
+                          - text: tests
+                    - 'cell "fix: add URL allowlist to AssetGateway to prevent SSRF via asset proxy (" [ref=e355]':
+                      - 'link "fix: add URL allowlist to AssetGateway to prevent SSRF via asset proxy (" [ref=e358] [cursor=pointer]':
+                        - /url: /davideast/stitch-mcp/commit/20fd73507fc6b9930338353f705c22c6d47cb73e
+                    - cell "Apr 1, 20262 days ago" [ref=e359]:
+                      - generic [ref=e360]: Apr 1, 20262 days ago
+                  - 'row ".gitignore, (File) tool: Change build_site to be context based only (#96) Feb 9, 20262 months ago" [ref=e361]':
+                    - cell ".gitignore, (File)" [ref=e362]:
+                      - generic [ref=e363]:
+                        - img [ref=e364]
+                        - link ".gitignore, (File)" [ref=e369] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/blob/main/.gitignore
+                          - text: .gitignore
+                    - 'cell "tool: Change build_site to be context based only (#96)" [ref=e370]':
+                      - generic [ref=e372]:
+                        - 'link "tool: Change build_site to be context based only (" [ref=e373] [cursor=pointer]':
+                          - /url: /davideast/stitch-mcp/commit/19ae03b6dbfeef963084e54bfe8df83e13ccd511
+                        - link "#96" [ref=e374] [cursor=pointer]:
+                          - /url: https://github.com/davideast/stitch-mcp/pull/96
+                        - link ")" [ref=e375] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/commit/19ae03b6dbfeef963084e54bfe8df83e13ccd511
+                    - cell "Feb 9, 20262 months ago" [ref=e376]:
+                      - generic [ref=e377]: Feb 9, 20262 months ago
+                  - 'row "GEMINI.md, (File) feat: stitch-mcp Jan 16, 20263 months ago" [ref=e378]':
+                    - cell "GEMINI.md, (File)" [ref=e379]:
+                      - generic [ref=e380]:
+                        - img [ref=e381]
+                        - link "GEMINI.md, (File)" [ref=e386] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/blob/main/GEMINI.md
+                          - text: GEMINI.md
+                    - 'cell "feat: stitch-mcp" [ref=e387]':
+                      - 'link "feat: stitch-mcp" [ref=e390] [cursor=pointer]':
+                        - /url: /davideast/stitch-mcp/commit/10ed2b4d4237c6740b3bfab284129ca74c251d13
+                    - cell "Jan 16, 20263 months ago" [ref=e391]:
+                      - generic [ref=e392]: Jan 16, 20263 months ago
+                  - row "LICENSE, (File) setup release deps Jan 16, 20263 months ago" [ref=e393]:
+                    - cell "LICENSE, (File)" [ref=e394]:
+                      - generic [ref=e395]:
+                        - img [ref=e396]
+                        - link "LICENSE, (File)" [ref=e401] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/blob/main/LICENSE
+                          - text: LICENSE
+                    - cell "setup release deps" [ref=e402]:
+                      - link "setup release deps" [ref=e405] [cursor=pointer]:
+                        - /url: /davideast/stitch-mcp/commit/e783aa844ebdca30c7ab3220dbfc8cb32bf8605a
+                    - cell "Jan 16, 20263 months ago" [ref=e406]:
+                      - generic [ref=e407]: Jan 16, 20263 months ago
+                  - 'row "README.md, (File) docs: Improve docs, add a site. (#105) Feb 17, 20262 months ago" [ref=e408]':
+                    - cell "README.md, (File)" [ref=e409]:
+                      - generic [ref=e410]:
+                        - img [ref=e411]
+                        - link "README.md, (File)" [ref=e416] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/blob/main/README.md
+                          - text: README.md
+                    - 'cell "docs: Improve docs, add a site. (#105)" [ref=e417]':
+                      - generic [ref=e419]:
+                        - 'link "docs: Improve docs, add a site. (" [ref=e420] [cursor=pointer]':
+                          - /url: /davideast/stitch-mcp/commit/90df4021fe930411fb9e049fcab3890a67b04717
+                        - link "#105" [ref=e421] [cursor=pointer]:
+                          - /url: https://github.com/davideast/stitch-mcp/pull/105
+                        - link ")" [ref=e422] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/commit/90df4021fe930411fb9e049fcab3890a67b04717
+                    - cell "Feb 17, 20262 months ago" [ref=e423]:
+                      - generic [ref=e424]: Feb 17, 20262 months ago
+                  - row "bun.lock, (File) Migrate to @google/stitch-sdk (#136) Mar 17, 20262 weeks ago" [ref=e425]:
+                    - cell "bun.lock, (File)" [ref=e426]:
+                      - generic [ref=e427]:
+                        - img [ref=e428]
+                        - link "bun.lock, (File)" [ref=e433] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/blob/main/bun.lock
+                          - text: bun.lock
+                    - cell "Migrate to @google/stitch-sdk (#136)" [ref=e434]:
+                      - generic [ref=e436]:
+                        - link "Migrate to" [ref=e437] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/commit/949c415bf13ffb199fa55b595f32632195262343
+                        - code [ref=e438]:
+                          - link "@google/stitch-sdk" [ref=e439] [cursor=pointer]:
+                            - /url: /davideast/stitch-mcp/commit/949c415bf13ffb199fa55b595f32632195262343
+                        - link "(" [ref=e440] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/commit/949c415bf13ffb199fa55b595f32632195262343
+                        - link "#136" [ref=e441] [cursor=pointer]:
+                          - /url: https://github.com/davideast/stitch-mcp/pull/136
+                        - link ")" [ref=e442] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/commit/949c415bf13ffb199fa55b595f32632195262343
+                    - cell "Mar 17, 20262 weeks ago" [ref=e443]:
+                      - generic [ref=e444]: Mar 17, 20262 weeks ago
+                  - 'row "index.ts, (File) feat: stitch-mcp Jan 16, 20263 months ago" [ref=e445]':
+                    - cell "index.ts, (File)" [ref=e446]:
+                      - generic [ref=e447]:
+                        - img [ref=e448]
+                        - link "index.ts, (File)" [ref=e453] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/blob/main/index.ts
+                          - text: index.ts
+                    - 'cell "feat: stitch-mcp" [ref=e454]':
+                      - 'link "feat: stitch-mcp" [ref=e457] [cursor=pointer]':
+                        - /url: /davideast/stitch-mcp/commit/10ed2b4d4237c6740b3bfab284129ca74c251d13
+                    - cell "Jan 16, 20263 months ago" [ref=e458]:
+                      - generic [ref=e459]: Jan 16, 20263 months ago
+                  - 'row "mock-site-data.json, (File) feat: Add snapshot command for UI testing and mocking (#89) Feb 7, 20262 months ago" [ref=e460]':
+                    - cell "mock-site-data.json, (File)" [ref=e461]:
+                      - generic [ref=e462]:
+                        - img [ref=e463]
+                        - link "mock-site-data.json, (File)" [ref=e468] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/blob/main/mock-site-data.json
+                          - text: mock-site-data.json
+                    - 'cell "feat: Add snapshot command for UI testing and mocking (#89)" [ref=e469]':
+                      - generic [ref=e471]:
+                        - 'link "feat: Add snapshot command for UI testing and mocking (" [ref=e472] [cursor=pointer]':
+                          - /url: /davideast/stitch-mcp/commit/52c4668834a0c318cd4615d708088cf13ad8dd60
+                        - link "#89" [ref=e473] [cursor=pointer]:
+                          - /url: https://github.com/davideast/stitch-mcp/pull/89
+                        - link ")" [ref=e474] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/commit/52c4668834a0c318cd4615d708088cf13ad8dd60
+                    - cell "Feb 7, 20262 months ago" [ref=e475]:
+                      - generic [ref=e476]: Feb 7, 20262 months ago
+                  - row "package.json, (File) 0.5.3 Apr 2, 20262 days ago" [ref=e477]:
+                    - cell "package.json, (File)" [ref=e478]:
+                      - generic [ref=e479]:
+                        - img [ref=e480]
+                        - link "package.json, (File)" [ref=e485] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/blob/main/package.json
+                          - text: package.json
+                    - cell "0.5.3" [ref=e486]:
+                      - link "0.5.3" [ref=e489] [cursor=pointer]:
+                        - /url: /davideast/stitch-mcp/commit/bca9554125d6e0178113c1eb5d70f7c6aa6e0e10
+                    - cell "Apr 2, 20262 days ago" [ref=e490]:
+                      - generic [ref=e491]: Apr 2, 20262 days ago
+                  - 'row "tsconfig.build.json, (File) chore: package it up (#18) Jan 17, 20263 months ago" [ref=e492]':
+                    - cell "tsconfig.build.json, (File)" [ref=e493]:
+                      - generic [ref=e494]:
+                        - img [ref=e495]
+                        - link "tsconfig.build.json, (File)" [ref=e500] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/blob/main/tsconfig.build.json
+                          - text: tsconfig.build.json
+                    - 'cell "chore: package it up (#18)" [ref=e501]':
+                      - generic [ref=e503]:
+                        - 'link "chore: package it up (" [ref=e504] [cursor=pointer]':
+                          - /url: /davideast/stitch-mcp/commit/42f51cc3199fb4617844e673d3ad229151724921
+                        - link "#18" [ref=e505] [cursor=pointer]:
+                          - /url: https://github.com/davideast/stitch-mcp/pull/18
+                        - link ")" [ref=e506] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/commit/42f51cc3199fb4617844e673d3ad229151724921
+                    - cell "Jan 17, 20263 months ago" [ref=e507]:
+                      - generic [ref=e508]: Jan 17, 20263 months ago
+                  - 'row "tsconfig.json, (File) feat: stitch-mcp Jan 16, 20263 months ago" [ref=e509]':
+                    - cell "tsconfig.json, (File)" [ref=e510]:
+                      - generic [ref=e511]:
+                        - img [ref=e512]
+                        - link "tsconfig.json, (File)" [ref=e517] [cursor=pointer]:
+                          - /url: /davideast/stitch-mcp/blob/main/tsconfig.json
+                          - text: tsconfig.json
+                    - 'cell "feat: stitch-mcp" [ref=e518]':
+                      - 'link "feat: stitch-mcp" [ref=e521] [cursor=pointer]':
+                        - /url: /davideast/stitch-mcp/commit/10ed2b4d4237c6740b3bfab284129ca74c251d13
+                    - cell "Jan 16, 20263 months ago" [ref=e522]:
+                      - generic [ref=e523]: Jan 16, 20263 months ago
+            - generic [ref=e525]:
+              - generic [ref=e526]:
+                - heading "Repository files navigation" [level=2] [ref=e527]
+                - navigation "Repository files" [ref=e528]:
+                  - list [ref=e529]:
+                    - listitem [ref=e530]:
+                      - link "README" [ref=e531] [cursor=pointer]:
+                        - /url: "#"
+                        - img [ref=e533]
+                        - generic [ref=e535]: README
+                    - listitem [ref=e536]:
+                      - link "Apache-2.0 license" [ref=e537] [cursor=pointer]:
+                        - /url: "#"
+                        - img [ref=e539]
+                        - generic [ref=e541]: Apache-2.0 license
+                - button "Outline" [ref=e542] [cursor=pointer]:
+                  - img [ref=e543]
+              - article [ref=e546]:
+                - generic [ref=e547]:
+                  - heading "stitch-mcp" [level=1] [ref=e548]
+                  - 'link "Permalink: stitch-mcp" [ref=e549] [cursor=pointer]':
+                    - /url: "#stitch-mcp"
+                    - img [ref=e550]
+                - paragraph [ref=e552]: A CLI for moving AI-generated UI designs into your development workflow — preview them locally, build sites from them, and feed them to coding agents.
+                - generic [ref=e553]:
+                  - heading "Why" [level=2] [ref=e554]
+                  - 'link "Permalink: Why" [ref=e555] [cursor=pointer]':
+                    - /url: "#why"
+                    - img [ref=e556]
+                - paragraph [ref=e558]: AI-generated designs in Google's Stitch platform live as HTML/CSS behind an API. Getting them into a local development environment — for previewing, building, or handing off to coding agents — requires fetching, serving, and structuring them. stitch-mcp handles this through a set of CLI commands that connect to Stitch.
+                - generic [ref=e559]:
+                  - heading "Quick start" [level=2] [ref=e560]
+                  - 'link "Permalink: Quick start" [ref=e561] [cursor=pointer]':
+                    - /url: "#quick-start"
+                    - img [ref=e562]
+                - generic [ref=e564]:
+                  - generic [ref=e565]:
+                    - generic [ref=e566]: "# Set up authentication and MCP client config"
+                    - text: npx @_davideast/stitch-mcp init
+                    - generic [ref=e567]: "# Serve all project screens on a local dev server"
+                    - text: npx @_davideast/stitch-mcp serve -p <project-id>
+                    - generic [ref=e568]: "# Build an Astro site by mapping screens to routes"
+                    - text: npx @_davideast/stitch-mcp site -p <project-id>
+                  - button "Copy" [ref=e570] [cursor=pointer]:
+                    - img [ref=e571]
+                - generic [ref=e574]:
+                  - heading "Features" [level=2] [ref=e575]
+                  - 'link "Permalink: Features" [ref=e576] [cursor=pointer]':
+                    - /url: "#features"
+                    - img [ref=e577]
+                - list [ref=e579]:
+                  - listitem [ref=e580]:
+                    - strong [ref=e581]: Preview designs locally
+                    - text: — serve all screens from a project on a Vite dev server
+                  - listitem [ref=e582]:
+                    - strong [ref=e583]: Build an Astro site from your designs
+                    - text: — map screens to routes and generate a deployable project
+                  - listitem [ref=e584]:
+                    - strong [ref=e585]: Give your agent design context
+                    - text: — proxy Stitch tools to your IDE's coding agent with automatic token refresh
+                  - listitem [ref=e586]:
+                    - strong [ref=e587]: Explore your design data
+                    - text: — browse projects, screens, and metadata in the terminal or via CLI
+                  - listitem [ref=e588]:
+                    - strong [ref=e589]: Browse projects in your terminal
+                    - text: — navigate screens interactively with copy, preview, and open actions
+                  - listitem [ref=e590]:
+                    - strong [ref=e591]: Set up in one command
+                    - text: — guided wizard handles gcloud, auth, and MCP client configuration
+                - generic [ref=e592]:
+                  - heading "MCP integration" [level=2] [ref=e593]
+                  - 'link "Permalink: MCP integration" [ref=e594] [cursor=pointer]':
+                    - /url: "#mcp-integration"
+                    - img [ref=e595]
+                - paragraph [ref=e597]: "Add this to your MCP client config to give coding agents access to Stitch tools:"
+                - generic [ref=e598]:
+                  - generic [ref=e599]:
+                    - text: "{ \"mcpServers\": { \"stitch\": { \"command\":"
+                    - generic [ref=e600]: "\"npx\""
+                    - text: ", \"args\": ["
+                    - generic [ref=e601]: "\"@_davideast/stitch-mcp\""
+                    - text: ","
+                    - generic [ref=e602]: "\"proxy\""
+                    - text: "] } } }"
+                  - button "Copy" [ref=e604] [cursor=pointer]:
+                    - img [ref=e605]
+                - paragraph [ref=e608]: "Supported clients: VS Code, Cursor, Claude Code, Gemini CLI, Codex, OpenCode."
+                - generic [ref=e609]:
+                  - heading "Virtual tools" [level=3] [ref=e610]
+                  - 'link "Permalink: Virtual tools" [ref=e611] [cursor=pointer]':
+                    - /url: "#virtual-tools"
+                    - img [ref=e612]
+                - paragraph [ref=e614]: "The proxy exposes these tools alongside the upstream Stitch MCP tools. They combine multiple API calls into higher-level operations for coding agents:"
+                - list [ref=e615]:
+                  - listitem [ref=e616]:
+                    - strong [ref=e617]:
+                      - code [ref=e618]: build_site
+                    - text: — Builds a site from a project by mapping screens to routes. Returns the design HTML for each page.
+                  - listitem [ref=e619]:
+                    - strong [ref=e620]:
+                      - code [ref=e621]: get_screen_code
+                    - text: — Retrieves a screen and downloads its HTML code content.
+                  - listitem [ref=e622]:
+                    - strong [ref=e623]:
+                      - code [ref=e624]: get_screen_image
+                    - text: — Retrieves a screen and downloads its screenshot image as base64.
+                - paragraph [ref=e625]:
+                  - code [ref=e626]: build_site
+                  - text: "input schema:"
+                - generic [ref=e627]:
+                  - generic [ref=e628]:
+                    - text: "{ \"projectId\":"
+                    - generic [ref=e629]: "\"string (required)\""
+                    - text: ", \"routes\": [ { \"screenId\":"
+                    - generic [ref=e630]: "\"string (required)\""
+                    - text: ", \"route\":"
+                    - generic [ref=e631]: "\"string (required, e.g. \\\"/\\\" or \\\"/about\\\")\""
+                    - text: "} ] }"
+                  - button "Copy" [ref=e633] [cursor=pointer]:
+                    - img [ref=e634]
+                - paragraph [ref=e637]: "Example:"
+                - generic [ref=e638]:
+                  - generic [ref=e639]:
+                    - text: npx @_davideast/stitch-mcp tool build_site -d
+                    - generic [ref=e640]: "'{"
+                    - text: "\"projectId\": \"123456\", \"routes\": [ { \"screenId\": \"abc\", \"route\": \"/\" }, { \"screenId\": \"def\", \"route\": \"/about\" } ]"
+                    - generic [ref=e641]: "}'"
+                  - button "Copy" [ref=e643] [cursor=pointer]:
+                    - img [ref=e644]
+                - generic [ref=e647]:
+                  - heading "Explore your designs" [level=2] [ref=e648]
+                  - 'link "Permalink: Explore your designs" [ref=e649] [cursor=pointer]':
+                    - /url: "#explore-your-designs"
+                    - img [ref=e650]
+                - paragraph [ref=e652]:
+                  - text: Use
+                  - code [ref=e653]: view
+                  - text: and
+                  - code [ref=e654]: tool
+                  - text: to browse your design data and understand what's available before prompting agents.
+                - generic [ref=e655]:
+                  - generic [ref=e656]:
+                    - generic [ref=e657]: "# Browse all projects"
+                    - text: npx @_davideast/stitch-mcp view --projects
+                    - generic [ref=e658]: "# Inspect a specific screen"
+                    - text: npx @_davideast/stitch-mcp view --project <project-id> --screen <screen-id>
+                    - generic [ref=e659]: "# Invoke any MCP tool from the CLI"
+                    - text: npx @_davideast/stitch-mcp tool [toolName]
+                  - button "Copy" [ref=e661] [cursor=pointer]:
+                    - img [ref=e662]
+                - paragraph [ref=e665]:
+                  - text: Inside the
+                  - code [ref=e666]: view
+                  - text: "browser:"
+                  - code [ref=e667]: c
+                  - text: copies the selected value,
+                  - code [ref=e668]: s
+                  - text: previews HTML in your browser,
+                  - code [ref=e669]: o
+                  - text: opens the project in Stitch, and
+                  - code [ref=e670]: q
+                  - text: quits. Use arrow keys to navigate and Enter to drill into nested data.
+                - paragraph [ref=e671]:
+                  - text: Run
+                  - code [ref=e672]: tool
+                  - text: without a name to list all available tools, or with
+                  - code [ref=e673]: "-s"
+                  - text: to see a tool's schema.
+                - separator [ref=e674]
+                - generic [ref=e675]:
+                  - heading "Installation" [level=2] [ref=e676]
+                  - 'link "Permalink: Installation" [ref=e677] [cursor=pointer]':
+                    - /url: "#installation"
+                    - img [ref=e678]
+                - paragraph [ref=e680]:
+                  - text: Run directly with
+                  - code [ref=e681]: npx
+                  - text: "(no install needed):"
+                - generic [ref=e682]:
+                  - generic [ref=e683]: npx @_davideast/stitch-mcp <command>
+                  - button "Copy" [ref=e685] [cursor=pointer]:
+                    - img [ref=e686]
+                - paragraph [ref=e689]: "Or install globally:"
+                - generic [ref=e690]:
+                  - generic [ref=e691]: npm install -g @_davideast/stitch-mcp stitch-mcp <command>
+                  - button "Copy" [ref=e693] [cursor=pointer]:
+                    - img [ref=e694]
+                - generic [ref=e697]:
+                  - heading "Commands" [level=2] [ref=e698]
+                  - 'link "Permalink: Commands" [ref=e699] [cursor=pointer]':
+                    - /url: "#commands"
+                    - img [ref=e700]
+                - table [ref=e703]:
+                  - rowgroup [ref=e704]:
+                    - row "Command Description" [ref=e705]:
+                      - columnheader "Command" [ref=e706]
+                      - columnheader "Description" [ref=e707]
+                  - rowgroup [ref=e708]:
+                    - row "Setup" [ref=e709]:
+                      - cell "Setup" [ref=e710]:
+                        - strong [ref=e711]: Setup
+                      - cell [ref=e712]
+                    - row "init Set up auth, gcloud, and MCP client config" [ref=e713]:
+                      - cell "init" [ref=e714]:
+                        - code [ref=e715]: init
+                      - cell "Set up auth, gcloud, and MCP client config" [ref=e716]
+                    - row "doctor Verify configuration health" [ref=e717]:
+                      - cell "doctor" [ref=e718]:
+                        - code [ref=e719]: doctor
+                      - cell "Verify configuration health" [ref=e720]
+                    - row "logout Revoke credentials" [ref=e721]:
+                      - cell "logout" [ref=e722]:
+                        - code [ref=e723]: logout
+                      - cell "Revoke credentials" [ref=e724]
+                    - row "Development" [ref=e725]:
+                      - cell "Development" [ref=e726]:
+                        - strong [ref=e727]: Development
+                      - cell [ref=e728]
+                    - row "serve -p <id> Preview project screens locally" [ref=e729]:
+                      - cell "serve -p <id>" [ref=e730]:
+                        - code [ref=e731]: serve -p <id>
+                      - cell "Preview project screens locally" [ref=e732]
+                    - row "screens -p <id> Browse screens in terminal" [ref=e733]:
+                      - cell "screens -p <id>" [ref=e734]:
+                        - code [ref=e735]: screens -p <id>
+                      - cell "Browse screens in terminal" [ref=e736]
+                    - row "view Interactive resource browser" [ref=e737]:
+                      - cell "view" [ref=e738]:
+                        - code [ref=e739]: view
+                      - cell "Interactive resource browser" [ref=e740]
+                    - row "Build" [ref=e741]:
+                      - cell "Build" [ref=e742]:
+                        - strong [ref=e743]: Build
+                      - cell [ref=e744]
+                    - row "site -p <id> Generate Astro project from screens" [ref=e745]:
+                      - cell "site -p <id>" [ref=e746]:
+                        - code [ref=e747]: site -p <id>
+                      - cell "Generate Astro project from screens" [ref=e748]
+                    - row "snapshot Save screen state to file" [ref=e749]:
+                      - cell "snapshot" [ref=e750]:
+                        - code [ref=e751]: snapshot
+                      - cell "Save screen state to file" [ref=e752]
+                    - row "Integration" [ref=e753]:
+                      - cell "Integration" [ref=e754]:
+                        - strong [ref=e755]: Integration
+                      - cell [ref=e756]
+                    - row "tool [name] Invoke MCP tools from CLI" [ref=e757]:
+                      - cell "tool [name]" [ref=e758]:
+                        - code [ref=e759]: tool [name]
+                      - cell "Invoke MCP tools from CLI" [ref=e760]
+                    - row "proxy Run MCP proxy for agents" [ref=e761]:
+                      - cell "proxy" [ref=e762]:
+                        - code [ref=e763]: proxy
+                      - cell "Run MCP proxy for agents" [ref=e764]
+                - paragraph [ref=e765]:
+                  - text: Run any command with
+                  - code [ref=e766]: "--help"
+                  - text: for full options.
+                - generic [ref=e767]:
+                  - heading "Authentication" [level=2] [ref=e768]
+                  - 'link "Permalink: Authentication" [ref=e769] [cursor=pointer]':
+                    - /url: "#authentication"
+                    - img [ref=e770]
+                - paragraph [ref=e772]:
+                  - strong [ref=e773]: "Automatic (recommended):"
+                  - text: Run
+                  - code [ref=e774]: init
+                  - text: and follow the wizard. It handles gcloud installation, OAuth, credentials, and project setup.
+                - generic [ref=e775]:
+                  - generic [ref=e776]: npx @_davideast/stitch-mcp init
+                  - button "Copy" [ref=e778] [cursor=pointer]:
+                    - img [ref=e779]
+                - paragraph [ref=e782]:
+                  - strong [ref=e783]: "API key:"
+                  - text: Set the
+                  - code [ref=e784]: STITCH_API_KEY
+                  - text: environment variable to skip OAuth entirely.
+                - generic [ref=e785]:
+                  - generic [ref=e786]:
+                    - text: export STITCH_API_KEY=
+                    - generic [ref=e787]: "\"your-api-key\""
+                  - button "Copy" [ref=e789] [cursor=pointer]:
+                    - img [ref=e790]
+                - paragraph [ref=e793]:
+                  - strong [ref=e794]: "Manual (existing gcloud):"
+                  - text: "If you already have gcloud configured:"
+                - generic [ref=e795]:
+                  - generic [ref=e796]: gcloud auth application-default login gcloud config set project <PROJECT_ID> gcloud beta services mcp enable stitch.googleapis.com --project=<PROJECT_ID>
+                  - button "Copy" [ref=e798] [cursor=pointer]:
+                    - img [ref=e799]
+                - paragraph [ref=e802]:
+                  - text: Then use the proxy with
+                  - code [ref=e803]: STITCH_USE_SYSTEM_GCLOUD=1
+                  - text: ":"
+                - generic [ref=e804]:
+                  - generic [ref=e805]:
+                    - text: "{ \"mcpServers\": { \"stitch\": { \"command\":"
+                    - generic [ref=e806]: "\"npx\""
+                    - text: ", \"args\": ["
+                    - generic [ref=e807]: "\"@_davideast/stitch-mcp\""
+                    - text: ","
+                    - generic [ref=e808]: "\"proxy\""
+                    - text: "], \"env\": { \"STITCH_USE_SYSTEM_GCLOUD\":"
+                    - generic [ref=e809]: "\"1\""
+                    - text: "} } } }"
+                  - button "Copy" [ref=e811] [cursor=pointer]:
+                    - img [ref=e812]
+                - generic [ref=e815]:
+                  - heading "Environment variables" [level=2] [ref=e816]
+                  - 'link "Permalink: Environment variables" [ref=e817] [cursor=pointer]':
+                    - /url: "#environment-variables"
+                    - img [ref=e818]
+                - table [ref=e821]:
+                  - rowgroup [ref=e822]:
+                    - row "Variable Description" [ref=e823]:
+                      - columnheader "Variable" [ref=e824]
+                      - columnheader "Description" [ref=e825]
+                  - rowgroup [ref=e826]:
+                    - row "STITCH_API_KEY API key for direct authentication (skips OAuth)" [ref=e827]:
+                      - cell "STITCH_API_KEY" [ref=e828]:
+                        - code [ref=e829]: STITCH_API_KEY
+                      - cell "API key for direct authentication (skips OAuth)" [ref=e830]
+                    - row "STITCH_ACCESS_TOKEN Pre-existing access token" [ref=e831]:
+                      - cell "STITCH_ACCESS_TOKEN" [ref=e832]:
+                        - code [ref=e833]: STITCH_ACCESS_TOKEN
+                      - cell "Pre-existing access token" [ref=e834]
+                    - row "STITCH_USE_SYSTEM_GCLOUD Use system gcloud config instead of isolated config" [ref=e835]:
+                      - cell "STITCH_USE_SYSTEM_GCLOUD" [ref=e836]:
+                        - code [ref=e837]: STITCH_USE_SYSTEM_GCLOUD
+                      - cell "Use system gcloud config instead of isolated config" [ref=e838]
+                    - row "STITCH_PROJECT_ID Override project ID" [ref=e839]:
+                      - cell "STITCH_PROJECT_ID" [ref=e840]:
+                        - code [ref=e841]: STITCH_PROJECT_ID
+                      - cell "Override project ID" [ref=e842]
+                    - row "GOOGLE_CLOUD_PROJECT Alternative project ID variable" [ref=e843]:
+                      - cell "GOOGLE_CLOUD_PROJECT" [ref=e844]:
+                        - code [ref=e845]: GOOGLE_CLOUD_PROJECT
+                      - cell "Alternative project ID variable" [ref=e846]
+                    - row "STITCH_HOST Custom Stitch API endpoint" [ref=e847]:
+                      - cell "STITCH_HOST" [ref=e848]:
+                        - code [ref=e849]: STITCH_HOST
+                      - cell "Custom Stitch API endpoint" [ref=e850]
+                - generic [ref=e851]:
+                  - heading "Troubleshooting" [level=2] [ref=e852]
+                  - 'link "Permalink: Troubleshooting" [ref=e853] [cursor=pointer]':
+                    - /url: "#troubleshooting"
+                    - img [ref=e854]
+                - generic [ref=e856]:
+                  - heading "\"Permission Denied\" errors" [level=3] [ref=e857]
+                  - 'link "Permalink: \"Permission Denied\" errors" [ref=e858] [cursor=pointer]':
+                    - /url: "#permission-denied-errors"
+                    - img [ref=e859]
+                - paragraph [ref=e861]:
+                  - text: Ensure you have Owner or Editor role, billing is enabled, and the Stitch API is enabled. Run
+                  - code [ref=e862]: doctor --verbose
+                  - text: to diagnose.
+                - generic [ref=e863]:
+                  - heading "Authentication URL not appearing" [level=3] [ref=e864]
+                  - 'link "Permalink: Authentication URL not appearing" [ref=e865] [cursor=pointer]':
+                    - /url: "#authentication-url-not-appearing"
+                    - img [ref=e866]
+                - paragraph [ref=e868]:
+                  - text: The tool prints authentication URLs to the terminal with a 5-second timeout. Look for a URL starting with
+                  - code [ref=e869]: https://accounts.google.com
+                  - text: . If using proxy with
+                  - code [ref=e870]: "--debug"
+                  - text: ", check"
+                  - code [ref=e871]: /tmp/stitch-proxy-debug.log
+                  - text: .
+                - generic [ref=e872]:
+                  - heading "Already authenticated but showing logged in" [level=3] [ref=e873]
+                  - 'link "Permalink: Already authenticated but showing logged in" [ref=e874] [cursor=pointer]':
+                    - /url: "#already-authenticated-but-showing-logged-in"
+                    - img [ref=e875]
+                - paragraph [ref=e877]: "The bundled gcloud SDK maintains separate authentication from your global gcloud installation. To fully clear authentication:"
+                - generic [ref=e878]:
+                  - generic [ref=e879]: npx @_davideast/stitch-mcp logout --force --clear-config
+                  - button "Copy" [ref=e881] [cursor=pointer]:
+                    - img [ref=e882]
+                - generic [ref=e885]:
+                  - heading "API connection fails after setup" [level=3] [ref=e886]
+                  - 'link "Permalink: API connection fails after setup" [ref=e887] [cursor=pointer]':
+                    - /url: "#api-connection-fails-after-setup"
+                    - img [ref=e888]
+                - paragraph [ref=e890]:
+                  - text: Run
+                  - code [ref=e891]: doctor --verbose
+                  - text: "to diagnose. Verify your project has billing and the Stitch API enabled. If issues persist, re-authenticate:"
+                - generic [ref=e892]:
+                  - generic [ref=e893]: npx @_davideast/stitch-mcp logout --force npx @_davideast/stitch-mcp init
+                  - button "Copy" [ref=e895] [cursor=pointer]:
+                    - img [ref=e896]
+                - generic [ref=e899]:
+                  - heading "WSL / SSH / Docker environments" [level=3] [ref=e900]
+                  - 'link "Permalink: WSL / SSH / Docker environments" [ref=e901] [cursor=pointer]':
+                    - /url: "#wsl--ssh--docker-environments"
+                    - img [ref=e902]
+                - paragraph [ref=e904]: The CLI detects WSL, SSH sessions, Docker containers, and Cloud Shell. In these environments, browser-based auth may not work automatically. Copy the OAuth URL from your terminal and open it in a browser manually.
+                - generic [ref=e905]:
+                  - heading "Development" [level=2] [ref=e906]
+                  - 'link "Permalink: Development" [ref=e907] [cursor=pointer]':
+                    - /url: "#development"
+                    - img [ref=e908]
+                - generic [ref=e910]:
+                  - generic [ref=e911]:
+                    - generic [ref=e912]: "# Install dependencies"
+                    - text: bun install
+                    - generic [ref=e913]: "# Run locally"
+                    - text: bun run dev init
+                    - generic [ref=e914]: "# Run tests"
+                    - text: bun test
+                    - generic [ref=e915]: "# Build"
+                    - text: bun run build
+                    - generic [ref=e916]: "# Verify package"
+                    - text: bun run verify-pack
+                  - button "Copy" [ref=e918] [cursor=pointer]:
+                    - img [ref=e919]
+                - generic [ref=e922]:
+                  - heading "License" [level=2] [ref=e923]
+                  - 'link "Permalink: License" [ref=e924] [cursor=pointer]':
+                    - /url: "#license"
+                    - img [ref=e925]
+                - paragraph [ref=e927]: Apache 2.0 © David East
+                - generic [ref=e928]:
+                  - heading "Disclaimer" [level=2] [ref=e929]
+                  - 'link "Permalink: Disclaimer" [ref=e930] [cursor=pointer]':
+                    - /url: "#disclaimer"
+                    - img [ref=e931]
+                - generic [ref=e933]:
+                  - paragraph [ref=e934]:
+                    - img [ref=e935]
+                    - text: Warning
+                  - paragraph [ref=e937]:
+                    - strong [ref=e938]: Experimental Project
+                    - text: "- This is an independent, experimental tool."
+                - paragraph [ref=e939]: "This project is:"
+                - list [ref=e940]:
+                  - listitem [ref=e941]:
+                    - strong [ref=e942]: NOT
+                    - text: affiliated with, endorsed by, or sponsored by Google LLC, Alphabet Inc., or the Stitch API team
+                  - listitem [ref=e943]:
+                    - text: Provided
+                    - strong [ref=e944]: AS-IS
+                    - text: with
+                    - strong [ref=e945]: NO WARRANTIES
+                    - text: of any kind
+                  - listitem [ref=e946]:
+                    - strong [ref=e947]: NOT
+                    - text: guaranteed to be maintained, secure, or compatible with future API versions
+                - paragraph [ref=e948]: "\"Stitch\" and \"Google Cloud\" are trademarks of Google LLC."
+                - paragraph [ref=e949]:
+                  - strong [ref=e950]: USE AT YOUR OWN RISK.
+        - generic [ref=e954]:
+          - generic [ref=e957]:
+            - heading "About" [level=2] [ref=e958]
+            - paragraph [ref=e959]: A CLI for moving AI-generated UI designs from Google’s Stitch platform into your development workflow.
+            - generic [ref=e960]:
+              - img [ref=e961]
+              - link "davideast.github.io/stitch-mcp/" [ref=e964] [cursor=pointer]:
+                - /url: https://davideast.github.io/stitch-mcp/
+            - heading "Resources" [level=3] [ref=e965]
+            - link "Readme" [ref=e967] [cursor=pointer]:
+              - /url: "#readme-ov-file"
+              - img [ref=e968]
+              - text: Readme
+            - heading "License" [level=3] [ref=e970]
+            - link "Apache-2.0 license" [ref=e972] [cursor=pointer]:
+              - /url: "#Apache-2.0-1-ov-file"
+              - img [ref=e973]
+              - text: Apache-2.0 license
+            - link "Activity" [ref=e976] [cursor=pointer]:
+              - /url: /davideast/stitch-mcp/activity
+              - img [ref=e977]
+              - text: Activity
+            - heading "Stars" [level=3] [ref=e979]
+            - link "705 stars" [ref=e981] [cursor=pointer]:
+              - /url: /davideast/stitch-mcp/stargazers
+              - img [ref=e982]
+              - strong [ref=e984]: "705"
+              - text: stars
+            - heading "Watchers" [level=3] [ref=e985]
+            - link "5 watching" [ref=e987] [cursor=pointer]:
+              - /url: /davideast/stitch-mcp/watchers
+              - img [ref=e988]
+              - strong [ref=e990]: "5"
+              - text: watching
+            - heading "Forks" [level=3] [ref=e991]
+            - link "84 forks" [ref=e993] [cursor=pointer]:
+              - /url: /davideast/stitch-mcp/forks
+              - img [ref=e994]
+              - strong [ref=e996]: "84"
+              - text: forks
+            - link "Report repository" [ref=e998] [cursor=pointer]:
+              - /url: /contact/report-content?content_url=https%3A%2F%2Fgithub.com%2Fdavideast%2Fstitch-mcp&report=davideast+%28user%29
+          - generic [ref=e1000]:
+            - heading "Releases 1" [level=2] [ref=e1001]:
+              - link "Releases 1" [ref=e1002] [cursor=pointer]:
+                - /url: /davideast/stitch-mcp/releases
+                - text: Releases
+                - generic "1" [ref=e1003]
+            - link "v0.5.1 Latest Mar 22, 20262 weeks ago" [ref=e1004] [cursor=pointer]:
+              - /url: /davideast/stitch-mcp/releases/tag/v0.5.1
+              - img [ref=e1005]
+              - generic [ref=e1007]:
+                - generic [ref=e1008]:
+                  - generic [ref=e1009]: v0.5.1
+                  - 'generic "Label: Latest" [ref=e1010]': Latest
+                - generic [ref=e1011]: Mar 22, 20262 weeks ago
+          - generic [ref=e1013]:
+            - heading "Packages" [level=2] [ref=e1014]:
+              - link "Packages" [ref=e1015] [cursor=pointer]:
+                - /url: /users/davideast/packages?repo_name=stitch-mcp
+            - generic [ref=e1016]: No packages published
+          - generic [ref=e1018]:
+            - heading "Contributors 10" [level=2] [ref=e1019]:
+              - link "Contributors 10" [ref=e1020] [cursor=pointer]:
+                - /url: /davideast/stitch-mcp/graphs/contributors
+                - text: Contributors
+                - generic "10" [ref=e1021]
+            - list [ref=e1022]:
+              - listitem [ref=e1023]:
+                - link "@davideast" [ref=e1024] [cursor=pointer]:
+                  - /url: https://github.com/davideast
+                  - img "@davideast" [ref=e1025]
+              - listitem [ref=e1026]:
+                - link "@google-labs-jules[bot]" [ref=e1027] [cursor=pointer]:
+                  - /url: https://github.com/apps/google-labs-jules
+                  - img "@google-labs-jules[bot]" [ref=e1028]
+              - listitem [ref=e1029]:
+                - link "@YUxiangLuo" [ref=e1030] [cursor=pointer]:
+                  - /url: https://github.com/YUxiangLuo
+                  - img "@YUxiangLuo" [ref=e1031]
+              - listitem [ref=e1032]:
+                - link "@salvarecuero" [ref=e1033] [cursor=pointer]:
+                  - /url: https://github.com/salvarecuero
+                  - img "@salvarecuero" [ref=e1034]
+              - listitem [ref=e1035]:
+                - link "@Kbediako" [ref=e1036] [cursor=pointer]:
+                  - /url: https://github.com/Kbediako
+                  - img "@Kbediako" [ref=e1037]
+              - listitem [ref=e1038]:
+                - link "@Supreme-Ed" [ref=e1039] [cursor=pointer]:
+                  - /url: https://github.com/Supreme-Ed
+                  - img "@Supreme-Ed" [ref=e1040]
+              - listitem [ref=e1041]:
+                - link "@JoaquimLey" [ref=e1042] [cursor=pointer]:
+                  - /url: https://github.com/JoaquimLey
+                  - img "@JoaquimLey" [ref=e1043]
+              - listitem [ref=e1044]:
+                - link "@dongitran" [ref=e1045] [cursor=pointer]:
+                  - /url: https://github.com/dongitran
+                  - img "@dongitran" [ref=e1046]
+              - listitem [ref=e1047]:
+                - link "@fblissjr" [ref=e1048] [cursor=pointer]:
+                  - /url: https://github.com/fblissjr
+                  - img "@fblissjr" [ref=e1049]
+              - listitem [ref=e1050]:
+                - link "@Daniel-Cherny" [ref=e1051] [cursor=pointer]:
+                  - /url: https://github.com/Daniel-Cherny
+                  - img "@Daniel-Cherny" [ref=e1052]
+          - generic [ref=e1054]:
+            - heading "Languages" [level=2] [ref=e1055]
+            - list [ref=e1062]:
+              - listitem [ref=e1063]:
+                - link "TypeScript 89.2%" [ref=e1064] [cursor=pointer]:
+                  - /url: /davideast/stitch-mcp/search?l=typescript
+                  - img [ref=e1065]
+                  - generic [ref=e1067]: TypeScript
+                  - generic [ref=e1068]: 89.2%
+              - listitem [ref=e1069]:
+                - link "HTML 8.9%" [ref=e1070] [cursor=pointer]:
+                  - /url: /davideast/stitch-mcp/search?l=html
+                  - img [ref=e1071]
+                  - generic [ref=e1073]: HTML
+                  - generic [ref=e1074]: 8.9%
+              - listitem [ref=e1075]:
+                - link "CSS 1.2%" [ref=e1076] [cursor=pointer]:
+                  - /url: /davideast/stitch-mcp/search?l=css
+                  - img [ref=e1077]
+                  - generic [ref=e1079]: CSS
+                  - generic [ref=e1080]: 1.2%
+              - listitem [ref=e1081]:
+                - generic [ref=e1082]:
+                  - img [ref=e1083]
+                  - generic [ref=e1085]: Other
+                  - generic [ref=e1086]: 0.7%
+  - contentinfo [ref=e1088]:
+    - heading "Footer" [level=2] [ref=e1089]
+    - generic [ref=e1090]:
+      - generic [ref=e1091]:
+        - link "GitHub Homepage" [ref=e1092] [cursor=pointer]:
+          - /url: https://github.com
+          - img [ref=e1093]
+        - generic [ref=e1095]: © 2026 GitHub, Inc.
+      - navigation "Footer" [ref=e1096]:
+        - heading "Footer navigation" [level=3] [ref=e1097]
+        - list "Footer navigation" [ref=e1098]:
+          - listitem [ref=e1099]:
+            - link "Terms" [ref=e1100] [cursor=pointer]:
+              - /url: https://docs.github.com/site-policy/github-terms/github-terms-of-service
+          - listitem [ref=e1101]:
+            - link "Privacy" [ref=e1102] [cursor=pointer]:
+              - /url: https://docs.github.com/site-policy/privacy-policies/github-privacy-statement
+          - listitem [ref=e1103]:
+            - link "Security" [ref=e1104] [cursor=pointer]:
+              - /url: https://github.com/security
+          - listitem [ref=e1105]:
+            - link "Status" [ref=e1106] [cursor=pointer]:
+              - /url: https://www.githubstatus.com/
+          - listitem [ref=e1107]:
+            - link "Community" [ref=e1108] [cursor=pointer]:
+              - /url: https://github.community/
+          - listitem [ref=e1109]:
+            - link "Docs" [ref=e1110] [cursor=pointer]:
+              - /url: https://docs.github.com/
+          - listitem [ref=e1111]:
+            - link "Contact" [ref=e1112] [cursor=pointer]:
+              - /url: https://support.github.com?tags=dotcom-footer
+          - listitem [ref=e1113]:
+            - button "Manage cookies" [ref=e1115] [cursor=pointer]
+          - listitem [ref=e1116]:
+            - button "Do not share my personal information" [ref=e1118] [cursor=pointer]
