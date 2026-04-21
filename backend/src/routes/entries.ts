@@ -15,9 +15,9 @@ const createEntrySchema = z.object({
   encryptedData: z.string().min(1, 'Encrypted data is required'),
   service: z.string().max(255).optional(),
   username: z.string().max(255).optional(),
-  url: z.string().url('Invalid URL format').max(2048).optional().or(z.literal('')),
-  note: z.string().max(2000).optional(),
-  expiresAt: z.string().datetime().optional().nullable(),
+  url: z.string().max(2048).optional().nullable(),
+  note: z.string().max(2000).optional().nullable(),
+  expiresAt: z.string().datetime().optional().nullable().or(z.literal('')),
   categoryIds: z.array(z.string().uuid()).optional(),
 });
 
