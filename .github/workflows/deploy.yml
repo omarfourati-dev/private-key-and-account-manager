@@ -47,6 +47,10 @@ jobs:
           JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
+      - name: Stop old containers if running
+        run: |
+          docker rm -f pkm-backend pkm-frontend 2>/dev/null || true
+
       - name: Build images
         working-directory: ${{ env.DEPLOY_DIR }}
         run: docker compose build --no-cache
