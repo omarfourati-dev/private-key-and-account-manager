@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
 
+env:
+  DEPLOY_DIR: /home/securevault
+
 jobs:
   deploy:
     name: Deploy to Production
@@ -13,6 +16,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Sync code to deploy directory
+        run: |
+          mkdir -p $DEPLOY_DIR
+          rsync -a --delete \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            --exclude='.env' \
+            $GITHUB_WORKSPACE/ $DEPLOY_DIR/
 
       - name: Ensure Docker network 'web' exists
         run: docker network create web 2>/dev/null || echo "Network 'web' already exists – skipping."
@@ -29,16 +41,18 @@ jobs:
             echo "JWT_ACCESS_SECRET=$JWT_ACCESS_SECRET"
             echo "JWT_REFRESH_SECRET=$JWT_REFRESH_SECRET"
             echo "DB_PASSWORD=$DB_PASSWORD"
-          } > .env
+          } > $DEPLOY_DIR/.env
         env:
           JWT_ACCESS_SECRET: ${{ secrets.JWT_ACCESS_SECRET }}
           JWT_REFRESH_SECRET: ${{ secrets.JWT_REFRESH_SECRET }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
       - name: Build images
+        working-directory: ${{ env.DEPLOY_DIR }}
         run: docker compose build --no-cache
 
       - name: Start / restart services
+        working-directory: ${{ env.DEPLOY_DIR }}
         run: docker compose up -d --remove-orphans
 
       - name: Wait for backend health
@@ -53,8 +67,9 @@ jobs:
             sleep 10
           done
           echo "Backend did not become healthy in time."
-          docker compose logs backend --tail=50
+          cd $DEPLOY_DIR && docker compose logs backend --tail=50
           exit 1
 
       - name: Show running containers
+        working-directory: ${{ env.DEPLOY_DIR }}
         run: docker compose ps
