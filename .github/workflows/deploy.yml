@@ -14,6 +14,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Ensure Docker network 'web' exists
+        run: docker network create web 2>/dev/null || echo "Network 'web' already exists – skipping."
+
       - name: Create database if not exists
         run: |
           docker exec zentrades-postgres psql -U zentrades \
