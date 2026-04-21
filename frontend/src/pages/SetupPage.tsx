@@ -3,8 +3,6 @@ import { Key, Eye, EyeOff, ShieldCheck, Lock, Cpu } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import toast from 'react-hot-toast';
 
-const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api';
-
 export default function SetupPage(): React.ReactElement {
   const { setup } = useAuth();
   const [email, setEmail] = useState('');
@@ -77,7 +75,7 @@ export default function SetupPage(): React.ReactElement {
           {/* OAuth buttons */}
           <div className="space-y-2.5">
             <a
-              href={`${API_BASE.replace('/api', '')}/api/auth/google`}
+              href="/api/auth/google"
               className="flex items-center justify-center gap-3 w-full h-12 rounded-xl border border-surface-200 bg-surface text-text text-sm font-medium hover:bg-surface-100 transition-colors"
             >
               <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
@@ -90,7 +88,7 @@ export default function SetupPage(): React.ReactElement {
             </a>
 
             <a
-              href={`${API_BASE.replace('/api', '')}/api/auth/apple`}
+              href="/api/auth/apple"
               className="flex items-center justify-center gap-3 w-full h-12 rounded-xl border border-surface-200 bg-surface text-text text-sm font-medium hover:bg-surface-100 transition-colors"
             >
               <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">

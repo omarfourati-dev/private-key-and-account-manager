@@ -4,8 +4,6 @@ import { useAuth } from '../hooks/useAuth';
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
 
-const API_BASE = import.meta.env.VITE_API_URL ?? 'http://localhost:4000/api';
-
 export default function LoginPage(): React.ReactElement {
   const { login } = useAuth();
   const [email, setEmail] = useState('');
@@ -27,8 +25,8 @@ export default function LoginPage(): React.ReactElement {
     }
   };
 
-  const googleHref = API_BASE.replace('/api', '') + '/api/auth/google';
-  const appleHref = API_BASE.replace('/api', '') + '/api/auth/apple';
+  const googleHref = '/api/auth/google';
+  const appleHref = '/api/auth/apple';
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-base relative overflow-hidden">
