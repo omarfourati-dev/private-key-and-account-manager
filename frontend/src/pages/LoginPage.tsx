@@ -26,7 +26,6 @@ export default function LoginPage(): React.ReactElement {
   };
 
   const googleHref = '/api/auth/google';
-  const appleHref = '/api/auth/apple';
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-base relative overflow-hidden">
