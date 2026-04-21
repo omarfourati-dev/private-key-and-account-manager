@@ -3,6 +3,7 @@ name: Deploy – securevault.omarfourati.de
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 env:
   DEPLOY_DIR: /home/securevault
