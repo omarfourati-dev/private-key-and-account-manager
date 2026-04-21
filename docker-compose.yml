@@ -16,8 +16,6 @@ services:
       ALLOWED_ORIGINS: https://securevault.omarfourati.de
       BACKEND_URL: ${BACKEND_URL:-https://securevault.omarfourati.de}
       FRONTEND_URL: ${FRONTEND_URL:-https://securevault.omarfourati.de}
-      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       LOG_LEVEL: ${LOG_LEVEL:-info}
     extra_hosts:
       - "host.docker.internal:host-gateway"
