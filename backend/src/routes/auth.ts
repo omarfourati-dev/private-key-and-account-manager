@@ -351,13 +351,14 @@ authRouter.get('/me', authMiddleware, async (req: AuthenticatedRequest, res: Res
   try {
     const user = await prisma.user.findUnique({
       where: { id: req.user!.userId },
-      select: { id: true, email: true, isAdmin: true, isActive: true },
+      select: { id: true, email: true, isAdmin: true, isActive: true, passwordHash: true, encryptedVaultKey: true },
     });
     if (!user) {
       res.status(404).json({ error: 'User not found' });
       return;
     }
-    res.json({ user });
+    const { passwordHash, encryptedVaultKey, ...rest } = user;
+    res.json({ user: { ...rest, hasPassword: !!passwordHash, encryptedVaultKey: encryptedVaultKey ?? null } });
   } catch (error) {
     next(error);
   }

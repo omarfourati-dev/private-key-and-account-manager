@@ -221,9 +221,13 @@ export function useAuthState(): AuthContextValue {
   const loginWithOAuthToken = useCallback(async (token: string) => {
     setAccessToken(token);
     const payload = JSON.parse(atob(token.split('.')[1])) as { userId: string; email: string };
-    const meRes = await api.get<{ user: User }>('/auth/me').catch(() => null);
-    setUser({ id: payload.userId, email: payload.email, isAdmin: meRes?.data.user.isAdmin });
+    const meRes = await api.get<{ user: User & { encryptedVaultKey: string | null } }>('/auth/me').catch(() => null);
+    const meUser = meRes?.data.user;
+    setUser({ id: payload.userId, email: payload.email, isAdmin: meUser?.isAdmin, hasPassword: meUser?.hasPassword });
     setIsSetupComplete(true);
+    if (meUser?.encryptedVaultKey) {
+      setStoredEncryptedVaultKey(meUser.encryptedVaultKey);
+    }
     setIsLocked(true);
     await refreshSettings();
   }, [refreshSettings]);
