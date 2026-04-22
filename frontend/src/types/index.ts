@@ -5,6 +5,7 @@ export type Theme = 'dark' | 'light';
 export interface User {
   id: string;
   email: string;
+  isAdmin?: boolean;
 }
 
 export interface Category {

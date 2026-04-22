@@ -13,6 +13,8 @@ model User {
   passwordHash String?
   googleId     String?  @unique
   appleId      String?  @unique
+  isAdmin      Boolean  @default(false)
+  isActive     Boolean  @default(true)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
@@ -20,8 +22,23 @@ model User {
   categories    Category[]
   refreshTokens RefreshToken[]
   settings      Settings?
+  inviteTokens  InviteToken[]
 
   @@map("users")
+}
+
+model InviteToken {
+  id        String    @id @default(uuid())
+  token     String    @unique
+  email     String?
+  createdBy String
+  createdAt DateTime  @default(now())
+  expiresAt DateTime
+  usedAt    DateTime?
+
+  creator User @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+
+  @@map("invite_tokens")
 }
 
 model RefreshToken {

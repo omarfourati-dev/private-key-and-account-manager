@@ -9,6 +9,7 @@ import { entriesRouter } from './routes/entries';
 import { categoriesRouter } from './routes/categories';
 import { transferRouter } from './routes/transfer';
 import { settingsRouter } from './routes/settings';
+import { adminRouter } from './routes/admin';
 import { errorHandler } from './middleware/errorHandler';
 import { logger } from './utils/logger';
 
@@ -62,6 +63,7 @@ app.use('/api/auth', oauthRouter);
 app.use('/api/entries', entriesRouter);
 app.use('/api/categories', categoriesRouter);
 app.use('/api/settings', settingsRouter);
+app.use('/api/admin', adminRouter);
 app.use('/api', transferRouter);
 
 // Error handler

@@ -4,10 +4,12 @@ import { useAuth } from './hooks/useAuth';
 import SetupPage from './pages/SetupPage';
 import LoginPage from './pages/LoginPage';
 import OAuthCallbackPage from './pages/OAuthCallbackPage';
+import InvitePage from './pages/InvitePage';
 import LockScreen from './components/LockScreen';
 import Dashboard from './pages/Dashboard';
 import SettingsPage from './pages/SettingsPage';
 import DownloadsPage from './pages/DownloadsPage';
+import AdminPage from './pages/AdminPage';
 import Layout from './components/Layout';
 
 export default function App(): React.ReactElement {
@@ -20,9 +22,12 @@ export default function App(): React.ReactElement {
     document.documentElement.classList.toggle('light', theme === 'light');
   }, [settings?.theme]);
 
-  // Handle OAuth callback redirect before any auth guards
   if (window.location.pathname === '/auth/callback') {
     return <OAuthCallbackPage />;
+  }
+
+  if (window.location.pathname.startsWith('/invite/')) {
+    return <InvitePage />;
   }
 
   if (isSetupComplete === null) {
@@ -55,6 +60,7 @@ export default function App(): React.ReactElement {
         <Route path="/" element={<Dashboard />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/downloads" element={<DownloadsPage />} />
+        {user?.isAdmin && <Route path="/admin" element={<AdminPage />} />}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Layout>

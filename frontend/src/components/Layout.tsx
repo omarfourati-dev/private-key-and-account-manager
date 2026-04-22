@@ -1,21 +1,26 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Key, Settings, Lock, LogOut, LayoutDashboard, Download } from 'lucide-react';
+import { Key, Settings, Lock, LogOut, LayoutDashboard, Download, Crown } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
-const navItems = [
+const baseNavItems = [
   { to: '/', icon: LayoutDashboard, label: 'Vault' },
   { to: '/downloads', icon: Download, label: 'Apps' },
   { to: '/settings', icon: Settings, label: 'Settings' },
 ];
 
 export default function Layout({ children }: LayoutProps): React.ReactElement {
-  const { lock, logout } = useAuth();
+  const { lock, logout, user } = useAuth();
   const location = useLocation();
+
+  const navItems = [
+    ...baseNavItems,
+    ...(user?.isAdmin ? [{ to: '/admin', icon: Crown, label: 'Admin' }] : []),
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-base">

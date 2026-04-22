@@ -42,15 +42,30 @@ const changePasswordSchema = z.object({
   })).optional(),
 });
 
-// POST /api/auth/setup - One-time initial setup
+// POST /api/auth/setup - Initial setup or invited registration
 authRouter.post('/setup', authRateLimiter, async (req, res: Response, next) => {
   try {
     const { email, password } = setupSchema.parse(req.body);
+    const inviteToken = typeof req.query.invite === 'string' ? req.query.invite : undefined;
 
     const existingUser = await prisma.user.findFirst();
-    if (existingUser) {
-      res.status(409).json({ error: 'Setup already completed. Only one user account is allowed.' });
-      return;
+    const isFirstUser = !existingUser;
+
+    if (!isFirstUser) {
+      if (!inviteToken) {
+        res.status(409).json({ error: 'Registration requires an invite link.' });
+        return;
+      }
+      const invite = await prisma.inviteToken.findUnique({ where: { token: inviteToken } });
+      if (!invite || invite.usedAt || invite.expiresAt < new Date()) {
+        res.status(400).json({ error: 'Invalid or expired invite link.' });
+        return;
+      }
+      if (invite.email && invite.email !== email) {
+        res.status(400).json({ error: 'This invite is for a different email address.' });
+        return;
+      }
+      await prisma.inviteToken.update({ where: { id: invite.id }, data: { usedAt: new Date() } });
     }
 
     const passwordHash = await bcrypt.hash(password, BCRYPT_ROUNDS);
@@ -58,6 +73,7 @@ authRouter.post('/setup', authRateLimiter, async (req, res: Response, next) => {
       data: {
         email,
         passwordHash,
+        isAdmin: isFirstUser,
         settings: {
           create: {
             autoLockMins: 15,
@@ -79,7 +95,7 @@ authRouter.post('/setup', authRateLimiter, async (req, res: Response, next) => {
     });
 
     res.cookie(REFRESH_TOKEN_COOKIE, refreshToken, COOKIE_OPTIONS);
-    res.status(201).json({ accessToken, user: { id: user.id, email: user.email } });
+    res.status(201).json({ accessToken, user: { id: user.id, email: user.email, isAdmin: user.isAdmin } });
   } catch (error) {
     next(error);
   }
@@ -103,6 +119,11 @@ authRouter.post('/login', authRateLimiter, async (req, res: Response, next) => {
       return;
     }
 
+    if (!user.isActive) {
+      res.status(403).json({ error: 'Your account has been deactivated. Contact an administrator.' });
+      return;
+    }
+
     const accessToken = generateAccessToken({ userId: user.id, email: user.email });
     const { token: refreshToken } = generateRefreshToken({ userId: user.id, email: user.email });
 
@@ -116,7 +137,7 @@ authRouter.post('/login', authRateLimiter, async (req, res: Response, next) => {
 
     logger.info('User logged in', { userId: user.id });
     res.cookie(REFRESH_TOKEN_COOKIE, refreshToken, COOKIE_OPTIONS);
-    res.json({ accessToken, user: { id: user.id, email: user.email } });
+    res.json({ accessToken, user: { id: user.id, email: user.email, isAdmin: user.isAdmin } });
   } catch (error) {
     next(error);
   }
@@ -309,11 +330,28 @@ authRouter.delete('/sessions/:id', authMiddleware, async (req: AuthenticatedRequ
   }
 });
 
+// GET /api/auth/me
+authRouter.get('/me', authMiddleware, async (req: AuthenticatedRequest, res: Response, next) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.userId },
+      select: { id: true, email: true, isAdmin: true, isActive: true },
+    });
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+    res.json({ user });
+  } catch (error) {
+    next(error);
+  }
+});
+
 // GET /api/auth/status
 authRouter.get('/status', async (_req, res: Response, next) => {
   try {
-    const userExists = await prisma.user.findFirst({ select: { id: true } });
-    res.json({ isSetupComplete: !!userExists });
+    const user = await prisma.user.findFirst({ select: { id: true } });
+    res.json({ isSetupComplete: !!user });
   } catch (error) {
     next(error);
   }

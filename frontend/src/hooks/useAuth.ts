@@ -10,7 +10,7 @@ export interface AuthContextValue {
   masterPassword: string | null;
   settings: Settings | null;
   login: (email: string, password: string) => Promise<void>;
-  setup: (email: string, password: string) => Promise<void>;
+  setup: (email: string, password: string, inviteToken?: string) => Promise<void>;
   loginWithOAuthToken: (token: string) => Promise<void>;
   logout: () => Promise<void>;
   lock: () => void;
@@ -112,7 +112,8 @@ export function useAuthState(): AuthContextValue {
         const { data } = await api.post<{ accessToken: string }>('/auth/refresh');
         setAccessToken(data.accessToken);
         const payload = JSON.parse(atob(data.accessToken.split('.')[1])) as { userId: string; email: string };
-        setUser({ id: payload.userId, email: payload.email });
+        const meRes = await api.get<{ user: User }>('/auth/me').catch(() => null);
+        setUser({ id: payload.userId, email: payload.email, isAdmin: meRes?.data.user.isAdmin });
         setIsLocked(true);
         await refreshSettings();
       } catch {
@@ -137,14 +138,16 @@ export function useAuthState(): AuthContextValue {
   const loginWithOAuthToken = useCallback(async (token: string) => {
     setAccessToken(token);
     const payload = JSON.parse(atob(token.split('.')[1])) as { userId: string; email: string };
-    setUser({ id: payload.userId, email: payload.email });
+    const meRes = await api.get<{ user: User }>('/auth/me').catch(() => null);
+    setUser({ id: payload.userId, email: payload.email, isAdmin: meRes?.data.user.isAdmin });
     setIsSetupComplete(true);
-    setIsLocked(true); // Vault locked until user enters vault password
+    setIsLocked(true);
     await refreshSettings();
   }, [refreshSettings]);
 
-  const setup = useCallback(async (email: string, password: string) => {
-    const { data } = await api.post<{ accessToken: string; user: User }>('/auth/setup', { email, password });
+  const setup = useCallback(async (email: string, password: string, inviteToken?: string) => {
+    const url = inviteToken ? `/auth/setup?invite=${inviteToken}` : '/auth/setup';
+    const { data } = await api.post<{ accessToken: string; user: User }>(url, { email, password });
     setAccessToken(data.accessToken);
     setUser(data.user);
     setMasterPassword(password);
