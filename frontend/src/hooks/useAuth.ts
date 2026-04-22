@@ -1,5 +1,15 @@
 import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import { api, setAccessToken } from '../utils/api';
+import {
+  generateVaultKey,
+  vaultKeyToString,
+  wrapVaultKey,
+  unwrapVaultKey,
+  reEncryptData,
+  generateAdminKeypair,
+  encryptVaultKeyForAdmin,
+  encryptAdminPrivateKey,
+} from '../utils/crypto';
 import type { User, Settings } from '../types';
 
 export interface AuthContextValue {
@@ -26,9 +36,11 @@ export function useAuthState(): AuthContextValue {
   const [isLocked, setIsLocked] = useState(false);
   const [isSetupComplete, setIsSetupComplete] = useState<boolean | null>(null);
   const [masterPassword, setMasterPassword] = useState<string | null>(null);
+  const [storedEncryptedVaultKey, setStoredEncryptedVaultKey] = useState<string | null>(null);
   const [settings, setSettings] = useState<Settings | null>(null);
   const lockTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastActivityRef = useRef<number>(Date.now());
+  const migrationRunningRef = useRef(false);
 
   const clearLockTimer = useCallback(() => {
     if (lockTimerRef.current) {
@@ -40,7 +52,6 @@ export function useAuthState(): AuthContextValue {
   const startLockTimer = useCallback((autoLockMins: number) => {
     clearLockTimer();
     if (autoLockMins === 0) return;
-
     lockTimerRef.current = setTimeout(() => {
       setIsLocked(true);
       setMasterPassword(null);
@@ -60,7 +71,6 @@ export function useAuthState(): AuthContextValue {
     window.addEventListener('keydown', handleActivity, { passive: true });
     window.addEventListener('click', handleActivity, { passive: true });
     window.addEventListener('touchstart', handleActivity, { passive: true });
-
     return () => {
       window.removeEventListener('mousemove', handleActivity);
       window.removeEventListener('keydown', handleActivity);
@@ -73,6 +83,7 @@ export function useAuthState(): AuthContextValue {
     const handleLogout = () => {
       setUser(null);
       setMasterPassword(null);
+      setStoredEncryptedVaultKey(null);
       setIsLocked(false);
       clearLockTimer();
     };
@@ -88,11 +99,69 @@ export function useAuthState(): AuthContextValue {
         startLockTimer(data.settings.autoLockMins);
       }
     } catch {
-      // Settings fetch failed - non-critical
+      // non-critical
     }
   }, [startLockTimer]);
 
-  // Check setup status on mount
+  // Runs once per account when no encryptedVaultKey exists yet.
+  // Generates a vault key, re-encrypts all entries, sets up admin RSA escrow.
+  const runVaultMigration = useCallback(async (password: string, currentUser: User) => {
+    if (migrationRunningRef.current) return;
+    migrationRunningRef.current = true;
+
+    try {
+      const vaultKey = generateVaultKey();
+      const vaultKeyStr = vaultKeyToString(vaultKey);
+
+      const { data: entriesData } = await api.get<{ entries: Array<{ id: string; encryptedData: string }> }>('/entries');
+
+      const reEncryptedEntries = await Promise.all(
+        entriesData.entries.map(async (entry) => ({
+          id: entry.id,
+          encryptedData: await reEncryptData(entry.encryptedData, password, vaultKeyStr),
+        }))
+      );
+
+      const encryptedVaultKey = await wrapVaultKey(vaultKey, password);
+
+      let adminEncryptedVaultKey: string | undefined;
+      let adminPublicKey: string | undefined;
+      let adminPrivateKeyEncrypted: string | undefined;
+
+      if (currentUser.isAdmin) {
+        const { publicKeyJwk, privateKeyJwk } = await generateAdminKeypair();
+        adminPublicKey = JSON.stringify(publicKeyJwk);
+        adminPrivateKeyEncrypted = await encryptAdminPrivateKey(privateKeyJwk, vaultKey);
+        adminEncryptedVaultKey = await encryptVaultKeyForAdmin(vaultKey, publicKeyJwk);
+      } else {
+        try {
+          const { data: keyData } = await api.get<{ publicKey: string | null }>('/auth/admin-public-key');
+          if (keyData.publicKey) {
+            const adminPublicKeyJwk = JSON.parse(keyData.publicKey) as JsonWebKey;
+            adminEncryptedVaultKey = await encryptVaultKeyForAdmin(vaultKey, adminPublicKeyJwk);
+          }
+        } catch {
+          // Admin has no keypair yet — escrow skipped
+        }
+      }
+
+      await api.post('/auth/migrate-vault', {
+        encryptedVaultKey,
+        adminEncryptedVaultKey,
+        adminPublicKey,
+        adminPrivateKeyEncrypted,
+        reEncryptedEntries,
+      });
+
+      setMasterPassword(vaultKeyStr);
+      setStoredEncryptedVaultKey(encryptedVaultKey);
+    } catch (err) {
+      console.error('Vault migration failed:', err);
+    } finally {
+      migrationRunningRef.current = false;
+    }
+  }, []);
+
   useEffect(() => {
     const checkStatus = async () => {
       try {
@@ -105,7 +174,6 @@ export function useAuthState(): AuthContextValue {
     checkStatus();
   }, []);
 
-  // Try to refresh token on mount
   useEffect(() => {
     const tryRefresh = async () => {
       try {
@@ -117,23 +185,38 @@ export function useAuthState(): AuthContextValue {
         setIsLocked(true);
         await refreshSettings();
       } catch {
-        // No valid refresh token - user must login
+        // No valid refresh token
       }
     };
-
     if (isSetupComplete) {
       tryRefresh();
     }
   }, [isSetupComplete, refreshSettings]);
 
   const login = useCallback(async (email: string, password: string) => {
-    const { data } = await api.post<{ accessToken: string; user: User }>('/auth/login', { email, password });
+    const { data } = await api.post<{
+      accessToken: string;
+      user: User;
+      encryptedVaultKey: string | null;
+    }>('/auth/login', { email, password });
+
     setAccessToken(data.accessToken);
     setUser(data.user);
-    setMasterPassword(password);
     setIsLocked(false);
+
+    if (data.encryptedVaultKey) {
+      const vaultKey = await unwrapVaultKey(data.encryptedVaultKey, password);
+      const vaultKeyStr = vaultKeyToString(vaultKey);
+      setMasterPassword(vaultKeyStr);
+      setStoredEncryptedVaultKey(data.encryptedVaultKey);
+    } else {
+      // Legacy account: use raw password temporarily, migrate in background
+      setMasterPassword(password);
+      setTimeout(() => runVaultMigration(password, data.user), 200);
+    }
+
     await refreshSettings();
-  }, [refreshSettings]);
+  }, [refreshSettings, runVaultMigration]);
 
   const loginWithOAuthToken = useCallback(async (token: string) => {
     setAccessToken(token);
@@ -146,11 +229,46 @@ export function useAuthState(): AuthContextValue {
   }, [refreshSettings]);
 
   const setup = useCallback(async (email: string, password: string, inviteToken?: string) => {
+    const vaultKey = generateVaultKey();
+    const vaultKeyStr = vaultKeyToString(vaultKey);
+    const encryptedVaultKey = await wrapVaultKey(vaultKey, password);
+
+    let adminEncryptedVaultKey: string | undefined;
+    let adminPublicKey: string | undefined;
+    let adminPrivateKeyEncrypted: string | undefined;
+
+    if (!inviteToken) {
+      // First user = admin: generate RSA keypair
+      const { publicKeyJwk, privateKeyJwk } = await generateAdminKeypair();
+      adminPublicKey = JSON.stringify(publicKeyJwk);
+      adminPrivateKeyEncrypted = await encryptAdminPrivateKey(privateKeyJwk, vaultKey);
+      adminEncryptedVaultKey = await encryptVaultKeyForAdmin(vaultKey, publicKeyJwk);
+    } else {
+      try {
+        const { data: keyData } = await api.get<{ publicKey: string | null }>('/auth/admin-public-key');
+        if (keyData.publicKey) {
+          const adminPublicKeyJwk = JSON.parse(keyData.publicKey) as JsonWebKey;
+          adminEncryptedVaultKey = await encryptVaultKeyForAdmin(vaultKey, adminPublicKeyJwk);
+        }
+      } catch {
+        // skip
+      }
+    }
+
     const url = inviteToken ? `/auth/setup?invite=${inviteToken}` : '/auth/setup';
-    const { data } = await api.post<{ accessToken: string; user: User }>(url, { email, password });
+    const { data } = await api.post<{ accessToken: string; user: User }>(url, {
+      email,
+      password,
+      encryptedVaultKey,
+      adminEncryptedVaultKey,
+      adminPublicKey,
+      adminPrivateKeyEncrypted,
+    });
+
     setAccessToken(data.accessToken);
     setUser(data.user);
-    setMasterPassword(password);
+    setMasterPassword(vaultKeyStr);
+    setStoredEncryptedVaultKey(encryptedVaultKey);
     setIsLocked(false);
     setIsSetupComplete(true);
     await refreshSettings();
@@ -160,11 +278,12 @@ export function useAuthState(): AuthContextValue {
     try {
       await api.post('/auth/logout');
     } catch {
-      // Ignore logout errors
+      // ignore
     } finally {
       setAccessToken(null);
       setUser(null);
       setMasterPassword(null);
+      setStoredEncryptedVaultKey(null);
       setIsLocked(false);
       setSettings(null);
       clearLockTimer();
@@ -180,7 +299,12 @@ export function useAuthState(): AuthContextValue {
   const unlock = useCallback(async (password: string) => {
     try {
       await api.post('/auth/refresh');
-      setMasterPassword(password);
+      if (storedEncryptedVaultKey) {
+        const vaultKey = await unwrapVaultKey(storedEncryptedVaultKey, password);
+        setMasterPassword(vaultKeyToString(vaultKey));
+      } else {
+        setMasterPassword(password);
+      }
       setIsLocked(false);
       if (settings?.autoLockMins && settings.autoLockMins > 0) {
         startLockTimer(settings.autoLockMins);
@@ -188,7 +312,7 @@ export function useAuthState(): AuthContextValue {
     } catch {
       throw new Error('Failed to unlock. Please check your password.');
     }
-  }, [settings, startLockTimer]);
+  }, [storedEncryptedVaultKey, settings, startLockTimer]);
 
   const updateSettings = useCallback(async (newSettings: Partial<Settings>) => {
     const { data } = await api.put<{ settings: Settings }>('/settings', newSettings);

@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Users, Shield, Activity, Link, Trash2, Ban, CheckCircle, Crown, Plus, Copy, X } from 'lucide-react';
+import { Users, Shield, Activity, Link, Trash2, Ban, CheckCircle, Crown, Plus, Copy, X, KeyRound, Eye, EyeOff } from 'lucide-react';
 import { api } from '../utils/api';
 import { useAuth } from '../hooks/useAuth';
+import { stringToVaultKey, decryptAdminPrivateKey, decryptVaultKeyWithAdminKey, wrapVaultKey } from '../utils/crypto';
 import toast from 'react-hot-toast';
 
 interface AdminUser {
@@ -42,7 +43,7 @@ interface Stats {
 type Tab = 'stats' | 'users' | 'sessions' | 'invites';
 
 export default function AdminPage(): React.ReactElement {
-  const { user } = useAuth();
+  const { user, masterPassword } = useAuth();
   const [tab, setTab] = useState<Tab>('stats');
   const [stats, setStats] = useState<Stats | null>(null);
   const [users, setUsers] = useState<AdminUser[]>([]);
@@ -51,6 +52,11 @@ export default function AdminPage(): React.ReactElement {
   const [loading, setLoading] = useState(false);
   const [inviteEmail, setInviteEmail] = useState('');
   const [showInviteForm, setShowInviteForm] = useState(false);
+  const [resetTarget, setResetTarget] = useState<AdminUser | null>(null);
+  const [resetPassword, setResetPassword] = useState('');
+  const [resetPasswordConfirm, setResetPasswordConfirm] = useState('');
+  const [showResetPassword, setShowResetPassword] = useState(false);
+  const [resetLoading, setResetLoading] = useState(false);
 
   const loadStats = useCallback(async () => {
     const { data } = await api.get<Stats>('/admin/stats');
@@ -145,6 +151,52 @@ export default function AdminPage(): React.ReactElement {
   const copyInviteUrl = (url: string) => {
     navigator.clipboard.writeText(url);
     toast.success('Copied to clipboard');
+  };
+
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!resetTarget || !masterPassword) return;
+    if (resetPassword !== resetPasswordConfirm) {
+      toast.error('Passwords do not match');
+      return;
+    }
+    if (resetPassword.length < 8) {
+      toast.error('Password must be at least 8 characters');
+      return;
+    }
+
+    setResetLoading(true);
+    try {
+      const { data } = await api.get<{
+        adminEncryptedVaultKey: string;
+        adminPrivateKeyEncrypted: string;
+      }>(`/admin/users/${resetTarget.id}/recovery-data`);
+
+      // Decrypt admin private key using admin's vault key
+      const adminVaultKey = stringToVaultKey(masterPassword);
+      const adminPrivateKeyJwk = await decryptAdminPrivateKey(data.adminPrivateKeyEncrypted, adminVaultKey);
+
+      // Decrypt user's vault key using admin private key
+      const userVaultKey = await decryptVaultKeyWithAdminKey(data.adminEncryptedVaultKey, adminPrivateKeyJwk);
+
+      // Re-wrap vault key under new password
+      const newEncryptedVaultKey = await wrapVaultKey(userVaultKey, resetPassword);
+
+      await api.post(`/admin/users/${resetTarget.id}/reset-password`, {
+        newPassword: resetPassword,
+        newEncryptedVaultKey,
+      });
+
+      toast.success(`Password reset for ${resetTarget.email}`);
+      setResetTarget(null);
+      setResetPassword('');
+      setResetPasswordConfirm('');
+    } catch (err: unknown) {
+      const msg = (err as { response?: { data?: { error?: string } } })?.response?.data?.error ?? 'Reset failed';
+      toast.error(msg);
+    } finally {
+      setResetLoading(false);
+    }
   };
 
   const tabs: { key: Tab; label: string; icon: React.ElementType }[] = [
@@ -246,6 +298,13 @@ export default function AdminPage(): React.ReactElement {
                       : <CheckCircle className="w-4 h-4 text-success" />}
                   </button>
                   <button
+                    onClick={() => { setResetTarget(u); setResetPassword(''); setResetPasswordConfirm(''); }}
+                    title="Reset password"
+                    className="p-1.5 rounded-lg transition-colors hover:bg-white/10"
+                  >
+                    <KeyRound className="w-4 h-4 text-text-muted" />
+                  </button>
+                  <button
                     onClick={() => deleteUser(u.id, u.email)}
                     title="Delete user"
                     className="p-1.5 rounded-lg transition-colors hover:bg-white/10"
@@ -333,6 +392,65 @@ export default function AdminPage(): React.ReactElement {
               </div>
             </div>
           ))}
+        </div>
+      )}
+      {/* Password Reset Modal */}
+      {resetTarget && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ background: 'rgba(0,0,0,0.7)' }}>
+          <div className="glass w-full max-w-sm p-6 rounded-2xl space-y-4">
+            <div className="flex items-center justify-between">
+              <h2 className="text-base font-semibold text-text">Reset Password</h2>
+              <button onClick={() => setResetTarget(null)} className="p-1 text-text-muted hover:text-text">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <p className="text-xs text-text-muted">
+              Resetting password for <span className="text-text font-medium">{resetTarget.email}</span>.
+              Their vault entries will remain fully accessible.
+            </p>
+            <form onSubmit={handleResetPassword} className="space-y-3">
+              <div>
+                <label className="block text-xs font-medium text-text-muted mb-1.5 uppercase tracking-wide">New Password</label>
+                <div className="relative">
+                  <input
+                    type={showResetPassword ? 'text' : 'password'}
+                    value={resetPassword}
+                    onChange={e => setResetPassword(e.target.value)}
+                    className="input pr-10"
+                    placeholder="Min. 8 characters"
+                    required
+                    minLength={8}
+                    autoFocus
+                  />
+                  <button type="button" onClick={() => setShowResetPassword(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted">
+                    {showResetPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-text-muted mb-1.5 uppercase tracking-wide">Confirm Password</label>
+                <input
+                  type={showResetPassword ? 'text' : 'password'}
+                  value={resetPasswordConfirm}
+                  onChange={e => setResetPasswordConfirm(e.target.value)}
+                  className="input"
+                  placeholder="Repeat password"
+                  required
+                />
+              </div>
+              <div className="flex gap-2 pt-1">
+                <button type="submit" className="btn-primary flex-1 py-2 text-sm flex items-center justify-center gap-2" disabled={resetLoading}>
+                  {resetLoading
+                    ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    : <KeyRound className="w-4 h-4" />}
+                  {resetLoading ? 'Resetting…' : 'Reset Password'}
+                </button>
+                <button type="button" onClick={() => setResetTarget(null)} className="px-4 py-2 text-sm text-text-muted hover:text-text">
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
     </div>

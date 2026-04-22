@@ -13,10 +13,14 @@ model User {
   passwordHash String?
   googleId     String?  @unique
   appleId      String?  @unique
-  isAdmin      Boolean  @default(false)
-  isActive     Boolean  @default(true)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  isAdmin                  Boolean  @default(false)
+  isActive                 Boolean  @default(true)
+  encryptedVaultKey        String?
+  adminEncryptedVaultKey   String?
+  adminPublicKey           String?
+  adminPrivateKeyEncrypted String?
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
 
   entries       Entry[]
   categories    Category[]

@@ -223,3 +223,81 @@ adminRouter.delete('/invites/:id', async (_req, res: Response, next) => {
     next(error);
   }
 });
+
+// GET /api/admin/users/:id/recovery-data - fetch data needed for admin password reset
+adminRouter.get('/users/:id/recovery-data', async (req: AuthenticatedRequest, res: Response, next) => {
+  try {
+    const { id } = req.params;
+
+    const [targetUser, adminUser] = await Promise.all([
+      prisma.user.findUnique({
+        where: { id },
+        select: { adminEncryptedVaultKey: true },
+      }),
+      prisma.user.findUnique({
+        where: { id: req.user!.userId },
+        select: { adminPrivateKeyEncrypted: true },
+      }),
+    ]);
+
+    if (!targetUser) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    if (!targetUser.adminEncryptedVaultKey || !adminUser?.adminPrivateKeyEncrypted) {
+      res.status(400).json({ error: 'Recovery data not available for this user. They must log in once to enable admin recovery.' });
+      return;
+    }
+
+    res.json({
+      adminEncryptedVaultKey: targetUser.adminEncryptedVaultKey,
+      adminPrivateKeyEncrypted: adminUser.adminPrivateKeyEncrypted,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// POST /api/admin/users/:id/reset-password
+adminRouter.post('/users/:id/reset-password', async (req: AuthenticatedRequest, res: Response, next) => {
+  try {
+    const { id } = req.params;
+
+    if (id === req.user!.userId) {
+      res.status(400).json({ error: 'Cannot reset your own password via admin panel' });
+      return;
+    }
+
+    const schema = z.object({
+      newPassword: z.string().min(8).max(128),
+      newEncryptedVaultKey: z.string(),
+    });
+
+    const { newPassword, newEncryptedVaultKey } = schema.parse(req.body);
+
+    const user = await prisma.user.findUnique({ where: { id } });
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    const bcrypt = await import('bcryptjs');
+    const newPasswordHash = await bcrypt.hash(newPassword, 12);
+
+    await prisma.$transaction(async (tx) => {
+      await tx.user.update({
+        where: { id },
+        data: { passwordHash: newPasswordHash, encryptedVaultKey: newEncryptedVaultKey },
+      });
+      await tx.refreshToken.updateMany({
+        where: { userId: id, isRevoked: false },
+        data: { isRevoked: true },
+      });
+    });
+
+    res.json({ message: 'Password reset successfully' });
+  } catch (error) {
+    next(error);
+  }
+});

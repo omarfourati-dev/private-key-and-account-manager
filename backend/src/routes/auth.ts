@@ -26,6 +26,10 @@ const COOKIE_OPTIONS = {
 const setupSchema = z.object({
   email: z.string().email('Invalid email format').max(255),
   password: z.string().min(8, 'Password must be at least 8 characters').max(128),
+  encryptedVaultKey: z.string().optional(),
+  adminEncryptedVaultKey: z.string().optional(),
+  adminPublicKey: z.string().optional(),
+  adminPrivateKeyEncrypted: z.string().optional(),
 });
 
 const loginSchema = z.object({
@@ -36,6 +40,7 @@ const loginSchema = z.object({
 const changePasswordSchema = z.object({
   currentPassword: z.string().min(1, 'Current password is required'),
   newPassword: z.string().min(8, 'New password must be at least 8 characters').max(128),
+  newEncryptedVaultKey: z.string().optional(),
   reEncryptedEntries: z.array(z.object({
     id: z.string().uuid(),
     encryptedData: z.string(),
@@ -45,7 +50,7 @@ const changePasswordSchema = z.object({
 // POST /api/auth/setup - Initial setup or invited registration
 authRouter.post('/setup', authRateLimiter, async (req, res: Response, next) => {
   try {
-    const { email, password } = setupSchema.parse(req.body);
+    const { email, password, encryptedVaultKey, adminEncryptedVaultKey, adminPublicKey, adminPrivateKeyEncrypted } = setupSchema.parse(req.body);
     const inviteToken = typeof req.query.invite === 'string' ? req.query.invite : undefined;
 
     const existingUser = await prisma.user.findFirst();
@@ -74,6 +79,10 @@ authRouter.post('/setup', authRateLimiter, async (req, res: Response, next) => {
         email,
         passwordHash,
         isAdmin: isFirstUser,
+        encryptedVaultKey: encryptedVaultKey ?? null,
+        adminEncryptedVaultKey: adminEncryptedVaultKey ?? null,
+        adminPublicKey: isFirstUser ? (adminPublicKey ?? null) : null,
+        adminPrivateKeyEncrypted: isFirstUser ? (adminPrivateKeyEncrypted ?? null) : null,
         settings: {
           create: {
             autoLockMins: 15,
@@ -137,7 +146,11 @@ authRouter.post('/login', authRateLimiter, async (req, res: Response, next) => {
 
     logger.info('User logged in', { userId: user.id });
     res.cookie(REFRESH_TOKEN_COOKIE, refreshToken, COOKIE_OPTIONS);
-    res.json({ accessToken, user: { id: user.id, email: user.email, isAdmin: user.isAdmin } });
+    res.json({
+      accessToken,
+      user: { id: user.id, email: user.email, isAdmin: user.isAdmin },
+      encryptedVaultKey: user.encryptedVaultKey ?? null,
+    });
   } catch (error) {
     next(error);
   }
@@ -235,7 +248,7 @@ authRouter.post('/logout-all', authMiddleware, async (req: AuthenticatedRequest,
 // PUT /api/auth/password
 authRouter.put('/password', authRateLimiter, authMiddleware, async (req: AuthenticatedRequest, res: Response, next) => {
   try {
-    const { currentPassword, newPassword, reEncryptedEntries } = changePasswordSchema.parse(req.body);
+    const { currentPassword, newPassword, newEncryptedVaultKey, reEncryptedEntries } = changePasswordSchema.parse(req.body);
 
     const user = await prisma.user.findUnique({ where: { id: req.user!.userId } });
     if (!user) {
@@ -259,7 +272,10 @@ authRouter.put('/password', authRateLimiter, authMiddleware, async (req: Authent
     await prisma.$transaction(async (tx) => {
       await tx.user.update({
         where: { id: user.id },
-        data: { passwordHash: newPasswordHash },
+        data: {
+          passwordHash: newPasswordHash,
+          ...(newEncryptedVaultKey ? { encryptedVaultKey: newEncryptedVaultKey } : {}),
+        },
       });
 
       if (reEncryptedEntries && reEncryptedEntries.length > 0) {
@@ -352,6 +368,65 @@ authRouter.get('/status', async (_req, res: Response, next) => {
   try {
     const user = await prisma.user.findFirst({ select: { id: true } });
     res.json({ isSetupComplete: !!user });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// GET /api/auth/admin-public-key - returns admin RSA public key for vault key escrow
+authRouter.get('/admin-public-key', authMiddleware, async (_req: AuthenticatedRequest, res: Response, next) => {
+  try {
+    const admin = await prisma.user.findFirst({
+      where: { isAdmin: true, adminPublicKey: { not: null } },
+      select: { adminPublicKey: true },
+    });
+    res.json({ publicKey: admin?.adminPublicKey ?? null });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// POST /api/auth/migrate-vault - called once per user to set up vault key escrow
+authRouter.post('/migrate-vault', authMiddleware, async (req: AuthenticatedRequest, res: Response, next) => {
+  try {
+    const schema = z.object({
+      encryptedVaultKey: z.string(),
+      adminEncryptedVaultKey: z.string().optional(),
+      adminPublicKey: z.string().optional(),
+      adminPrivateKeyEncrypted: z.string().optional(),
+      reEncryptedEntries: z.array(z.object({
+        id: z.string().uuid(),
+        encryptedData: z.string(),
+      })).optional(),
+    });
+
+    const { encryptedVaultKey, adminEncryptedVaultKey, adminPublicKey, adminPrivateKeyEncrypted, reEncryptedEntries } = schema.parse(req.body);
+    const userId = req.user!.userId;
+
+    await prisma.$transaction(async (tx) => {
+      const user = await tx.user.findUnique({ where: { id: userId }, select: { isAdmin: true } });
+
+      await tx.user.update({
+        where: { id: userId },
+        data: {
+          encryptedVaultKey,
+          adminEncryptedVaultKey: adminEncryptedVaultKey ?? null,
+          ...(user?.isAdmin && adminPublicKey ? { adminPublicKey } : {}),
+          ...(user?.isAdmin && adminPrivateKeyEncrypted ? { adminPrivateKeyEncrypted } : {}),
+        },
+      });
+
+      if (reEncryptedEntries && reEncryptedEntries.length > 0) {
+        for (const entry of reEncryptedEntries) {
+          await tx.entry.update({
+            where: { id: entry.id, userId },
+            data: { encryptedData: entry.encryptedData },
+          });
+        }
+      }
+    });
+
+    res.json({ message: 'Vault migrated successfully' });
   } catch (error) {
     next(error);
   }
