@@ -87,7 +87,7 @@ export default function Layout({ children }: LayoutProps): React.ReactElement {
       </header>
 
       {/* Main Content */}
-      <main className="relative z-10 flex-1 max-w-7xl w-full mx-auto px-4 py-6 pb-24 sm:pb-6">
+      <main className="relative z-10 flex-1 max-w-7xl w-full mx-auto px-4 py-6 sm:pb-6 mobile-content-pad">
         {children}
       </main>
 

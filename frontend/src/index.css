@@ -294,6 +294,19 @@
   }
 }
 
+/* Main content bottom padding on mobile: clears bottom nav + iPhone home bar */
+@media (max-width: 639px) {
+  .mobile-content-pad {
+    padding-bottom: 6rem; /* fallback: ~nav height */
+  }
+
+  @supports (padding-bottom: env(safe-area-inset-bottom)) {
+    .mobile-content-pad {
+      padding-bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+    }
+  }
+}
+
 @media (display-mode: standalone) {
   .nav-bg {
     padding-top: env(safe-area-inset-top, 0);
