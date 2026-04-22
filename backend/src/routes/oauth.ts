@@ -163,16 +163,12 @@ oauthRouter.get('/google/callback', async (req: Request, res: Response) => {
     const isNewUser = !user;
 
     if (!user) {
-      // Single-user app: reject if another account already exists
-      const existing = await prisma.user.findFirst();
-      if (existing) {
-        return res.redirect(`${FRONTEND_URL}/auth/callback?error=account_exists`);
-      }
-
+      const isFirstUser = !(await prisma.user.findFirst({ select: { id: true } }));
       user = await prisma.user.create({
         data: {
           email,
           googleId,
+          isAdmin: isFirstUser,
           settings: { create: { autoLockMins: 15, theme: 'dark' } },
         },
       });
@@ -333,18 +329,15 @@ oauthRouter.post(
       const isNewUser = !user;
 
       if (!user) {
-        const existing = await prisma.user.findFirst();
-        if (existing) {
-          return res.redirect(`${FRONTEND_URL}/auth/callback?error=account_exists`);
-        }
         if (!email) {
           return res.redirect(`${FRONTEND_URL}/auth/callback?error=no_email`);
         }
-
+        const isFirstUser = !(await prisma.user.findFirst({ select: { id: true } }));
         user = await prisma.user.create({
           data: {
             email,
             appleId,
+            isAdmin: isFirstUser,
             settings: { create: { autoLockMins: 15, theme: 'dark' } },
           },
         });
