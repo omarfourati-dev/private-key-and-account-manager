@@ -92,7 +92,7 @@ jobs:
       - name: Sync code to deploy directory
         run: |
           mkdir -p $DEPLOY_DIR
-          rsync -a --delete \
+          rsync -a --no-owner --no-group --delete \
             --exclude='.git' \
             --exclude='node_modules' \
             --exclude='.env' \
