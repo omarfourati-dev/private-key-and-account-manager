@@ -29,10 +29,12 @@ vi.mock('../src/index', () => ({
       findUnique: vi.fn(),
       create: vi.fn(),
       update: vi.fn(),
+      upsert: vi.fn(),
       delete: vi.fn(),
       deleteMany: vi.fn(),
     },
     entryCategory: {
+      create: vi.fn(),
       createMany: vi.fn(),
       deleteMany: vi.fn(),
     },

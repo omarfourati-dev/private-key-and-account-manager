@@ -37,6 +37,8 @@ export interface DecryptedEntry extends Omit<Entry, 'encryptedData'> {
   apiKey?: string;
   // For ACCOUNT type
   password?: string;
+  // TOTP secret imported from Apple Passwords (stored inside the encrypted blob)
+  otpAuth?: string;
 }
 
 export interface EntryFormData {

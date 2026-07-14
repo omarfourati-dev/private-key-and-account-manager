@@ -1,0 +1,4 @@
+name,url,username,password,note
+GitHub,https://github.com/login,omar,pw-github-sample-123,
+Spotify,android://sampleCertHash=@com.spotify.music/,omar@example.com,pw-spotify-sample,app login
+"Site, with comma",https://example.com,user,"pw,with""quote",note text

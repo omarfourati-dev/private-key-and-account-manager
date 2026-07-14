@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Eye, EyeOff, Shield, Clock, Sun, Moon, LogOut, Trash2, Download, Upload, Plus, Edit2, X, Check } from 'lucide-react';
+import { Eye, EyeOff, Shield, Clock, Sun, Moon, LogOut, Trash2, Download, Upload, Plus, Edit2, X, Check, Smartphone } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useEntries } from '../hooks/useEntries';
 import { useCategories } from '../hooks/useCategories';
 import { api } from '../utils/api';
 import toast from 'react-hot-toast';
+import ImportWizard from '../components/ImportWizard';
 import type { Category } from '../types';
 
 interface Session {
@@ -347,6 +348,7 @@ function DataSection({ entries, fetchEntries, reEncryptAllEntries }: {
 }) {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showImportWizard, setShowImportWizard] = useState(false);
   const { masterPassword } = useAuth();
 
   const handleExport = async () => {
@@ -409,8 +411,20 @@ function DataSection({ entries, fetchEntries, reEncryptAllEntries }: {
           Import
         </button>
 
+        <button onClick={() => setShowImportWizard(true)} className="btn-secondary">
+          <Smartphone className="w-4 h-4" />
+          Import from Apple / Google
+        </button>
+
         <input ref={fileInputRef} type="file" accept=".json" onChange={handleImport} className="hidden" />
       </div>
+
+      {showImportWizard && (
+        <ImportWizard
+          onClose={() => setShowImportWizard(false)}
+          onDone={() => { void fetchEntries(); }}
+        />
+      )}
 
       {!showDeleteConfirm ? (
         <button onClick={() => setShowDeleteConfirm(true)} className="btn-danger text-sm">
