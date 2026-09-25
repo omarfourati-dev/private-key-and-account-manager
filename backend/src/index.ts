@@ -17,6 +17,11 @@ export const prisma = new PrismaClient();
 
 const app = express();
 
+// Hinter dem nginx-Reverse-Proxy steht genau ein Hop. Ohne diese Einstellung sieht
+// Express fuer jeden Request die Proxy-IP — damit teilen sich alle Clients einen
+// Rate-Limit-Eimer und Sitzungen bekommen eine nutzlose IP.
+app.set('trust proxy', 1);
+
 const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') ?? ['http://localhost:5173', 'http://localhost:3000'];
 
 app.use(helmet({

@@ -3,10 +3,22 @@ import { z } from 'zod';
 import { prisma } from '../index';
 import { authMiddleware, AuthenticatedRequest } from '../middleware/auth';
 import { generalRateLimiter } from '../middleware/rateLimiter';
+import { setEntryFavorite, markEntryUsed } from '../utils/entryFlags';
 
 export const entriesRouter = Router();
 entriesRouter.use(authMiddleware);
 entriesRouter.use(generalRateLimiter);
+
+function isHttpUrlOrEmpty(value: string): boolean {
+  const trimmed = value.trim();
+  if (trimmed === '') return true;
+  try {
+    const { protocol } = new URL(trimmed);
+    return protocol === 'http:' || protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
 
 const createEntrySchema = z.object({
   type: z.enum(['API_KEY', 'ACCOUNT']),
@@ -15,7 +27,14 @@ const createEntrySchema = z.object({
   encryptedData: z.string().min(1, 'Encrypted data is required'),
   service: z.string().max(255).optional(),
   username: z.string().max(255).optional(),
-  url: z.string().max(2048).optional().nullable(),
+  // Nur http(s) oder leer: Die URL landet im Frontend in <a href> und window.open —
+  // javascript:, data: & Co. dürfen dort nie ankommen.
+  url: z
+    .string()
+    .max(2048)
+    .refine(isHttpUrlOrEmpty, 'URL must start with http:// or https://')
+    .optional()
+    .nullable(),
   note: z.string().max(2000).optional().nullable(),
   expiresAt: z.string().datetime().optional().nullable().or(z.literal('')),
   categoryIds: z.array(z.string().uuid()).optional(),
@@ -51,7 +70,7 @@ entriesRouter.get('/', async (req: AuthenticatedRequest, res: Response, next) =>
       };
     }
 
-    const validSortFields = ['createdAt', 'updatedAt', 'name'];
+    const validSortFields = ['createdAt', 'updatedAt', 'name', 'lastUsedAt'];
     const sortField = validSortFields.includes(sortBy as string) ? (sortBy as string) : 'createdAt';
     const order = sortOrder === 'asc' ? 'asc' : 'desc';
 
@@ -173,6 +192,42 @@ entriesRouter.put('/:id', async (req: AuthenticatedRequest, res: Response, next)
         categories: entry?.categories.map(ec => ec.category) ?? [],
       },
     });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// PATCH /api/entries/:id/favorite
+entriesRouter.patch('/:id/favorite', async (req: AuthenticatedRequest, res: Response, next) => {
+  try {
+    const { id } = req.params;
+    const { isFavorite } = z.object({ isFavorite: z.boolean() }).parse(req.body);
+
+    const found = await setEntryFavorite(prisma, id, req.user!.userId, isFavorite);
+    if (!found) {
+      res.status(404).json({ error: 'Entry not found' });
+      return;
+    }
+
+    res.json({ id, isFavorite });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// POST /api/entries/:id/used — markiert einen Eintrag als benutzt (Copy/Reveal)
+entriesRouter.post('/:id/used', async (req: AuthenticatedRequest, res: Response, next) => {
+  try {
+    const { id } = req.params;
+
+    const lastUsedAt = new Date();
+    const found = await markEntryUsed(prisma, id, req.user!.userId, lastUsedAt);
+    if (!found) {
+      res.status(404).json({ error: 'Entry not found' });
+      return;
+    }
+
+    res.json({ id, lastUsedAt });
   } catch (error) {
     next(error);
   }

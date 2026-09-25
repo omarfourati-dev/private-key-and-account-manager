@@ -9,6 +9,9 @@ settingsRouter.use(authMiddleware);
 const updateSettingsSchema = z.object({
   autoLockMins: z.number().int().min(0).max(120).optional(),
   theme: z.enum(['dark', 'light']).optional(),
+  // 0 = Zwischenablage wird nicht automatisch geleert
+  clipboardClearSecs: z.number().int().min(0).max(300).optional(),
+  locale: z.enum(['de', 'en']).optional(),
 });
 
 // GET /api/settings
@@ -45,6 +48,8 @@ settingsRouter.put('/', async (req: AuthenticatedRequest, res: Response, next) =
         userId: req.user!.userId,
         autoLockMins: data.autoLockMins ?? 15,
         theme: data.theme ?? 'dark',
+        clipboardClearSecs: data.clipboardClearSecs ?? 30,
+        locale: data.locale ?? 'de',
       },
     });
 

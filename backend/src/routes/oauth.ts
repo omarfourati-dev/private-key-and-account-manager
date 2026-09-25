@@ -3,6 +3,7 @@ import express from 'express';
 import https from 'https';
 import crypto from 'crypto';
 import { prisma } from '../index';
+import { getSessionMetadata } from '../utils/session';
 import {
   generateAccessToken,
   generateRefreshToken,
@@ -76,11 +77,16 @@ function httpsGet(url: string, headers: Record<string, string> = {}): Promise<st
 }
 
 // Issue JWT + refresh token and set cookie
-async function issueSession(userId: string, email: string, res: Response): Promise<string> {
+async function issueSession(userId: string, email: string, res: Response, req: Request): Promise<string> {
   const accessToken = generateAccessToken({ userId, email });
   const { token: refreshToken } = generateRefreshToken({ userId, email });
   await prisma.refreshToken.create({
-    data: { token: refreshToken, userId, expiresAt: getRefreshTokenExpiry() },
+    data: {
+      token: refreshToken,
+      userId,
+      expiresAt: getRefreshTokenExpiry(),
+      ...getSessionMetadata(req),
+    },
   });
   res.cookie(REFRESH_TOKEN_COOKIE, refreshToken, COOKIE_OPTIONS);
   return accessToken;
@@ -179,7 +185,7 @@ oauthRouter.get('/google/callback', async (req: Request, res: Response) => {
       logger.info('Google ID linked to existing account', { userId: user.id });
     }
 
-    const accessToken = await issueSession(user.id, user.email, res);
+    const accessToken = await issueSession(user.id, user.email, res, req);
     return res.redirect(
       `${FRONTEND_URL}/auth/callback?token=${encodeURIComponent(accessToken)}&isNewUser=${isNewUser}`
     );
@@ -347,7 +353,7 @@ oauthRouter.post(
         logger.info('Apple ID linked to existing account', { userId: user.id });
       }
 
-      const accessToken = await issueSession(user.id, user.email, res);
+      const accessToken = await issueSession(user.id, user.email, res, req);
       return res.redirect(
         `${FRONTEND_URL}/auth/callback?token=${encodeURIComponent(accessToken)}&isNewUser=${isNewUser}`
       );

@@ -53,6 +53,12 @@ model RefreshToken {
   createdAt DateTime @default(now())
   isRevoked Boolean  @default(false)
 
+  // Sitzungs-Metadaten. Die IP wird bewusst gekuerzt gespeichert (IPv4 /24, IPv6 /48),
+  // sie dient der Wiedererkennung durch den Nutzer, nicht der Identifikation.
+  userAgent    String?
+  ipAddress    String?
+  lastActiveAt DateTime @default(now())
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("refresh_tokens")
@@ -79,6 +85,8 @@ model Entry {
   name          String
   icon          String?   @default("🔑")
   userId        String
+  isFavorite    Boolean   @default(false)
+  lastUsedAt    DateTime?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
@@ -97,6 +105,7 @@ model Entry {
 
   @@index([userId])
   @@index([userId, type])
+  @@index([userId, isFavorite])
   @@map("entries")
 }
 
@@ -116,6 +125,11 @@ model Settings {
   userId        String   @unique
   autoLockMins  Int      @default(15)
   theme         String   @default("dark")
+
+  /// Sekunden, nach denen ein kopiertes Secret aus der Zwischenablage geloescht wird (0 = aus)
+  clipboardClearSecs Int    @default(30)
+  /// Oberflaechensprache: "de" | "en"
+  locale             String @default("de")
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 

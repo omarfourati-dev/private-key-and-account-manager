@@ -11,6 +11,7 @@ import {
 import { authRateLimiter } from '../middleware/rateLimiter';
 import { authMiddleware, AuthenticatedRequest } from '../middleware/auth';
 import { logger } from '../utils/logger';
+import { getSessionMetadata, parseUserAgent } from '../utils/session';
 
 export const authRouter = Router();
 
@@ -100,6 +101,7 @@ authRouter.post('/setup', authRateLimiter, async (req, res: Response, next) => {
         token: refreshToken,
         userId: user.id,
         expiresAt: getRefreshTokenExpiry(),
+        ...getSessionMetadata(req),
       },
     });
 
@@ -141,6 +143,7 @@ authRouter.post('/login', authRateLimiter, async (req, res: Response, next) => {
         token: refreshToken,
         userId: user.id,
         expiresAt: getRefreshTokenExpiry(),
+        ...getSessionMetadata(req),
       },
     });
 
@@ -201,6 +204,11 @@ authRouter.post('/refresh', async (req, res: Response, next) => {
         token: newRefreshToken,
         userId: user.id,
         expiresAt: getRefreshTokenExpiry(),
+        // Der Token rotiert, die Sitzung bleibt dieselbe: Startzeitpunkt uebernehmen,
+        // damit die Sitzungsliste nicht bei jedem Refresh auf "gerade eben" springt.
+        createdAt: storedToken.createdAt,
+        lastActiveAt: new Date(),
+        ...getSessionMetadata(req),
       },
     });
 
@@ -304,6 +312,8 @@ authRouter.put('/password', authRateLimiter, authMiddleware, async (req: Authent
 // GET /api/auth/sessions
 authRouter.get('/sessions', authMiddleware, async (req: AuthenticatedRequest, res: Response, next) => {
   try {
+    const currentToken = req.cookies[REFRESH_TOKEN_COOKIE] as string | undefined;
+
     const sessions = await prisma.refreshToken.findMany({
       where: {
         userId: req.user!.userId,
@@ -312,13 +322,24 @@ authRouter.get('/sessions', authMiddleware, async (req: AuthenticatedRequest, re
       },
       select: {
         id: true,
+        token: true,
         createdAt: true,
         expiresAt: true,
+        lastActiveAt: true,
+        userAgent: true,
+        ipAddress: true,
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { lastActiveAt: 'desc' },
     });
 
-    res.json({ sessions });
+    res.json({
+      sessions: sessions.map(({ token, userAgent, ...session }) => ({
+        ...session,
+        // Der Token selbst wird nie ausgeliefert, nur der Vergleich mit dem eigenen Cookie
+        isCurrent: !!currentToken && token === currentToken,
+        ...parseUserAgent(userAgent),
+      })),
+    });
   } catch (error) {
     next(error);
   }
@@ -332,6 +353,13 @@ authRouter.delete('/sessions/:id', authMiddleware, async (req: AuthenticatedRequ
     const token = await prisma.refreshToken.findUnique({ where: { id } });
     if (!token || token.userId !== req.user!.userId) {
       res.status(404).json({ error: 'Session not found' });
+      return;
+    }
+
+    // Die eigene Sitzung wird ueber /logout beendet, nicht ueber die Sitzungsliste —
+    // sonst bleibt die Oberflaeche mit einem toten Refresh-Token zurueck.
+    if (token.token === req.cookies[REFRESH_TOKEN_COOKIE]) {
+      res.status(400).json({ error: 'Cannot revoke the current session, use logout instead' });
       return;
     }
 
