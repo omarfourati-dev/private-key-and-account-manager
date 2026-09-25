@@ -1,5 +1,6 @@
 import React from 'react';
 import { Tag } from 'lucide-react';
+import { useT } from '../i18n';
 import type { Category } from '../types';
 
 interface CategoryFilterProps {
@@ -9,6 +10,7 @@ interface CategoryFilterProps {
 }
 
 export default function CategoryFilter({ categories, selectedId, onSelect }: CategoryFilterProps): React.ReactElement {
+  const { t } = useT();
   return (
     <div className="flex gap-2 flex-wrap">
       <button
@@ -17,7 +19,7 @@ export default function CategoryFilter({ categories, selectedId, onSelect }: Cat
           !selectedId ? 'bg-primary/20 text-primary' : 'bg-surface text-text-muted hover:bg-surface-100'
         }`}
       >
-        All
+        {t('filter.allCategories')}
       </button>
       {categories.map(cat => (
         <button

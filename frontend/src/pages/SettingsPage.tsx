@@ -1,21 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { Eye, EyeOff, Shield, Clock, Sun, Moon, LogOut, Trash2, Download, Upload, Plus, Edit2, X, Check, Smartphone } from 'lucide-react';
+import { Eye, EyeOff, Shield, Clock, Sun, Moon, LogOut, Trash2, Download, Upload, Plus, Edit2, X, Check, Smartphone, ClipboardCopy, Monitor, Tablet } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useEntries } from '../hooks/useEntries';
 import { useCategories } from '../hooks/useCategories';
 import { api } from '../utils/api';
 import toast from 'react-hot-toast';
 import ImportWizard from '../components/ImportWizard';
-import type { Category } from '../types';
+import type { Category, Locale } from '../types';
+import { useT, SUPPORTED_LOCALES } from '../i18n';
 
 interface Session {
   id: string;
   createdAt: string;
   expiresAt: string;
+  lastActiveAt: string;
+  ipAddress: string | null;
+  isCurrent: boolean;
+  device: 'mobile' | 'tablet' | 'desktop' | 'unknown';
+  browser: string;
+  os: string;
 }
+
+
 
 export default function SettingsPage(): React.ReactElement {
   const { settings, user, updateSettings, logout } = useAuth();
+  const { t } = useT();
   const { entries, fetchEntries, reEncryptAllEntries } = useEntries();
   const { categories, fetchCategories, createCategory, updateCategory, deleteCategory } = useCategories();
   const [sessions, setSessions] = useState<Session[]>([]);
@@ -31,22 +41,24 @@ export default function SettingsPage(): React.ReactElement {
   return (
     <div className="max-w-2xl space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-text">Settings</h1>
-        <p className="text-text-muted text-sm mt-1">Manage your vault preferences</p>
+        <h1 className="text-2xl font-bold text-text">{t('settings.title')}</h1>
+        <p className="text-text-muted text-sm mt-1">{t('settings.subtitle')}</p>
       </div>
 
       <AccountSection user={user} />
       <AutoLockSection settings={settings} onUpdate={updateSettings} />
+      <ClipboardSection settings={settings} onUpdate={updateSettings} />
       <ThemeSection settings={settings} onUpdate={updateSettings} />
+      <LanguageSection settings={settings} onUpdate={updateSettings} />
       <CategorySection categories={categories} onCreateCategory={createCategory} onUpdateCategory={updateCategory} onDeleteCategory={deleteCategory} />
       <DataSection entries={entries} fetchEntries={fetchEntries} reEncryptAllEntries={reEncryptAllEntries} />
       <SessionsSection sessions={sessions} onRevoke={async (id) => {
         try {
           await api.delete(`/auth/sessions/${id}`);
           setSessions(prev => prev.filter(s => s.id !== id));
-          toast.success('Session revoked');
+          toast.success(t('settings.saved'));
         } catch {
-          toast.error('Failed to revoke session');
+          toast.error(t('common.error'));
         }
       }} />
       <DangerSection onLogout={logout} />
@@ -72,17 +84,18 @@ function AccountSection({ user }: { user: { email: string } | null }) {
   const [showNew, setShowNew] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { masterPassword } = useAuth();
+  const { t } = useT();
   const { entries } = useEntries();
   const { reEncryptAllEntries } = useEntries();
 
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
-      toast.error('New passwords do not match');
+      toast.error(t('settings.passwordMismatch'));
       return;
     }
     if (newPassword.length < 8) {
-      toast.error('New password must be at least 8 characters');
+      toast.error(t('settings.passwordTooShort'));
       return;
     }
 
@@ -93,28 +106,28 @@ function AccountSection({ user }: { user: { email: string } | null }) {
         : [];
 
       await api.put('/auth/password', { currentPassword, newPassword, reEncryptedEntries });
-      toast.success('Password changed. Please log in again.');
+      toast.success(t('settings.saved'));
       setShowChangePassword(false);
     } catch {
-      toast.error('Failed to change password. Check your current password.');
+      toast.error(t('common.error'));
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <SettingCard title="Account">
+    <SettingCard title={t('settings.account')}>
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm font-medium text-text">{user?.email}</p>
-          <p className="text-xs text-text-muted">Signed in user</p>
+          <p className="text-xs text-text-muted">{t('settings.signedInUser')}</p>
         </div>
         <button
           onClick={() => setShowChangePassword(v => !v)}
           className="btn-secondary text-sm"
         >
           <Shield className="w-4 h-4" />
-          Change Password
+          {t('settings.changePassword')}
         </button>
       </div>
 
@@ -126,7 +139,7 @@ function AccountSection({ user }: { user: { email: string } | null }) {
               value={currentPassword}
               onChange={e => setCurrentPassword(e.target.value)}
               className="input pr-10"
-              placeholder="Current password"
+              placeholder={t('settings.currentPassword')}
               required
             />
             <button type="button" onClick={() => setShowCurrent(v => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted">
@@ -140,7 +153,7 @@ function AccountSection({ user }: { user: { email: string } | null }) {
               value={newPassword}
               onChange={e => setNewPassword(e.target.value)}
               className="input pr-10"
-              placeholder="New password (min. 8 characters)"
+              placeholder={t('settings.newPassword')}
               required
               minLength={8}
             />
@@ -154,15 +167,15 @@ function AccountSection({ user }: { user: { email: string } | null }) {
             value={confirmPassword}
             onChange={e => setConfirmPassword(e.target.value)}
             className="input"
-            placeholder="Confirm new password"
+            placeholder={t('settings.confirmPassword')}
             required
           />
 
           <div className="flex gap-2">
             <button type="submit" className="btn-primary flex-1" disabled={isLoading}>
-              {isLoading ? <span className="w-4 h-4 border-2 border-base border-t-transparent rounded-full animate-spin" /> : 'Change Password'}
+              {isLoading ? <span className="w-4 h-4 border-2 border-base border-t-transparent rounded-full animate-spin" /> : t('settings.changePassword')}
             </button>
-            <button type="button" onClick={() => setShowChangePassword(false)} className="btn-secondary flex-1">Cancel</button>
+            <button type="button" onClick={() => setShowChangePassword(false)} className="btn-secondary flex-1">{t('common.cancel')}</button>
           </div>
         </form>
       )}
@@ -171,20 +184,21 @@ function AccountSection({ user }: { user: { email: string } | null }) {
 }
 
 function AutoLockSection({ settings, onUpdate }: { settings: { autoLockMins: number } | null; onUpdate: (s: { autoLockMins: number }) => Promise<void> }) {
+  const { t } = useT();
   const options = [
     { value: 5, label: '5 min' },
     { value: 15, label: '15 min' },
     { value: 30, label: '30 min' },
-    { value: 0, label: 'Off' },
+    { value: 0, label: t('settings.off') },
   ];
 
   return (
-    <SettingCard title="Auto-Lock">
+    <SettingCard title={t('settings.autoLock')}>
       <div className="grid grid-cols-4 gap-2">
         {options.map(opt => (
           <button
             key={opt.value}
-            onClick={() => onUpdate({ autoLockMins: opt.value }).then(() => toast.success('Auto-lock updated'))}
+            onClick={() => onUpdate({ autoLockMins: opt.value }).then(() => toast.success(t('settings.saved')))}
             className={`flex flex-col items-center gap-1 py-3 rounded-xl text-sm transition-all ${
               settings?.autoLockMins === opt.value
                 ? 'bg-primary/20 text-primary border border-primary/30'
@@ -200,17 +214,59 @@ function AutoLockSection({ settings, onUpdate }: { settings: { autoLockMins: num
   );
 }
 
-function ThemeSection({ settings, onUpdate }: { settings: { theme: string } | null; onUpdate: (s: { theme: 'dark' | 'light' }) => Promise<void> }) {
+function ClipboardSection({
+  settings,
+  onUpdate,
+}: {
+  settings: { clipboardClearSecs: number } | null;
+  onUpdate: (s: { clipboardClearSecs: number }) => Promise<void>;
+}) {
+  const { t } = useT();
+  const options = [
+    { value: 10, label: '10 s' },
+    { value: 20, label: '20 s' },
+    { value: 30, label: '30 s' },
+    { value: 60, label: '60 s' },
+    { value: 0, label: t('settings.off') },
+  ];
+  const current = settings?.clipboardClearSecs ?? 30;
+
   return (
-    <SettingCard title="Appearance">
+    <SettingCard title={t('settings.clipboard')}>
+      <p className="text-xs text-text-muted -mt-2">{t('settings.clipboardHint')}</p>
+      <div className="grid grid-cols-5 gap-2">
+        {options.map(opt => (
+          <button
+            key={opt.value}
+            onClick={() => onUpdate({ clipboardClearSecs: opt.value }).then(() => toast.success(t('settings.saved')))}
+            className={`flex flex-col items-center gap-1 py-3 rounded-xl text-sm transition-all ${
+              current === opt.value
+                ? 'bg-primary/20 text-primary border border-primary/30'
+                : 'bg-surface text-text-muted hover:text-text border border-transparent'
+            }`}
+          >
+            <ClipboardCopy className="w-4 h-4" />
+            <span className="text-xs font-medium">{opt.label}</span>
+          </button>
+        ))}
+      </div>
+      <p className="text-xs text-text-dim">{t('settings.clipboardIosHint')}</p>
+    </SettingCard>
+  );
+}
+
+function ThemeSection({ settings, onUpdate }: { settings: { theme: string } | null; onUpdate: (s: { theme: 'dark' | 'light' }) => Promise<void> }) {
+  const { t } = useT();
+  return (
+    <SettingCard title={t('settings.appearance')}>
       <div className="grid grid-cols-2 gap-2">
         {([
-          { value: 'dark', label: 'Dark', Icon: Moon },
-          { value: 'light', label: 'Light', Icon: Sun },
+          { value: 'dark', label: t('settings.dark'), Icon: Moon },
+          { value: 'light', label: t('settings.light'), Icon: Sun },
         ] as const).map(({ value, label, Icon }) => (
           <button
             key={value}
-            onClick={() => onUpdate({ theme: value }).then(() => toast.success('Theme updated'))}
+            onClick={() => onUpdate({ theme: value }).then(() => toast.success(t('settings.saved')))}
             className={`flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-all border ${
               settings?.theme === value
                 ? 'bg-primary/20 text-primary border-primary/30'
@@ -219,6 +275,38 @@ function ThemeSection({ settings, onUpdate }: { settings: { theme: string } | nu
           >
             <Icon className="w-4 h-4" />
             {label}
+          </button>
+        ))}
+      </div>
+    </SettingCard>
+  );
+}
+
+function LanguageSection({
+  settings,
+  onUpdate,
+}: {
+  settings: { locale: Locale } | null;
+  onUpdate: (s: { locale: Locale }) => Promise<void>;
+}) {
+  const { t } = useT();
+  const labels: Record<Locale, string> = { de: 'Deutsch', en: 'English' };
+  const current = settings?.locale ?? 'de';
+
+  return (
+    <SettingCard title={t('settings.language')}>
+      <div className="grid grid-cols-2 gap-2">
+        {SUPPORTED_LOCALES.map(locale => (
+          <button
+            key={locale}
+            onClick={() => onUpdate({ locale }).then(() => toast.success(t('settings.saved')))}
+            className={`flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-medium transition-all border ${
+              current === locale
+                ? 'bg-primary/20 text-primary border-primary/30'
+                : 'bg-surface text-text-muted hover:text-text border-transparent'
+            }`}
+          >
+            {labels[locale]}
           </button>
         ))}
       </div>
@@ -237,6 +325,7 @@ function CategorySection({
   onUpdateCategory: (id: string, data: { name?: string; color?: string }) => Promise<void>;
   onDeleteCategory: (id: string) => Promise<void>;
 }) {
+  const { t } = useT();
   const [newName, setNewName] = useState('');
   const [newColor, setNewColor] = useState('#6366f1');
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -262,21 +351,21 @@ function CategorySection({
   };
 
   return (
-    <SettingCard title="Categories">
+    <SettingCard title={t('settings.categories')}>
       <form onSubmit={handleCreate} className="flex gap-2">
         <input
           type="color"
           value={newColor}
           onChange={e => setNewColor(e.target.value)}
           className="w-10 h-9 rounded-lg border-0 bg-surface cursor-pointer"
-          title="Category color"
+          title={t('settings.categoryColor')}
         />
         <input
           type="text"
           value={newName}
           onChange={e => setNewName(e.target.value)}
           className="input flex-1"
-          placeholder="New category name"
+          placeholder={t('settings.newCategory')}
           maxLength={100}
         />
         <button type="submit" className="btn-primary px-3" disabled={isCreating || !newName.trim()}>
@@ -334,7 +423,7 @@ function CategorySection({
         ))}
 
         {categories.length === 0 && (
-          <p className="text-sm text-text-muted text-center py-4">No categories yet</p>
+          <p className="text-sm text-text-muted text-center py-4">{t('settings.noCategories')}</p>
         )}
       </div>
     </SettingCard>
@@ -346,6 +435,7 @@ function DataSection({ entries, fetchEntries, reEncryptAllEntries }: {
   fetchEntries: ReturnType<typeof useEntries>['fetchEntries'];
   reEncryptAllEntries: ReturnType<typeof useEntries>['reEncryptAllEntries'];
 }) {
+  const { t } = useT();
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showImportWizard, setShowImportWizard] = useState(false);
@@ -360,9 +450,9 @@ function DataSection({ entries, fetchEntries, reEncryptAllEntries }: {
       a.download = `key-manager-export-${new Date().toISOString().slice(0, 10)}.json`;
       a.click();
       URL.revokeObjectURL(url);
-      toast.success('Export downloaded');
+      toast.success(t('settings.exportDone'));
     } catch {
-      toast.error('Export failed');
+      toast.error(t('settings.exportFailed'));
     }
   };
 
@@ -375,9 +465,9 @@ function DataSection({ entries, fetchEntries, reEncryptAllEntries }: {
       const data = JSON.parse(text);
       await api.post('/import', { ...data, merge: true });
       await fetchEntries();
-      toast.success('Import successful');
+      toast.success(t('settings.importDone'));
     } catch {
-      toast.error('Import failed. Check file format.');
+      toast.error(t('settings.importFailed'));
     } finally {
       if (fileInputRef.current) fileInputRef.current.value = '';
     }
@@ -387,10 +477,10 @@ function DataSection({ entries, fetchEntries, reEncryptAllEntries }: {
     try {
       await api.delete('/settings/data');
       await fetchEntries();
-      toast.success('All data deleted');
+      toast.success(t('settings.dataDeleted'));
       setShowDeleteConfirm(false);
     } catch {
-      toast.error('Failed to delete data');
+      toast.error(t('common.error'));
     }
   };
 
@@ -399,21 +489,21 @@ function DataSection({ entries, fetchEntries, reEncryptAllEntries }: {
   void masterPassword;
 
   return (
-    <SettingCard title="Data Management">
+    <SettingCard title={t('settings.dataManagement')}>
       <div className="flex gap-3 flex-wrap">
         <button onClick={handleExport} className="btn-secondary">
           <Download className="w-4 h-4" />
-          Export Encrypted
+          {t('settings.exportEncrypted')}
         </button>
 
         <button onClick={() => fileInputRef.current?.click()} className="btn-secondary">
           <Upload className="w-4 h-4" />
-          Import
+          {t('settings.import')}
         </button>
 
         <button onClick={() => setShowImportWizard(true)} className="btn-secondary">
           <Smartphone className="w-4 h-4" />
-          Import from Apple / Google
+          {t('settings.importExternal')}
         </button>
 
         <input ref={fileInputRef} type="file" accept=".json" onChange={handleImport} className="hidden" />
@@ -429,14 +519,14 @@ function DataSection({ entries, fetchEntries, reEncryptAllEntries }: {
       {!showDeleteConfirm ? (
         <button onClick={() => setShowDeleteConfirm(true)} className="btn-danger text-sm">
           <Trash2 className="w-4 h-4" />
-          Delete All Data
+          {t('settings.deleteAllData')}
         </button>
       ) : (
         <div className="p-3 bg-error/10 border border-error/30 rounded-lg space-y-3">
-          <p className="text-sm text-text">Are you sure? This will permanently delete all entries and categories.</p>
+          <p className="text-sm text-text">{t('settings.deleteAllConfirm')}</p>
           <div className="flex gap-2">
-            <button onClick={handleDeleteAllData} className="btn-danger flex-1 text-sm">Delete Everything</button>
-            <button onClick={() => setShowDeleteConfirm(false)} className="btn-secondary flex-1 text-sm">Cancel</button>
+            <button onClick={handleDeleteAllData} className="btn-danger flex-1 text-sm">{t('settings.deleteEverything')}</button>
+            <button onClick={() => setShowDeleteConfirm(false)} className="btn-secondary flex-1 text-sm">{t('common.cancel')}</button>
           </div>
         </div>
       )}
@@ -444,45 +534,79 @@ function DataSection({ entries, fetchEntries, reEncryptAllEntries }: {
   );
 }
 
+const DEVICE_ICONS = {
+  mobile: Smartphone,
+  tablet: Tablet,
+  desktop: Monitor,
+  unknown: Monitor,
+} as const;
+
 function SessionsSection({ sessions, onRevoke }: { sessions: Session[]; onRevoke: (id: string) => Promise<void> }) {
+  const { t, formatRelative } = useT();
   return (
-    <SettingCard title="Active Sessions">
+    <SettingCard title={t('settings.sessions')}>
       <div className="space-y-2">
         {sessions.length === 0 ? (
-          <p className="text-sm text-text-muted text-center py-2">No other active sessions</p>
+          <p className="text-sm text-text-muted text-center py-2">{t('settings.noSessions')}</p>
         ) : (
-          sessions.map((session) => (
-            <div key={session.id} className="flex items-center justify-between p-2 bg-surface rounded-lg">
-              <div>
-                <p className="text-sm text-text">
-                  Session from {new Date(session.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
-                </p>
-                <p className="text-xs text-text-muted">
-                  Expires {new Date(session.expiresAt).toLocaleDateString()}
-                </p>
-              </div>
-              <button
-                onClick={() => onRevoke(session.id)}
-                className="btn-ghost p-1.5 text-text-muted hover:text-error text-xs"
-                title="Revoke session"
+          sessions.map((session) => {
+            const DeviceIcon = DEVICE_ICONS[session.device];
+            return (
+              <div
+                key={session.id}
+                className={`flex items-center gap-3 p-3 bg-surface rounded-xl ${
+                  session.isCurrent ? 'ring-1 ring-primary/30' : ''
+                }`}
               >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-          ))
+                <div className="w-9 h-9 rounded-xl bg-base-100 flex items-center justify-center flex-shrink-0">
+                  <DeviceIcon className="w-4 h-4 text-text-muted" />
+                </div>
+
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm text-text flex items-center gap-2 flex-wrap">
+                    <span className="truncate">{session.browser} · {session.os}</span>
+                    {session.isCurrent && (
+                      <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-primary/20 text-primary">
+                        {t('settings.thisDevice')}
+                      </span>
+                    )}
+                  </p>
+                  <p className="text-xs text-text-muted">
+                    {t('settings.activeAgo', { time: formatRelative(session.lastActiveAt) })}
+                    {session.ipAddress && <> · {session.ipAddress}</>}
+                  </p>
+                  <p className="text-xs text-text-dim">
+                    {t('settings.signedInAgo', { time: formatRelative(session.createdAt) })}
+                  </p>
+                </div>
+
+                {!session.isCurrent && (
+                  <button
+                    onClick={() => onRevoke(session.id)}
+                    className="w-9 h-9 flex items-center justify-center rounded-lg text-text-muted hover:text-error hover:bg-error/10 transition-colors flex-shrink-0"
+                    title={t('settings.revokeSession')}
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                )}
+              </div>
+            );
+          })
         )}
       </div>
+      <p className="text-xs text-text-dim">{t('settings.ipHint')}</p>
     </SettingCard>
   );
 }
 
 function DangerSection({ onLogout }: { onLogout: () => Promise<void> }) {
+  const { t } = useT();
   return (
-    <SettingCard title="Session">
+    <SettingCard title={t('settings.session')}>
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm text-text">Sign out of all devices</p>
-          <p className="text-xs text-text-muted">Invalidates all active sessions</p>
+          <p className="text-sm text-text">{t('settings.signOutAllTitle')}</p>
+          <p className="text-xs text-text-muted">{t('settings.signOutAllHint')}</p>
         </div>
         <button
           onClick={async () => {
@@ -490,18 +614,18 @@ function DangerSection({ onLogout }: { onLogout: () => Promise<void> }) {
               await api.post('/auth/logout-all');
               await onLogout();
             } catch {
-              toast.error('Failed to sign out all sessions');
+              toast.error(t('common.error'));
             }
           }}
           className="btn-danger text-sm"
         >
           <LogOut className="w-4 h-4" />
-          Sign Out All
+          {t('settings.signOutAll')}
         </button>
       </div>
 
       <div className="text-xs text-text-muted pt-2 border-t border-surface">
-        Private Key Manager v1.0.0
+        {t('settings.version', { version: '1.0.0' })}
       </div>
     </SettingCard>
   );

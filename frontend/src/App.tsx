@@ -12,9 +12,12 @@ import DownloadsPage from './pages/DownloadsPage';
 import AdminPage from './pages/AdminPage';
 import Layout from './components/Layout';
 import { pageCategoryFor, trackPageview } from './utils/analytics';
+import { I18nProvider, detectLocale } from './i18n';
 
 export default function App(): React.ReactElement {
-  const { user, isAuthenticated, isLocked, isSetupComplete, settings } = useAuth();
+  const { settings } = useAuth();
+  // Bis die Einstellungen geladen sind, entscheidet die Browsersprache
+  const locale = settings?.locale ?? detectLocale();
 
   // Apply theme
   useEffect(() => {
@@ -22,6 +25,20 @@ export default function App(): React.ReactElement {
     document.documentElement.classList.toggle('dark', theme === 'dark');
     document.documentElement.classList.toggle('light', theme === 'light');
   }, [settings?.theme]);
+
+  useEffect(() => {
+    document.documentElement.lang = locale;
+  }, [locale]);
+
+  return (
+    <I18nProvider locale={locale}>
+      <AppRoutes />
+    </I18nProvider>
+  );
+}
+
+function AppRoutes(): React.ReactElement {
+  const { user, isAuthenticated, isLocked, isSetupComplete } = useAuth();
 
   // Analytics: nur neutrale Seitenkategorie, nie echter Pfad oder Inhalte
   const { pathname } = useLocation();
@@ -74,7 +91,7 @@ export default function App(): React.ReactElement {
         <Route path="/" element={<Dashboard />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="/downloads" element={<DownloadsPage />} />
-        {user?.isAdmin && <Route path="/admin" element={<AdminPage />} />}
+        {user.isAdmin && <Route path="/admin" element={<AdminPage />} />}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Layout>

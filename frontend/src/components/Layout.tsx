@@ -2,24 +2,26 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Key, Settings, Lock, LogOut, LayoutDashboard, Download, Crown } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
+import { useT } from '../i18n';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const baseNavItems = [
-  { to: '/', icon: LayoutDashboard, label: 'Vault' },
-  { to: '/downloads', icon: Download, label: 'Apps' },
-  { to: '/settings', icon: Settings, label: 'Settings' },
+  { to: '/', icon: LayoutDashboard, labelKey: 'nav.vault' },
+  { to: '/downloads', icon: Download, labelKey: 'nav.apps' },
+  { to: '/settings', icon: Settings, labelKey: 'nav.settings' },
 ];
 
 export default function Layout({ children }: LayoutProps): React.ReactElement {
   const { lock, logout, user } = useAuth();
   const location = useLocation();
+  const { t } = useT();
 
   const navItems = [
     ...baseNavItems,
-    ...(user?.isAdmin ? [{ to: '/admin', icon: Crown, label: 'Admin' }] : []),
+    ...(user?.isAdmin ? [{ to: '/admin', icon: Crown, labelKey: 'nav.admin' }] : []),
   ];
 
   return (
@@ -47,7 +49,7 @@ export default function Layout({ children }: LayoutProps): React.ReactElement {
 
           {/* Desktop Nav */}
           <nav className="hidden sm:flex items-center gap-1">
-            {navItems.map(({ to, icon: Icon, label }) => {
+            {navItems.map(({ to, icon: Icon, labelKey }) => {
               const active = location.pathname === to;
               return (
                 <Link
@@ -60,7 +62,7 @@ export default function Layout({ children }: LayoutProps): React.ReactElement {
                   }`}
                 >
                   <Icon className="w-3.5 h-3.5" />
-                  {label}
+                  {t(labelKey)}
                 </Link>
               );
             })}
@@ -71,14 +73,14 @@ export default function Layout({ children }: LayoutProps): React.ReactElement {
             <button
               onClick={lock}
               className="btn-ghost p-2 rounded-lg"
-              title="Lock vault"
+              title={t('nav.lockVault')}
             >
               <Lock className="w-4 h-4" />
             </button>
             <button
               onClick={logout}
               className="btn-ghost p-2 rounded-lg"
-              title="Sign out"
+              title={t('nav.signOut')}
             >
               <LogOut className="w-4 h-4" />
             </button>
@@ -94,7 +96,7 @@ export default function Layout({ children }: LayoutProps): React.ReactElement {
       {/* Mobile Bottom Nav */}
       <nav className="sm:hidden fixed bottom-0 inset-x-0 z-40 safe-bottom nav-bg">
         <div className="flex items-center justify-around px-2 py-2">
-          {navItems.map(({ to, icon: Icon, label }) => {
+          {navItems.map(({ to, icon: Icon, labelKey }) => {
             const active = location.pathname === to;
             return (
               <Link
@@ -107,7 +109,7 @@ export default function Layout({ children }: LayoutProps): React.ReactElement {
                 <div className={`p-1.5 rounded-lg transition-colors ${active ? 'bg-primary/15' : ''}`}>
                   <Icon className="w-4.5 h-4.5" style={{ width: 18, height: 18 }} />
                 </div>
-                <span className="text-[10px] font-medium">{label}</span>
+                <span className="text-[10px] font-medium">{t(labelKey)}</span>
               </Link>
             );
           })}
@@ -119,7 +121,7 @@ export default function Layout({ children }: LayoutProps): React.ReactElement {
             <div className="p-1.5 rounded-lg">
               <Lock style={{ width: 18, height: 18 }} />
             </div>
-            <span className="text-[10px] font-medium">Lock</span>
+            <span className="text-[10px] font-medium">{t('nav.lock')}</span>
           </button>
         </div>
       </nav>

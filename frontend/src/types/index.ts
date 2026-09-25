@@ -26,6 +26,8 @@ export interface Entry {
   url?: string | null;
   note?: string | null;
   expiresAt?: string | null;
+  isFavorite: boolean;
+  lastUsedAt?: string | null;
   encryptedData: string;
   categories: Category[];
   createdAt: string;
@@ -54,12 +56,19 @@ export interface EntryFormData {
   // Sensitive (will be encrypted)
   apiKey?: string;
   password?: string;
+  /** otpauth://-URI oder Base32-Secret; leerer String entfernt einen bestehenden Schlüssel */
+  otpAuth?: string;
 }
+
+export type Locale = 'de' | 'en';
 
 export interface Settings {
   id: string;
   autoLockMins: number;
   theme: Theme;
+  /** Sekunden bis zum automatischen Leeren der Zwischenablage (0 = aus) */
+  clipboardClearSecs: number;
+  locale: Locale;
 }
 
 export interface AuthState {
@@ -74,7 +83,7 @@ export interface ApiError {
   details?: { field: string; message: string }[];
 }
 
-export type SortField = 'createdAt' | 'updatedAt' | 'name';
+export type SortField = 'createdAt' | 'updatedAt' | 'name' | 'lastUsedAt';
 export type SortOrder = 'asc' | 'desc';
 
 export interface FilterState {
