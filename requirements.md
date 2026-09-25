@@ -279,3 +279,59 @@ Eine **private, passwortgeschützte Web-App** mit Backend, die gleichzeitig als 
 - [ ] Kategorien-System implementiert
 - [ ] Responsive UI (Mobile + Desktop)
 - [ ] `README.md` mit Schritt-für-Schritt Deployment-Anleitung
+---
+
+## 14. Feature-Roadmap v2
+
+Erweiterung des Funktionsumfangs. Die technische Detailspezifikation zu jedem Punkt
+(Datenmodell, Crypto-Design, API, Migration) steht in `docs/feature-specs.md`.
+
+### Welle 1 — Quick Wins
+- [x] **1. TOTP-Codes** – 2FA-Codes im Eintrag anzeigen (RFC 6238), QR-Scan zum Hinzufügen
+- [x] **2. Zwischenablage automatisch leeren** – konfigurierbar 10–60 s
+- [x] **3. Favoriten & „Zuletzt verwendet"** – Stern-Markierung, neue Sortierung
+- [x] **4. Command Palette** – Cmd/Ctrl+K, Suchen → Enter → kopiert
+- [x] **5. Session-Details** – Gerät, Browser, gekürzte IP, letzte Aktivität
+- [~] **6. Deutsche Lokalisierung** – DE/EN umschaltbar, typsichere Schlüssel
+
+### Welle 2 — Datensicherheit
+- [ ] **9. Papierkorb & Versionshistorie** – Soft Delete 30 Tage, 10 Versionen je Eintrag
+- [ ] **23. Audit-Log** – nachvollziehbare Aktivitätshistorie je Nutzer
+- [ ] **24. Escrow-Transparenz** – Admin-Wiederherstellung sichtbar machen, Opt-out
+- [ ] **10. Ablauf-Benachrichtigungen** – Web Push bei T-30/T-7/T-0
+
+### Welle 3 — Vault-Härtung
+- [ ] **21. Verschlüsselte Metadaten** – Blind Index statt Klartextspalten
+- [ ] **22. Argon2id** – KDF-Ablösung von PBKDF2, versioniertes Blob-Format
+
+### Welle 4 — Inhalte
+- [ ] **11. Weitere Eintragstypen** – SSH, Zertifikat, Notiz, Karte, WLAN, Seed, Ausweis
+- [ ] **12. Verschlüsselte Datei-Anhänge** – 10 MB/Datei, eigener Datei-Schlüssel
+- [ ] **7. Password-Health-Dashboard** – schwach, wiederverwendet, alt, ohne 2FA
+- [ ] **8. Breach-Check (HIBP)** – k-Anonymity, zwingend opt-in
+- [ ] **13. Weitere Importformate** – Bitwarden, 1Password, KeePass, LastPass, Dashlane
+
+### Welle 5 — Zugang
+- [ ] **15. Biometrisches Entsperren** – WebAuthn PRF, Capacitor Keystore/Keychain
+- [ ] **14. Offline-Schreiben** – IndexedDB-Queue mit Konfliktdialog
+
+### Welle 6 — Teilen
+- [ ] **16. Eintrags-Sharing** – Nutzer-Keypair, Eintrags-Schlüssel je Eintrag
+- [ ] **17. One-Time-Secret-Links** – Schlüssel im URL-Fragment, selbstzerstörend
+- [ ] **20. Notfallzugriff** – Vertrauensperson mit Wartefrist
+
+### Welle 7 — Integration
+- [ ] **18. CLI + Access Tokens** – `keyvault exec` injiziert Secrets ohne stdout-Ausgabe
+- [ ] **19. Browser-Extension & Android Autofill** – MV3-Extension, AutofillService
+
+### Welle 8 — Extras
+- [ ] **25. Duress-Passwort** – Köder-Tresor bei Nötigung
+
+### Sicherheitsgrundsätze für alle neuen Features
+
+1. Kein Secret verlässt das Gerät im Klartext – auch nicht in Benachrichtigungen, Logs
+   oder Fehlermeldungen.
+2. Kein Request an Dritte ohne ausdrückliche Zustimmung (§10 „keine Telemetrie").
+3. Kein stiller Datenverlust: Konflikte und Überschreibungen werden erfragt, nicht geraten.
+4. Jede Änderung am Blob-Format ist versioniert und abwärtskompatibel lesbar.
+5. Grenzen des Schutzmodells werden in der UI benannt, nicht beschönigt.
