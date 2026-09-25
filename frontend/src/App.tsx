@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth';
 import SetupPage from './pages/SetupPage';
 import LoginPage from './pages/LoginPage';
@@ -11,6 +11,7 @@ import SettingsPage from './pages/SettingsPage';
 import DownloadsPage from './pages/DownloadsPage';
 import AdminPage from './pages/AdminPage';
 import Layout from './components/Layout';
+import { pageCategoryFor, trackPageview } from './utils/analytics';
 
 export default function App(): React.ReactElement {
   const { user, isAuthenticated, isLocked, isSetupComplete, settings } = useAuth();
@@ -21,6 +22,19 @@ export default function App(): React.ReactElement {
     document.documentElement.classList.toggle('dark', theme === 'dark');
     document.documentElement.classList.toggle('light', theme === 'light');
   }, [settings?.theme]);
+
+  // Analytics: nur neutrale Seitenkategorie, nie echter Pfad oder Inhalte
+  const { pathname } = useLocation();
+  const pageCategory = pageCategoryFor({
+    pathname,
+    isSetupComplete,
+    hasUser: Boolean(user),
+    isLocked,
+    isAuthenticated,
+  });
+  useEffect(() => {
+    trackPageview(pageCategory);
+  }, [pageCategory]);
 
   if (window.location.pathname === '/auth/callback') {
     return <OAuthCallbackPage />;
