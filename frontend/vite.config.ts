@@ -81,6 +81,9 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     sourcemap: false,
+    // Schriften nie als data:-URI einbetten: Die CSP erlaubt nur font-src 'self'.
+    // Für alles andere gilt Vites Standard (undefined = eingebaute 4-KB-Grenze).
+    assetsInlineLimit: (filePath: string) => (/\.(woff2?|ttf|otf|eot)$/i.test(filePath) ? false : undefined),
     rollupOptions: {
       output: {
         manualChunks: {
