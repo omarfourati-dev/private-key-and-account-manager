@@ -4,6 +4,9 @@ import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import App from './App';
 import { AuthProvider } from './hooks/AuthProvider';
+// Schriften lokal ausgeliefert statt von Google Fonts: kein Drittanbieter-Request, strikte CSP (font-src 'self')
+import '@fontsource-variable/inter';
+import '@fontsource-variable/jetbrains-mono';
 import './index.css';
 
 const root = document.getElementById('root');
