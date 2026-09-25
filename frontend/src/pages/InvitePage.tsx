@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Key, Eye, EyeOff, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import toast from 'react-hot-toast';
+import LegalFooter from '../components/LegalFooter';
 
 export default function InvitePage(): React.ReactElement {
   const { setup } = useAuth();
@@ -79,6 +80,7 @@ export default function InvitePage(): React.ReactElement {
             </button>
           </form>
         </div>
+        <LegalFooter className="mt-5" />
       </div>
     </div>
   );

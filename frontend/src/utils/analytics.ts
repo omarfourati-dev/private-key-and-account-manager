@@ -23,6 +23,7 @@ export const PAGE_CATEGORIES = [
   '/settings',
   '/downloads',
   '/admin',
+  '/legal',
 ] as const;
 
 export type PageCategory = (typeof PAGE_CATEGORIES)[number];
@@ -38,6 +39,7 @@ export interface AppViewState {
 /** Leitet aus dem App-Zustand eine neutrale Kategorie ab, nie aus Nutzerdaten. */
 export function pageCategoryFor(state: AppViewState): PageCategory | null {
   const { pathname } = state;
+  if (pathname === '/impressum' || pathname === '/datenschutz') return '/legal';
   if (pathname === '/auth/callback') return '/login';
   if (pathname.startsWith('/invite/')) return '/register';
   if (state.isSetupComplete === null) return null; // lädt noch

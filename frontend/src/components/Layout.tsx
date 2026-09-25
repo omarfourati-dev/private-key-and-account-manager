@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Key, Settings, Lock, LogOut, LayoutDashboard, Download, Crown } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useT } from '../i18n';
+import LegalFooter from './LegalFooter';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -92,6 +93,10 @@ export default function Layout({ children }: LayoutProps): React.ReactElement {
       <main className="relative z-10 flex-1 max-w-7xl w-full mx-auto px-4 py-6 sm:pb-6 mobile-content-pad">
         {children}
       </main>
+
+      <footer className="relative z-10 pb-24 sm:pb-6">
+        <LegalFooter />
+      </footer>
 
       {/* Mobile Bottom Nav */}
       <nav className="sm:hidden fixed bottom-0 inset-x-0 z-40 safe-bottom nav-bg">

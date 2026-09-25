@@ -3,6 +3,7 @@ import { Key, Eye, EyeOff, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
+import LegalFooter from '../components/LegalFooter';
 
 export default function LoginPage(): React.ReactElement {
   const { login } = useAuth();
@@ -157,6 +158,8 @@ export default function LoginPage(): React.ReactElement {
           <ShieldCheck className="w-3.5 h-3.5" />
           <p className="text-xs">End-to-end encrypted &middot; 5 attempts before lockout</p>
         </div>
+
+        <LegalFooter className="mt-4" />
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Key, Eye, EyeOff, ShieldCheck, Lock, Cpu } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import toast from 'react-hot-toast';
+import LegalFooter from '../components/LegalFooter';
 
 export default function SetupPage(): React.ReactElement {
   const { setup } = useAuth();
@@ -183,6 +184,7 @@ export default function SetupPage(): React.ReactElement {
             ))}
           </div>
         </div>
+        <LegalFooter className="mt-5" />
       </div>
     </div>
   );

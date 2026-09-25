@@ -7,6 +7,12 @@
  * Konvention für Plurale: `<key>_one` und `<key>_other`.
  */
 export const en = {
+  // Legal
+  'legal.imprint': 'Legal notice',
+  'legal.privacy': 'Privacy policy',
+  'legal.back': 'Back',
+  'legal.footerLabel': 'Legal information',
+
   // Navigation & Layout
   'nav.vault': 'Vault',
   'nav.apps': 'Apps',

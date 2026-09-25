@@ -7,6 +7,12 @@ import type { TranslationKey } from './en';
  * Type-Check fehl statt zur Laufzeit auf Englisch zurückzufallen.
  */
 export const de: Record<TranslationKey, string> = {
+  // Rechtliches
+  'legal.imprint': 'Impressum',
+  'legal.privacy': 'Datenschutz',
+  'legal.back': 'Zurück',
+  'legal.footerLabel': 'Rechtliche Hinweise',
+
   // Navigation & Layout
   'nav.vault': 'Tresor',
   'nav.apps': 'Apps',

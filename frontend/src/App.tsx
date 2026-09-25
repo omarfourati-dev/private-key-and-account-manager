@@ -11,6 +11,7 @@ import SettingsPage from './pages/SettingsPage';
 import DownloadsPage from './pages/DownloadsPage';
 import AdminPage from './pages/AdminPage';
 import Layout from './components/Layout';
+import { ImpressumPage, DatenschutzPage } from './pages/LegalPages';
 import { pageCategoryFor, trackPageview } from './utils/analytics';
 import { I18nProvider, detectLocale } from './i18n';
 
@@ -52,6 +53,10 @@ function AppRoutes(): React.ReactElement {
   useEffect(() => {
     trackPageview(pageCategory);
   }, [pageCategory]);
+
+  // Rechtstexte sind immer erreichbar – unabhängig von Anmeldung, Sperre oder Setup
+  if (pathname === '/impressum') return <ImpressumPage />;
+  if (pathname === '/datenschutz') return <DatenschutzPage />;
 
   if (window.location.pathname === '/auth/callback') {
     return <OAuthCallbackPage />;
