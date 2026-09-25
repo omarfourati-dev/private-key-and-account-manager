@@ -3,7 +3,12 @@ import { X, Eye, EyeOff, Wand2, ChevronDown } from 'lucide-react';
 import PasswordGenerator from './PasswordGenerator';
 import type { Entry, EntryFormData, Category } from '../types';
 import { decryptData } from '../utils/crypto';
+import { parseOtpAuth, generateTotp, formatTotpCode, TotpError, type TotpErrorCode } from '../utils/totp';
 import toast from 'react-hot-toast';
+import { useT } from '../i18n';
+
+/** Fehlercode des TOTP-Parsers → i18n-Schlüssel */
+const otpErrorKey = (code: TotpErrorCode): string => `totp.error.${code}`;
 
 const ICONS = ['🔑', '🔐', '🛡️', '⚡', '🌐', '🚀', '💻', '📱', '☁️', '🏦', '💳', '🔒', '🤖', '📊', '🎯', '🗝️', '🔓', '📋', '🧩', '🌍'];
 
@@ -17,6 +22,7 @@ interface EntryFormProps {
 
 export default function EntryForm({ entry, categories, masterPassword, onSubmit, onClose }: EntryFormProps): React.ReactElement {
   const isEditing = !!entry;
+  const { t } = useT();
 
   const [formData, setFormData] = useState<EntryFormData>({
     type: 'API_KEY',
@@ -28,6 +34,7 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
     note: '',
     apiKey: '',
     password: '',
+    otpAuth: '',
     categoryIds: [],
   });
 
@@ -37,11 +44,38 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
   const [showIconPicker, setShowIconPicker] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingExisting, setIsLoadingExisting] = useState(false);
+  const [otpPreview, setOtpPreview] = useState<string | null>(null);
+  const [otpAuthError, setOtpAuthError] = useState<string | null>(null);
+
+  // Live-Validierung des 2FA-Schlüssels mit Vorschau des aktuellen Codes
+  useEffect(() => {
+    const raw = formData.otpAuth?.trim();
+    if (!raw) {
+      setOtpPreview(null);
+      setOtpAuthError(null);
+      return;
+    }
+
+    let cancelled = false;
+    try {
+      const config = parseOtpAuth(raw);
+      setOtpAuthError(null);
+      void generateTotp(config).then(code => {
+        if (!cancelled) setOtpPreview(formatTotpCode(code));
+      });
+    } catch (err) {
+      setOtpPreview(null);
+      setOtpAuthError(
+        err instanceof TotpError ? t(otpErrorKey(err.code)) : t('common.error')
+      );
+    }
+    return () => { cancelled = true; };
+  }, [formData.otpAuth, t]);
 
   useEffect(() => {
     if (entry) {
       setIsLoadingExisting(true);
-      decryptData<{ apiKey?: string; password?: string }>(entry.encryptedData, masterPassword)
+      decryptData<{ apiKey?: string; password?: string; otpAuth?: string }>(entry.encryptedData, masterPassword)
         .then(decrypted => {
           setFormData({
             type: entry.type,
@@ -54,10 +88,11 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
             expiresAt: entry.expiresAt ?? undefined,
             apiKey: decrypted.apiKey ?? '',
             password: decrypted.password ?? '',
+            otpAuth: decrypted.otpAuth ?? '',
             categoryIds: entry.categories.map(c => c.id),
           });
         })
-        .catch(() => toast.error('Failed to decrypt entry data'))
+        .catch(() => toast.error(t('entry.decryptFailed')))
         .finally(() => setIsLoadingExisting(false));
     }
   }, [entry, masterPassword]);
@@ -86,14 +121,18 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
     e.preventDefault();
     const secretValue = formData.type === 'API_KEY' ? formData.apiKey : formData.password;
     if (!secretValue && !isEditing) {
-      toast.error(`Please enter a ${formData.type === 'API_KEY' ? 'API key' : 'password'}`);
+      toast.error(formData.type === 'API_KEY' ? t('form.missingApiKey') : t('form.missingPassword'));
+      return;
+    }
+    if (otpAuthError) {
+      toast.error(`${t('totp.label')}: ${otpAuthError}`);
       return;
     }
     setIsLoading(true);
     try {
       await onSubmit(formData);
     } catch {
-      toast.error('Failed to save entry');
+      toast.error(t('common.error'));
     } finally {
       setIsLoading(false);
     }
@@ -120,13 +159,13 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
         {/* Sticky header */}
         <div className="sticky top-0 z-10 flex items-center justify-between px-5 py-4 border-b border-surface bg-base-100/95 backdrop-blur-sm rounded-t-3xl sm:rounded-t-2xl">
           <h2 className="text-base font-semibold text-text">
-            {isEditing ? 'Edit Entry' : 'New Entry'}
+            {isEditing ? t('form.editEntry') : t('form.newEntry')}
           </h2>
           {/* Large close button for mobile */}
           <button
             onClick={onClose}
             className="w-9 h-9 flex items-center justify-center rounded-xl bg-surface hover:bg-surface-100 transition-colors text-text-muted hover:text-text"
-            aria-label="Close"
+            aria-label={t('form.close')}
           >
             <X className="w-4 h-4" />
           </button>
@@ -135,18 +174,18 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
         <form onSubmit={handleSubmit} className="px-5 py-4 space-y-4 overflow-y-auto" style={{ maxHeight: 'calc(85vh - 72px)' }}>
           {/* Type selector — full height buttons for easy tap */}
           <div className="flex gap-2">
-            {(['API_KEY', 'ACCOUNT'] as const).map(t => (
+            {(['API_KEY', 'ACCOUNT'] as const).map(entryType => (
               <button
-                key={t}
+                key={entryType}
                 type="button"
-                onClick={() => update('type', t)}
+                onClick={() => update('type', entryType)}
                 className={`flex-1 py-3 rounded-xl text-sm font-medium transition-all ${
-                  formData.type === t
+                  formData.type === entryType
                     ? 'bg-primary/20 text-primary border border-primary/40'
                     : 'bg-surface text-text-muted hover:text-text border border-transparent'
                 }`}
               >
-                {t === 'API_KEY' ? '🔑 API Key' : '👤 Account'}
+                {entryType === 'API_KEY' ? `🔑 ${t('form.typeApiKey')}` : `👤 ${t('form.typeAccount')}`}
               </button>
             ))}
           </div>
@@ -159,7 +198,7 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
                 type="button"
                 onClick={() => setShowIconPicker(v => !v)}
                 className="w-12 h-12 flex items-center justify-center bg-surface border border-surface-200 rounded-xl text-xl hover:bg-surface-100 transition-colors relative"
-                title="Choose icon"
+                title={t('form.chooseIcon')}
               >
                 {formData.icon}
                 <ChevronDown className="absolute bottom-0.5 right-0.5 w-2.5 h-2.5 text-text-dim" />
@@ -194,7 +233,7 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
                 value={formData.name}
                 onChange={e => update('name', e.target.value)}
                 className="input h-12"
-                placeholder="Name / Label"
+                placeholder={t('form.name')}
                 required
                 maxLength={255}
               />
@@ -207,7 +246,7 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
             value={formData.service}
             onChange={e => update('service', e.target.value)}
             className="input"
-            placeholder={formData.type === 'API_KEY' ? 'Service / Provider (e.g. OpenAI)' : 'Service / Website'}
+            placeholder={formData.type === 'API_KEY' ? t('form.serviceApiKey') : t('form.serviceAccount')}
             maxLength={255}
           />
 
@@ -218,7 +257,7 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
               value={formData.username}
               onChange={e => update('username', e.target.value)}
               className="input"
-              placeholder="Username / Email"
+              placeholder={t('form.username')}
               autoComplete="off"
               maxLength={255}
             />
@@ -228,7 +267,7 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
           <div className="space-y-2">
             <div className="flex items-center justify-between mb-1">
               <span className="text-xs font-medium text-text-muted uppercase tracking-wide">
-                {formData.type === 'API_KEY' ? 'API Key' : 'Password'}
+                {formData.type === 'API_KEY' ? t('form.apiKey') : t('form.password')}
               </span>
               <button
                 type="button"
@@ -240,7 +279,7 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
                 }`}
               >
                 <Wand2 className="w-3.5 h-3.5" />
-                {showGenerator ? 'Hide generator' : 'Generate password'}
+                {showGenerator ? t('form.hideGenerator') : t('form.generate')}
               </button>
             </div>
 
@@ -250,7 +289,7 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
                 value={formData.type === 'API_KEY' ? formData.apiKey : formData.password}
                 onChange={e => update(formData.type === 'API_KEY' ? 'apiKey' : 'password', e.target.value)}
                 className="input pr-12 font-mono text-sm"
-                placeholder={formData.type === 'API_KEY' ? 'API Key (AES-256 encrypted)' : 'Paste or generate a password'}
+                placeholder={formData.type === 'API_KEY' ? t('form.apiKeyPlaceholder') : t('form.passwordPlaceholder')}
                 autoComplete="new-password"
                 maxLength={4096}
               />
@@ -258,7 +297,7 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
                 type="button"
                 onClick={() => setShowSecret(v => !v)}
                 className="absolute right-1 top-1/2 -translate-y-1/2 w-10 h-9 flex items-center justify-center rounded-lg text-text-muted hover:text-text hover:bg-surface transition-colors"
-                title={showSecret ? 'Hide' : 'Show'}
+                title={showSecret ? t('entry.hide') : t('entry.show')}
               >
                 {showSecret ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
@@ -275,20 +314,53 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
             )}
           </div>
 
+          {/* 2FA-Schlüssel (nur für Konten) */}
+          {formData.type === 'ACCOUNT' && (
+            <div>
+              <label className="block text-xs font-medium text-text-muted mb-1.5">
+                {t('totp.label')}
+              </label>
+              <input
+                type="text"
+                value={formData.otpAuth ?? ''}
+                onChange={e => update('otpAuth', e.target.value)}
+                className={`input font-mono text-xs ${
+                  otpAuthError ? 'border-error/50 focus:ring-error/40' : ''
+                }`}
+                placeholder={t('totp.placeholder')}
+                autoComplete="off"
+                maxLength={2048}
+                aria-invalid={!!otpAuthError}
+                aria-describedby={otpAuthError ? 'otpauth-error' : undefined}
+              />
+              {otpAuthError ? (
+                <p id="otpauth-error" className="text-xs text-error mt-1.5">{otpAuthError}</p>
+              ) : otpPreview ? (
+                <p className="text-xs text-success mt-1.5 font-mono tracking-widest">
+                  {t('totp.preview', { code: otpPreview })}
+                </p>
+              ) : (
+                <p className="text-xs text-text-dim mt-1.5">
+                  {t('totp.hint')}
+                </p>
+              )}
+            </div>
+          )}
+
           {/* URL */}
           <input
             type="url"
             value={formData.url}
             onChange={e => update('url', e.target.value)}
             className="input"
-            placeholder="URL / Website (optional)"
+            placeholder={t('form.url')}
             maxLength={2048}
           />
 
           {/* Expiry (API key only) */}
           {formData.type === 'API_KEY' && (
             <div>
-              <label className="block text-xs font-medium text-text-muted mb-1.5">Expiration Date (optional)</label>
+              <label className="block text-xs font-medium text-text-muted mb-1.5">{t('form.expiresAt')}</label>
               <input
                 type="datetime-local"
                 value={formData.expiresAt ?? ''}
@@ -303,7 +375,7 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
             value={formData.note}
             onChange={e => update('note', e.target.value)}
             className="input resize-none"
-            placeholder="Notes / 2FA hints (optional)"
+            placeholder={t('form.note')}
             rows={3}
             maxLength={2000}
           />
@@ -311,7 +383,7 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
           {/* Categories */}
           {categories.length > 0 && (
             <div>
-              <label className="block text-xs font-medium text-text-muted mb-2">Categories</label>
+              <label className="block text-xs font-medium text-text-muted mb-2">{t('form.categories')}</label>
               <div className="flex flex-wrap gap-2">
                 {categories.map(cat => {
                   const selected = formData.categoryIds?.includes(cat.id);
@@ -340,13 +412,13 @@ export default function EntryForm({ entry, categories, masterPassword, onSubmit,
           {/* Submit buttons — full width, 48px height */}
           <div className="flex gap-3 pt-2 pb-2">
             <button type="button" onClick={onClose} className="btn-secondary flex-1 h-12">
-              Cancel
+              {t('form.cancel')}
             </button>
             <button type="submit" className="btn-primary flex-1 h-12" disabled={isLoading}>
               {isLoading ? (
                 <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
-                isEditing ? 'Save Changes' : 'Create Entry'
+                isEditing ? t('form.save') : t('form.create')
               )}
             </button>
           </div>

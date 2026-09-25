@@ -1,22 +1,12 @@
 import '@testing-library/jest-dom';
+import { webcrypto } from 'node:crypto';
 
-// Mock Web Crypto API for tests
+// Use the real Web Crypto implementation from Node so that crypto-dependent
+// modules (crypto.ts, totp.ts) are exercised for real instead of against a stub.
 Object.defineProperty(globalThis, 'crypto', {
-  value: {
-    getRandomValues: (arr: Uint8Array) => {
-      for (let i = 0; i < arr.length; i++) {
-        arr[i] = Math.floor(Math.random() * 256);
-      }
-      return arr;
-    },
-    subtle: {
-      importKey: async () => ({ type: 'secret' }),
-      deriveKey: async () => ({ type: 'secret' }),
-      encrypt: async (_algo: unknown, _key: unknown, data: ArrayBuffer) => data,
-      decrypt: async (_algo: unknown, _key: unknown, data: ArrayBuffer) => data,
-    },
-  },
+  value: webcrypto,
   writable: true,
+  configurable: true,
 });
 
 // Mock matchMedia
